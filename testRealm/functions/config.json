@@ -1,0 +1,94 @@
+[
+    {
+        "name": "resetFunc",
+        "private": true
+    },
+    {
+        "name": "SplitAndInsertRecords",
+        "private": true
+    },
+    {
+        "name": "saveNOtification",
+        "private": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "sendAPNPushNotification",
+        "private": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "GenerateAlerts",
+        "private": true
+    },
+    {
+        "name": "getGeofence",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "addGeofence",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "updateGeofence",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "removeGeofence",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "TestAPNTrigger",
+        "private": true
+    },
+    {
+        "name": "addDeviceData",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "TriggerNotifications",
+        "private": true
+    },
+    {
+        "name": "AlertsGenerate",
+        "private": true
+    },
+    {
+        "name": "createUser",
+        "private": true
+    },
+    {
+        "name": "onUserCreation",
+        "private": true
+    },
+    {
+        "name": "loginFunc",
+        "private": true
+    },
+    {
+        "name": "postRapidSOSData",
+        "private": true
+    },
+    {
+        "name": "TriggerRapidSOS",
+        "private": true
+    },
+    {
+        "name": "InsertAuditRecord",
+        "private": true
+    },
+    {
+        "name": "PostRapidSOSDataVerification",
+        "private": true
+    }
+]

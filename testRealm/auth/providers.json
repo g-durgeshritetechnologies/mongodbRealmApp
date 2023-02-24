@@ -1,0 +1,76 @@
+{
+    "anon-user": {
+        "name": "anon-user",
+        "type": "anon-user",
+        "disabled": false
+    },
+    "api-key": {
+        "name": "api-key",
+        "type": "api-key",
+        "disabled": true
+    },
+    "local-userpass": {
+        "name": "local-userpass",
+        "type": "local-userpass",
+        "config": {
+            "autoConfirm": true,
+            "resetFunctionName": "resetFunc",
+            "runConfirmationFunction": false,
+            "runResetFunction": true
+        },
+        "disabled": false
+    },
+    "oauth2-facebook": {
+        "name": "oauth2-facebook",
+        "type": "oauth2-facebook",
+        "config": {
+            "clientId": "562694339097880"
+        },
+        "secret_config": {
+            "clientSecret": "FacebookAuth"
+        },
+        "disabled": false,
+        "metadata_fields": [
+            {
+                "required": false,
+                "name": "email"
+            },
+            {
+                "required": false,
+                "name": "name"
+            },
+            {
+                "required": false,
+                "name": "first_name"
+            },
+            {
+                "required": false,
+                "name": "last_name"
+            }
+        ],
+        "redirect_uris": [
+            "https://localhost:44345/Home/FacebookCallback"
+        ]
+    },
+    "oauth2-google": {
+        "name": "oauth2-google",
+        "type": "oauth2-google",
+        "config": {
+            "clientId": "905781377267-82j4nectqjirh2suc8seh4827285oj14.apps.googleusercontent.com",
+            "openId": true
+        },
+        "secret_config": {
+            "clientSecret": "GoogleAuth"
+        },
+        "disabled": false,
+        "metadata_fields": [
+            {
+                "required": false,
+                "name": "email"
+            }
+        ],
+        "redirect_uris": [
+            "https://localhost:44300/google-response"
+        ]
+    }
+}

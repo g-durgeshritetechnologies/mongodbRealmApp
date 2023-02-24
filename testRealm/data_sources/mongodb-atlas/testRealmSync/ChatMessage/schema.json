@@ -1,0 +1,44 @@
+{
+    "bsonType": "object",
+    "properties": {
+        "_deviceId": {
+            "bsonType": "string"
+        },
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "author": {
+            "bsonType": "string"
+        },
+        "device_Id": {
+            "bsonType": "objectId"
+        },
+        "device_id": {
+            "bsonType": "string"
+        },
+        "deviece_id": {
+            "bsonType": "string"
+        },
+        "room": {
+            "bsonType": "string"
+        },
+        "text": {
+            "bsonType": "string"
+        },
+        "timestamp": {
+            "bsonType": "date"
+        }
+    },
+    "required": [
+        "_id",
+        "_deviceId",
+        "author",
+        "text",
+        "timestamp",
+        "room",
+        "deviece_id",
+        "device_id",
+        "device_Id"
+    ],
+    "title": "ChatMessage"
+}

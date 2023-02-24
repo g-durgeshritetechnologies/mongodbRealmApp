@@ -1,0 +1,20 @@
+{
+    "name": "Login",
+    "type": "AUTHENTICATION",
+    "config": {
+        "operation_type": "LOGIN",
+        "providers": [
+            "oauth2-facebook",
+            "oauth2-google",
+            "local-userpass"
+        ]
+    },
+    "disabled": false,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "loginFunc"
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "name": "TestAPNTrigger",
+    "type": "DATABASE",
+    "config": {
+        "operation_types": [
+            "INSERT"
+        ],
+        "database": "testRealmSync",
+        "collection": "jsonmessages",
+        "service_name": "mongodb-atlas",
+        "match": {},
+        "project": {},
+        "full_document": true,
+        "full_document_before_change": false,
+        "unordered": true,
+        "skip_catchup_events": false,
+        "tolerate_resume_errors": false
+    },
+    "disabled": true,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "TestAPNTrigger"
+            }
+        }
+    }
+}

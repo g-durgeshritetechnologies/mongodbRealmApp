@@ -1,0 +1,44 @@
+{
+    "bsonType": "object",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "alert": {
+            "bsonType": "string"
+        },
+        "created": {
+            "bsonType": "string"
+        },
+        "data": {
+            "bsonType": "string"
+        },
+        "datasize": {
+            "bsonType": "long"
+        },
+        "device_id": {
+            "bsonType": "string"
+        },
+        "id": {
+            "bsonType": "string"
+        },
+        "origin_request_id": {
+            "bsonType": "string"
+        },
+        "product_type": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "device_id",
+        "id",
+        "alert",
+        "product_type",
+        "created",
+        "origin_request_id",
+        "data",
+        "datasize"
+    ],
+    "title": "Task1"
+}

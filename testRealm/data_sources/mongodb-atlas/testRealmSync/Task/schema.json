@@ -1,0 +1,31 @@
+{
+    "bsonType": "object",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "_partition": {
+            "bsonType": "string"
+        },
+        "device_id": {
+            "bsonType": "string"
+        },
+        "name": {
+            "bsonType": "string"
+        },
+        "owner": {
+            "bsonType": "string"
+        },
+        "status": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "device_id",
+        "name",
+        "status",
+        "_partition"
+    ],
+    "title": "Task"
+}

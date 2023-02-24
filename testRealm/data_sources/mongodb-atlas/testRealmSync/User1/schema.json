@@ -1,0 +1,36 @@
+{
+    "bsonType": "object",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "device_id": {
+            "bsonType": "string"
+        },
+        "memberOf": {
+            "bsonType": "array",
+            "items": {
+                "bsonType": "object",
+                "properties": {
+                    "name": {
+                        "bsonType": "string"
+                    },
+                    "partition": {
+                        "bsonType": "string"
+                    }
+                },
+                "required": [],
+                "title": "Project"
+            }
+        },
+        "name": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "device_id",
+        "name"
+    ],
+    "title": "User1"
+}

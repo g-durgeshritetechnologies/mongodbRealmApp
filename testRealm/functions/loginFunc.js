@@ -1,0 +1,1 @@
+exports = async function onUserLogin(authEvent) {  const customUserDataCollection = context.services    .get("mongodb-atlas")    .db("testRealmSync")    .collection("userLogin");    try{        console.log("authEvent: ",JSON.stringify(authEvent));    }    catch(e)    {      console.error(`Failed to get user`);      throw e    }}

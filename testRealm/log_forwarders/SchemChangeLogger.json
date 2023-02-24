@@ -1,0 +1,20 @@
+{
+    "name": "SchemChangeLogger",
+    "log_types": [
+        "schema"
+    ],
+    "log_statuses": [
+        "error",
+        "success"
+    ],
+    "policy": {
+        "type": "single"
+    },
+    "action": {
+        "type": "collection",
+        "data_source": "mongodb-atlas",
+        "database": "production_Cluster0",
+        "collection": "roles_log"
+    },
+    "disabled": false
+}

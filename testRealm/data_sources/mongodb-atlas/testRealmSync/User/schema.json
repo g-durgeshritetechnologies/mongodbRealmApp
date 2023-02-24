@@ -1,0 +1,56 @@
+{
+    "bsonType": "object",
+    "properties": {
+        "_deviceId": {
+            "bsonType": "string"
+        },
+        "_id": {
+            "bsonType": "string"
+        },
+        "_partition": {
+            "bsonType": "string"
+        },
+        "device_Id": {
+            "bsonType": "objectId"
+        },
+        "device_id": {
+            "bsonType": "string"
+        },
+        "deviece_id": {
+            "bsonType": "string"
+        },
+        "memberOf": {
+            "bsonType": "array",
+            "items": {
+                "bsonType": "object",
+                "properties": {
+                    "name": {
+                        "bsonType": "string"
+                    },
+                    "partition": {
+                        "bsonType": "string"
+                    }
+                },
+                "required": [],
+                "title": "Project"
+            }
+        },
+        "name": {
+            "bsonType": "string"
+        },
+        "room": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "_partition",
+        "name",
+        "_deviceId",
+        "room",
+        "deviece_id",
+        "device_id",
+        "device_Id"
+    ],
+    "title": "User"
+}
