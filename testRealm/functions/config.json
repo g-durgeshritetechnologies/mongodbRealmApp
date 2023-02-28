@@ -90,5 +90,9 @@
     {
         "name": "PostRapidSOSDataVerification",
         "private": true
+    },
+    {
+        "name": "custFun",
+        "private": true
     }
 ]
