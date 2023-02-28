@@ -90,13 +90,5 @@
     {
         "name": "PostRapidSOSDataVerification",
         "private": true
-    },
-    {
-        "name": "custFun",
-        "private": true
-    },
-    {
-        "name": "custFun1",
-        "private": true
     }
 ]
