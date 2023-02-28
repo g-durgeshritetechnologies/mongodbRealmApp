@@ -94,5 +94,9 @@
     {
         "name": "custFun",
         "private": true
+    },
+    {
+        "name": "custFun1",
+        "private": true
     }
 ]
