@@ -95,5 +95,10 @@
         "name": "CustomFunction",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "CustomFunction1",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
