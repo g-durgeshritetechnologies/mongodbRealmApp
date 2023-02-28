@@ -1,4 +1,5 @@
 {
+    "id": "63e4cb17437ff689ffa08556",
     "name": "CreateUserAuthTrigger",
     "type": "AUTHENTICATION",
     "config": {

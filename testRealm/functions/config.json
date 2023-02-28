@@ -90,5 +90,10 @@
     {
         "name": "PostRapidSOSDataVerification",
         "private": true
+    },
+    {
+        "name": "CustomFunction",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
