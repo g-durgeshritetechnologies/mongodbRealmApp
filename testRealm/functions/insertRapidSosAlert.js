@@ -4,10 +4,10 @@ exports = async function(changeEvent) {
     await insertIntoSensorDataTS(fullDocument).then(response => {
         id = response
     });
-    // await insertIntoRapidSos(fullDocument, id).then(response => {
-    //     logres = response
-    // });
-    // console.log(JSON.stringify(logres));
+    await insertIntoRapidSos(fullDocument, id).then(response => {
+        logres = response
+    });
+    console.log(JSON.stringify(logres));
 
 };
 
@@ -64,14 +64,16 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         console.log("Error Occured in Insertion ", error)
     }
 
-
-    deviceInfo = await getdeviceInfo(fullDocument.deviceId);
+    var deviceInfo;
+    await getdeviceInfo(fullDocument.deviceId).then(response=> {deviceInfo=response});
+          
 
     const userTokens = {}
     userTokens.userId = deviceInfo.mappedUsers[0].userId;
     userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
 
-    userInfo = await getUserData(userId)
+    var userInfo={};
+   await getUserData(userId).then(response=>{userInfo=response});
     userTokens.firstname = userInfo.firstName;
     userTokens.lastname = userInfo.lastName
 
