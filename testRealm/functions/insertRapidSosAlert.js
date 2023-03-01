@@ -96,7 +96,7 @@ async function insertIntoSensorDataTS(fullDocument) {
     try {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData ");
 
-        const sensorData = {}
+        let sensorData = {}
 
         sensorData.timestamp = fullDocument.time;
         sensorData.deviceId = fullDocument.deviceId;
