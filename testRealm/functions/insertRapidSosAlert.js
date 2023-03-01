@@ -81,10 +81,10 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
    await getUserData(userTokens.userId).then(response=>{userInfo=response});
     userTokens.firstname = userInfo.firstName;
     userTokens.lastname = userInfo.lastName
-
+  console.log("WOrks Well Before")
     rapidSosData.userTokens = userTokens;
     rapidSosData.sensordataid = insertedId;
-
+  console.log("WOrks Well")
 
      rapidsosalert.insertOne(rapidSosData).then(result => {
         console.log(`Successfully inserted item with _id: ${
