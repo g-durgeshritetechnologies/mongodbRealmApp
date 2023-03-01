@@ -1,37 +1,15 @@
 [
     {
-        "name": "resetFunc",
-        "private": true
-    },
-    {
         "name": "SplitAndInsertRecords",
         "private": true
     },
     {
-        "name": "saveNOtification",
-        "private": true,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "sendAPNPushNotification",
-        "private": true,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "GenerateAlerts",
+        "name": "createUser",
         "private": true
     },
     {
-        "name": "getGeofence",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "addGeofence",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
+        "name": "TriggerRapidSOS",
+        "private": true
     },
     {
         "name": "updateGeofence",
@@ -40,13 +18,23 @@
         "disable_arg_logs": true
     },
     {
-        "name": "removeGeofence",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
+        "name": "AlertsGenerate",
+        "private": true
     },
     {
-        "name": "TestAPNTrigger",
+        "name": "onUserCreation",
+        "private": true
+    },
+    {
+        "name": "GenerateAlerts",
+        "private": true
+    },
+    {
+        "name": "resetFunc",
+        "private": true
+    },
+    {
+        "name": "loginFunc",
         "private": true
     },
     {
@@ -60,19 +48,7 @@
         "private": true
     },
     {
-        "name": "AlertsGenerate",
-        "private": true
-    },
-    {
-        "name": "createUser",
-        "private": true
-    },
-    {
-        "name": "onUserCreation",
-        "private": true
-    },
-    {
-        "name": "loginFunc",
+        "name": "PostRapidSOSDataVerification",
         "private": true
     },
     {
@@ -80,7 +56,40 @@
         "private": true
     },
     {
-        "name": "TriggerRapidSOS",
+        "name": "sendAPNPushNotification",
+        "private": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "addGeofence",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "getGeofence",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "saveNOtification",
+        "private": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "removeGeofence",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "CustomFunction",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "TestAPNTrigger",
         "private": true
     },
     {
@@ -88,12 +97,7 @@
         "private": true
     },
     {
-        "name": "PostRapidSOSDataVerification",
+        "name": "insertRapidSosAlert",
         "private": true
-    },
-    {
-        "name": "CustomFunction",
-        "private": false,
-        "disable_arg_logs": true
     }
 ]
