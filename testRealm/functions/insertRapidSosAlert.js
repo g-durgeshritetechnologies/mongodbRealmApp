@@ -78,7 +78,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
     userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
 
     var userInfo={};
-   await getUserData(userId).then(response=>{userInfo=response});
+   await getUserData(userTokens.userId).then(response=>{userInfo=response});
     userTokens.firstname = userInfo.firstName;
     userTokens.lastname = userInfo.lastName
 
