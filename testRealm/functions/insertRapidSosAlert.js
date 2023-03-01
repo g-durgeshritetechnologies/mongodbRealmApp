@@ -72,7 +72,9 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
     
 
     const userTokens = {}
+    console.log(deviceInfo.mappedUsers[0].userId);
     userTokens.userId = deviceInfo.mappedUsers[0].userId;
+    
     userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
 
     var userInfo={};
