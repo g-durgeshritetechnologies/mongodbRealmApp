@@ -64,9 +64,12 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         console.log("Error Occured in Insertion ", error)
     }
 
-    var deviceInfo;
-    await getdeviceInfo(fullDocument.deviceId).then(response=> {deviceInfo=response});
-          
+    var deviceInfo={};
+    await getdeviceInfo(fullDocument.deviceId).then(response=> {deviceInfo=response
+      console.log(deviceInfo); 
+    }
+    );
+    
 
     const userTokens = {}
     userTokens.userId = deviceInfo.mappedUsers[0].userId;
