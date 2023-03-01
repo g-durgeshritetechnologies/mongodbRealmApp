@@ -30,7 +30,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let deviceCordinates = {};
         let DeviceLatitud = "";
         let DeviceLongitud = "";
-        Device_GPGGA = await ptGPGGA(fullDocument.gpgga);
+        Device_GPGGA = await decryptGPGGA(fullDocument.gpgga);
 
         if (Device_GPGGA.valid == true) {
             if (Device_GPGGA.loc.geojson && Device_GPGGA.loc.geojson != undefined) {
