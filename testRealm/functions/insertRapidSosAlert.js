@@ -1,7 +1,7 @@
-exports = async function(changeEvent) {
+exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
     let id;
-    let rapidSosData={};
+    let rapidSosData = {};
     await insertIntoSensorDataTS(fullDocument).then(response => {
         id = response
     });
@@ -16,17 +16,16 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
     try {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts ");
 
-
         let rapidSosData = {};
 
         rapidSosData.title = '';
-
         rapidSosData.deviceId = fullDocument.deviceId;
         rapidSosData.spo2 = fullDocument.data.o;
         rapidSosData.heartrate = fullDocument.data.hr;
         rapidSosData.alertInfo = fullDocument.data.c;
         rapidSosData.isConfirmed = fullDocument.isConfirmed;
-
+        let userInfo = {};
+        let deviceInfo = {};
         let Device_GPGGA = {};
         let deviceCordinates = {};
         let DeviceLatitud = "";
@@ -51,44 +50,46 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.details = details;
         await rapidsosalert.insertOne(fullDocument).then(result => {
             console.log(`Successfully inserted item with _id: ${
-            result.insertedId
-        }`);
+                result.insertedId
+            }`);
             return result.insertedId;
         }).catch(err => {
             console.error(`Failed to insert item: ${err}`);
             return false;
         })
-        var deviceInfo={};
-    await getdeviceInfo(fullDocument.deviceId).then(response=> {deviceInfo=response;
-      console.log(deviceInfo); 
-    }
-    );
-    const userTokens = {};
-    console.log(deviceInfo.mappedUsers[0].userId);
-    userTokens.userId = deviceInfo.mappedUsers[0].userId;
-    userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
-    var userInfo={};
-    await getUserData(userTokens.userId).then(response=>{userInfo=response;});
-    userTokens.firstname = userInfo.firstName;
-    userTokens.lastname = userInfo.lastName;
-    console.log("WOrks Well Before");
-    rapidSosData.userTokens = userTokens;
-    rapidSosData.sensordataid = insertedId;
-    console.log("WOrks Well");
+        
+        await getdeviceInfo(fullDocument.deviceId).then(response => {
+            deviceInfo = response;
+            console.log("Device Info Received");
+        });
+        const userTokens = {};
+        console.log("mapped users okay");
+        userTokens.userId = deviceInfo.mappedUsers[0].userId;
+        userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
+       
+        await getUserData(userTokens.userId).then(response => {
+            userInfo = response;
+        });
+        userTokens.firstname = userInfo.firstName;
+        userTokens.lastname = userInfo.lastName;
+        console.log("WOrks Well Before");
+        rapidSosData.userTokens = userTokens;
+        rapidSosData.sensordataid = insertedId;
+        console.log("WOrks Well");
 
-     rapidsosalert.insertOne(rapidSosData).then(result => {
-        console.log(`Successfully inserted item with _id: ${
-            result.insertedId
-        }`);
-        return result.insertedId;
-    }).catch(err => {
-        console.error(`Failed to insert item: ${err}`);
-        return false;
-    });
+        rapidsosalert.insertOne(rapidSosData).then(result => {
+            console.log(`Successfully inserted item with _id: ${
+                result.insertedId
+            }`);
+            return result.insertedId;
+        }).catch(err => {
+            console.error(`Failed to insert item: ${err}`);
+            return false;
+        });
     } catch (error) {
         console.log("Error Occured in Insertion ", error)
     }
-    
+
 
 }
 
@@ -96,7 +97,6 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
 async function insertIntoSensorDataTS(fullDocument) {
     try {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData ");
-
         let sensorData = {}
 
         sensorData.timestamp = fullDocument.time;
@@ -114,12 +114,12 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.g;
         sensorData.alertInfo = fullDocument.data.c;
         sensorData.nodeId - '';
-        
+
 
         await rapidsosalert.insertOne(sensorData).then(result => {
             console.log(`Successfully inserted item with _id: ${
-            result.insertedId
-        }`);
+                result.insertedId
+            }`);
             return result.insertedId;
         }).catch(err => {
             console.error(`Failed to insert item: ${err}`);
@@ -160,18 +160,15 @@ async function getUserData(userId) {
             "_id": userId
         }
 
-        var response = await userCollection.find(userquery)
-            .toArray()
-            .then(resultData => {
-                if (resultData) {
-                    user_data = resultData
-                    return user_data;
-                } else {
-                    console.log("No document matches the provided query.");
-                }
+        var response = await userCollection.find(userquery).toArray().then(resultData => {
+            if (resultData) {
+                user_data = resultData
+                return user_data;
+            } else {
+                console.log("No document matches the provided query.");
+            }
 
-            })
-            .catch(err => console.error(`Failed to find document: ${err}`));
+        }).catch(err => console.error(`Failed to find document: ${err}`));
 
     }
     return response;
@@ -184,17 +181,15 @@ async function getdeviceInfo(deviceIdData) {
     };
 
     var device_id_data;
-    var res = await deviceCollection.findOne(query)
-        .then(result => {
-            if (result) {
-                device_id_data = result;
-                console.log("Got Device Data");
-                return device_id_data;
-            } else {
-                console.log("No document matches the provided query.");
-            }
+    var res = await deviceCollection.findOne(query).then(result => {
+        if (result) {
+            device_id_data = result;
+            console.log("Got Device Data");
+            return device_id_data;
+        } else {
+            console.log("No document matches the provided query.");
+        }
 
-        })
-        .catch(err => console.error(`Failed to find document: ${err}`));
+    }).catch(err => console.error(`Failed to find document: ${err}`));
     return res;
 }
