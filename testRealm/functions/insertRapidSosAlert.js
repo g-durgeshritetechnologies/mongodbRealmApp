@@ -6,7 +6,7 @@ exports = async function(changeEvent) {
 async function insertIntoRapidSos(fullDocument){
   try
   {
-    const rapidsosalert = context.services.get("mongodb-atlas").db("testRealmSync").collection("rapidSOSAlerts ");
+    const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts ");
     
    
     await rapidsosalert.insertOne(fullDocument).then(result => {
@@ -23,4 +23,7 @@ async function insertIntoRapidSos(fullDocument){
     console.log("Error Occured in Insertion ", error)
   }
 }
+
+
+
 
