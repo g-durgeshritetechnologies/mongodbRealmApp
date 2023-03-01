@@ -1,6 +1,7 @@
 exports = async function(changeEvent) {
     const fullDocument = changeEvent.fullDocument;
     let id;
+    let rapidSosData={};
     await insertIntoSensorDataTS(fullDocument).then(response => {
         id = response
     });
