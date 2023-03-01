@@ -16,7 +16,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts ");
 
 
-        const rapidSosData = {}
+        let rapidSosData = {}
 
         rapidSosData.title = '';
 
@@ -86,7 +86,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
     rapidSosData.sensordataid = insertedId;
 
 
-    await rapidsosalert.insertOne(rapidSosData).then(result => {
+     rapidsosalert.insertOne(rapidSosData).then(result => {
         console.log(`Successfully inserted item with _id: ${
             result.insertedId
         }`);
