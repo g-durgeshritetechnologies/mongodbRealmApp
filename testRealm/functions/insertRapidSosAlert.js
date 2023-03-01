@@ -17,7 +17,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts ");
 
 
-        let rapidSosData = {}
+        let rapidSosData = {};
 
         rapidSosData.title = '';
 
@@ -46,12 +46,9 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.latitude = Device_GPGGA.deviceCordinates.latitude;
         rapidSosData.longitute = Device_GPGGA.deviceCordinates.longitute;
         rapidSosData.alert = fullDocument.data.a;
-
-
         const details = {};
-        details.param = "Temperature"
+        details.param = "Temperature";
         rapidSosData.details = details;
-
         await rapidsosalert.insertOne(fullDocument).then(result => {
             console.log(`Successfully inserted item with _id: ${
             result.insertedId
@@ -61,31 +58,23 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             console.error(`Failed to insert item: ${err}`);
             return false;
         })
-    } catch (error) {
-        console.log("Error Occured in Insertion ", error)
-    }
-
-    var deviceInfo={};
-    await getdeviceInfo(fullDocument.deviceId).then(response=> {deviceInfo=response
+        var deviceInfo={};
+    await getdeviceInfo(fullDocument.deviceId).then(response=> {deviceInfo=response;
       console.log(deviceInfo); 
     }
     );
-    
-
-    const userTokens = {}
+    const userTokens = {};
     console.log(deviceInfo.mappedUsers[0].userId);
     userTokens.userId = deviceInfo.mappedUsers[0].userId;
-    
     userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
-
     var userInfo={};
-   await getUserData(userTokens.userId).then(response=>{userInfo=response});
+    await getUserData(userTokens.userId).then(response=>{userInfo=response;});
     userTokens.firstname = userInfo.firstName;
-    userTokens.lastname = userInfo.lastName
-  console.log("WOrks Well Before")
+    userTokens.lastname = userInfo.lastName;
+    console.log("WOrks Well Before");
     rapidSosData.userTokens = userTokens;
     rapidSosData.sensordataid = insertedId;
-  console.log("WOrks Well")
+    console.log("WOrks Well");
 
      rapidsosalert.insertOne(rapidSosData).then(result => {
         console.log(`Successfully inserted item with _id: ${
@@ -96,6 +85,10 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         console.error(`Failed to insert item: ${err}`);
         return false;
     });
+    } catch (error) {
+        console.log("Error Occured in Insertion ", error)
+    }
+    
 
 }
 
