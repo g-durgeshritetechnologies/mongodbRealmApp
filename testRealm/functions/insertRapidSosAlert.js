@@ -115,7 +115,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.nodeId - '';
         
 
-        await rapidsosalert.insertOne(sensorData).then(result => {
+        await rapidsosalert.insert(sensorData).then(result => {
             console.log(`Sorry Nahi hoga inserted item with _id: ${
             result.insertedId
         }`);
