@@ -184,7 +184,7 @@ async function getUserData(userId) {
 async function getdeviceInfo(deviceIdData) {
     const deviceCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info");
     const query = {
-        "_id": deviceIdData
+        "deviceId": deviceIdData
     };
 
     var device_id_data;
@@ -192,11 +192,12 @@ async function getdeviceInfo(deviceIdData) {
         .then(result => {
             if (result) {
                 device_id_data = result;
+                console.log("Got Device Data");
                 return device_id_data;
             } else {
                 console.log("No document matches the provided query.");
             }
-            return device_id_data;
+
         })
         .catch(err => console.error(`Failed to find document: ${err}`));
     return res;
