@@ -1,7 +1,7 @@
 exports = async function(changeEvent) {
     const fullDocument = changeEvent.fullDocument;
     if (fullDocument.isConfirmed == "Y") {} else {
-        if (fullDocument.alert == "" || fullDocument.alert.length() != 8) {
+        if (fullDocument.alert == "" || fullDocument.alert.length != 8) {
             fullDocument.alert = "00000000";
         }
         const HeartRate_Alert = Alert.charAt(1);
