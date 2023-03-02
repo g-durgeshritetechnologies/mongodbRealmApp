@@ -26,11 +26,11 @@ exports = async function(changeEvent) {
         let deviceCordinates={}
         deviceCordinates.latitude=fullDocument.latitude;
         deviceCordinates.longitute=fullDocument.longitute;
-        
+        console.log("deviceData",JSON.stringify(deviceData));
         activeWearer = deviceData.wearer.forEach(wearer => {
             wearer.isActive == "true";
         });
-        
+        console.log("activeWearer",JSON.stringify(activeWearer));
 
         if (HeartRate_Alert == 1) { 
             AlertTitle.push("Heart Rate alert");
@@ -105,11 +105,13 @@ exports = async function(changeEvent) {
                 }
 
             }).catch(err => console.error(`Failed to find document: ${err}`));
-
+            console.log("deviceData",JSON.stringify(deviceData));
+            
             GetGeofenceRecord = deviceData.geofences.forEach(geofence => {
                 geofence.status == "active";
 
             });
+            console.log("GetGeofenceRecord",JSON.stringify(GetGeofenceRecord));
             if (GetGeofenceRecord.length === 0) {} else {
                 if (GetGeofenceRecord) {
 
