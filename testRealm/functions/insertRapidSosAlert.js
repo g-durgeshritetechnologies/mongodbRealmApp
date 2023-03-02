@@ -65,7 +65,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
 
         await getUserData(userTokens.userId).then(response => {
             userInfo = response;
-            console.log("userdata", JSON.stringify(userInfo));
+            console.log("FirstName & LastName", JSON.stringify(userInfo.firstName), JSON.stringify.lastName);
             userTokens.firstname = userInfo.firstName;
             userTokens.lastname = userInfo.lastName;
             console.log("userTokens",JSON.stringify(userTokens))
