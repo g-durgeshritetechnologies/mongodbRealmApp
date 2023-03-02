@@ -27,7 +27,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.alertInfo = fullDocument.data.c;
         rapidSosData.isConfirmed = fullDocument.isConfirmed;
         console.log(JSON.stringify(fullDocument));
-        
+
 
         let deviceInfo = {};
         let Device_GPGGA = {};
@@ -64,12 +64,13 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
 
         await getUserData(userTokens.userId).then(response => {
-            userInfo = response;
-            console.log("FirstName & LastName", JSON.stringify(userInfo.firstName), JSON.stringify.lastName);
-            userTokens.firstname = userInfo.firstName;
-            userTokens.lastname = userInfo.lastName;
-            console.log("userTokens",JSON.stringify(userTokens))
-        });
+
+            console.log("FirstName & LastName", JSON.stringify(response.firstName), JSON.stringify(response.lastName));
+                userTokens.firstname = response.firstName;
+                userTokens.lastname = response.lastName;
+                console.log("userTokens", JSON.stringify(userTokens))
+            }
+        );
 
 
         rapidSosData.userTokens = userTokens;
