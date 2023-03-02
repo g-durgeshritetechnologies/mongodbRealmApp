@@ -32,23 +32,23 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let deviceInfo = {};
         let Device_GPGGA = {};
         let deviceCordinates = {};
-        let DeviceLatitud = "";
-        let DeviceLongitud = "";
+        let DeviceLatitude = "";
+        let DeviceLongitude = "";
         let gpggaData = fullDocument.data.gpgga;
         Device_GPGGA = await decryptGPGGA(gpggaData);
 
         if (Device_GPGGA.valid == true) {
             if (Device_GPGGA.loc.geojson && Device_GPGGA.loc.geojson != undefined) {
-                DeviceLatitud = Device_GPGGA.loc.geojson.coordinates[1];
-                DeviceLongitud = Device_GPGGA.loc.geojson.coordinates[0];
+                DeviceLatitude = Device_GPGGA.loc.geojson.coordinates[1];
+                DeviceLongitude = Device_GPGGA.loc.geojson.coordinates[0];
                 deviceCordinates = {
-                    "latitude": DeviceLatitud,
-                    "longitute": DeviceLongitud
+                    "latitude": DeviceLatitude,
+                    "longitute": DeviceLongitude
                 };
             }
         }
-        rapidSosData.latitude = Device_GPGGA.deviceCordinates.latitude;
-        rapidSosData.longitute = Device_GPGGA.deviceCordinates.longitute;
+        rapidSosData.latitude = deviceCordinates.latitude;
+        rapidSosData.longitute = deviceCordinates.longitute;
         rapidSosData.alert = fullDocument.data.a;
         const details = {};
         details.param = "Temperature";
@@ -101,10 +101,10 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
 
 async function insertIntoSensorDataTS(fullDocument) {
     try {
-        const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData");
+        const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData ");
         let sensorData = {};
-        let timestamp=new Date(Date.now()).toISOString();
-        sensorData.timestamp =timestamp;
+
+        sensorData.timestamp = fullDocument.time;
         sensorData.deviceId = fullDocument.deviceId;
         sensorData.version = '';
         sensorData.pressure = fullDocument.data.p;
@@ -138,7 +138,7 @@ async function insertIntoSensorDataTS(fullDocument) {
 
 async function decryptGPGGA(gpgga) {
     try {
-      console.log(JSON.stringify(gpgga));
+        console.log(JSON.stringify(gpgga));
         const nmea = require('@drivetech/node-nmea');
         gpgga = gpgga.replace(/\r\n/g, '');
         let data = nmea.parse(gpgga);
