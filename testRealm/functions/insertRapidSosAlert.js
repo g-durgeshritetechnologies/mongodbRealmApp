@@ -53,26 +53,28 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         const details = {};
         details.param = "Temperature";
         rapidSosData.details = details;
-        
+
         await getdeviceInfo(fullDocument.deviceId).then(response => {
             deviceInfo = response;
-            console.log("Device Info Received");
+
         });
         const userTokens = {};
-        console.log("mapped users okay");
+
         userTokens.userId = deviceInfo.mappedUsers[0].userId;
         userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
 
         await getUserData(userTokens.userId).then(response => {
             userInfo = response;
-            console.log("userdata",JSON.stringify(userInfo))
+            console.log("userdata", JSON.stringify(userInfo));
+            userTokens.firstname = userInfo.firstName;
+            userTokens.lastname = userInfo.lastName;
+            console.log("userTokens")
         });
-        userTokens.firstname = userInfo.firstName;
-        userTokens.lastname = userInfo.lastName;
-        console.log("WOrks Well Before");
+
+
         rapidSosData.userTokens = userTokens;
         rapidSosData.sensordataid = insertedId;
-        console.log("WOrks Well");
+
 
         rapidsosalert.insertOne(rapidSosData).then(result => {
             console.log(`Successfully inserted item with _id: ${
@@ -182,7 +184,7 @@ async function getdeviceInfo(deviceIdData) {
     var res = await deviceCollection.findOne(query).then(result => {
         if (result) {
             device_id_data = result;
-            console.log("Got Device Data");
+
             return device_id_data;
         } else {
             console.log("No document matches the provided query.");
