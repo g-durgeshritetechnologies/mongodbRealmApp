@@ -63,7 +63,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         userTokens.userId = deviceInfo.mappedUsers[0].userId;
         userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
 
-        await getUserData(userTokens.userId).then(response => {
+         getUserData(userTokens.userId).then(response => {
 
             console.log("FirstName & LastName", JSON.stringify(response.firstName), JSON.stringify(response.lastName));
                 userTokens.firstname = response.firstName;
