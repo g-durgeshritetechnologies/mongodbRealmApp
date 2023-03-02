@@ -103,11 +103,11 @@ exports = async function(changeEvent) {
             }).catch(err => console.error(`Failed to find document: ${err}`));
             console.log("deviceData",JSON.stringify(deviceData));
         console.log("deviceData",JSON.stringify(deviceData));
-            activeWearer = deviceData.wearer.forEach(wearer => {
+            activeWearer = deviceData.wearer.forEach((wearer) => {
                 wearer.isActive == "true";
             });
             console.log("activeWearer",JSON.stringify(activeWearer));
-            GetGeofenceRecord = deviceData.geofences.forEach(geofence => {
+            GetGeofenceRecord = deviceData.geofences.forEach((geofence) => {
                 geofence.status == "active";
 
             });
