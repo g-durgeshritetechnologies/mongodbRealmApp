@@ -121,6 +121,7 @@ exports = async function(changeEvent) {
                         "isAlertFor": GeoFence_Alert,
                         "deviceCordinates": deviceCordinates
                     };
+                    console.log("Code Reached here 1");
                     AlertBody.push("Geofence - Yes");
                     details.push({
                         "param":"Heart Rate",
@@ -132,12 +133,14 @@ exports = async function(changeEvent) {
                         "wearerThreshold": ""
         
                     });
+                    console.log("Code Reached here 2");
                 } else {}
             }
 
 
         }
         if (SpO2_Alert == 1) {
+            console.log("Code Reached here 3");
             AlertTitle.push("SpO2 alert");
             details.push({
                 "param":"Heart Rate",
@@ -151,6 +154,7 @@ exports = async function(changeEvent) {
             });
         }
         if (SOS_Alert == 1) {
+            console.log("Code Reached here 4");
             AlertTitle.push("SOS alert");
             details.push({
                 "param":"Heart Rate",
