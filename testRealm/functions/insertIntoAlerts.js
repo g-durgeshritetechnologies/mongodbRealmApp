@@ -23,9 +23,9 @@ exports = async function(changeEvent) {
         let details=[];
         let activeWearer={};
         
-        activeWearer = deviceData.wearer.forEach(wearer => {
-            wearer.isActive == "true";
-        });
+        // activeWearer = deviceData.wearer.forEach(wearer => {
+        //     wearer.isActive == "true";
+        // });
         
 
         if (HeartRate_Alert == 1) { 
@@ -102,10 +102,10 @@ exports = async function(changeEvent) {
 
             }).catch(err => console.error(`Failed to find document: ${err}`));
 
-            GetGeofenceRecord = deviceData.geofences.forEach(geofence => {
-                geofence.status == "active";
+            // GetGeofenceRecord = deviceData.geofences.forEach(geofence => {
+            //     geofence.status == "active";
 
-            });
+            // });
             if (GetGeofenceRecord.length === 0) {} else {
                 if (GetGeofenceRecord) {
 
