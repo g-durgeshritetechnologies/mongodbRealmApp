@@ -139,20 +139,20 @@ exports = async function(changeEvent) {
 
 
         }
-        if (SpO2_Alert == 1) {
-            console.log("Code Reached here 3");
-            AlertTitle.push("SpO2 alert");
-            details.push({
-                "param":"Heart Rate",
-                "value":fullDocument.heartrate,
-                "type":"",
-                "message":"Heart Rate is high",
-                "level":alertLevel,
-                "color":alertLevel,
-                "wearerThreshold": ""
+        // if (SpO2_Alert == 1) {
+        //     console.log("Code Reached here 3");
+        //     AlertTitle.push("SpO2 alert");
+        //     details.push({
+        //         "param":"Heart Rate",
+        //         "value":fullDocument.heartrate,
+        //         "type":"",
+        //         "message":"Heart Rate is high",
+        //         "level":alertLevel,
+        //         "color":alertLevel,
+        //         "wearerThreshold": ""
 
-            });
-        }
+        //     });
+        // }
         if (SOS_Alert == 1) {
             console.log("Code Reached here 4");
             AlertTitle.push("SOS alert");
