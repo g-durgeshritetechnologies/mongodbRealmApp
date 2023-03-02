@@ -27,9 +27,9 @@ exports = async function(changeEvent) {
         deviceCordinates.latitude=fullDocument.latitude;
         deviceCordinates.longitute=fullDocument.longitute;
         
-        // activeWearer = deviceData.wearer.forEach(wearer => {
-        //     wearer.isActive == "true";
-        // });
+        activeWearer = deviceData.wearer.forEach(wearer => {
+            wearer.isActive == "true";
+        });
         
 
         if (HeartRate_Alert == 1) { 
@@ -106,10 +106,10 @@ exports = async function(changeEvent) {
 
             }).catch(err => console.error(`Failed to find document: ${err}`));
 
-            // GetGeofenceRecord = deviceData.geofences.forEach(geofence => {
-            //     geofence.status == "active";
+            GetGeofenceRecord = deviceData.geofences.forEach(geofence => {
+                geofence.status == "active";
 
-            // });
+            });
             if (GetGeofenceRecord.length === 0) {} else {
                 if (GetGeofenceRecord) {
 
@@ -207,7 +207,7 @@ exports = async function(changeEvent) {
                 alertObj.details=details;
                 alertObj.userTokens=fullDocument.userTokens.notificationTokens;
                 alertObj.sensordataid=fullDocument.sensordataid;
-                alertObj.devicId=fullDocument.devicId;
+                alertObj.deviceId=fullDocument.deviceId;
                 alertObj.wearerId=activeWearer._id;
                 alertObj.wearerFirstName=activeWearer.firstname;
                 alertObj.wearerLastName=activeWearer.lastname;
