@@ -23,6 +23,9 @@ exports = async function(changeEvent) {
         let deviceData = {};
         let details=[];
         let activeWearer={};
+        let deviceCordinates={}
+        deviceCordinates.latitude=fullDocument.latitude;
+        deviceCordinates.longitute=fullDocument.longitute;
         
         // activeWearer = deviceData.wearer.forEach(wearer => {
         //     wearer.isActive == "true";
@@ -116,7 +119,7 @@ exports = async function(changeEvent) {
                         "value": "Distance greater",
                         "alert": "",
                         "isAlertFor": GeoFence_Alert,
-                        "deviceCordinates": deviceCordinates
+                        "deviceCordinates": fulldeviceCordinates
                     };
                     AlertBody.push("Geofence - Yes");
                     details.push({
