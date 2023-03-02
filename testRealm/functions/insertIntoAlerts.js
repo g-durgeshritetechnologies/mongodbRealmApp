@@ -1,6 +1,7 @@
 exports = async function(changeEvent) {
     const fullDocument = changeEvent.fullDocument;
     let Alert=fullDocument.alert;
+    console.log("data",fullDocument);
     if (fullDocument.isConfirmed == "Y") {} else {
         if (fullDocument.alert == "" || fullDocument.alert.length != 8) {
             fullDocument.alert = "00000000";
