@@ -53,16 +53,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         const details = {};
         details.param = "Temperature";
         rapidSosData.details = details;
-        await rapidsosalert.insertOne(fullDocument).then(result => {
-            console.log(`Successfully inserted item with _id: ${
-                result.insertedId
-            }`);
-            return result.insertedId;
-        }).catch(err => {
-            console.error(`Failed to insert item: ${err}`);
-            return false;
-        });
-
+        
         await getdeviceInfo(fullDocument.deviceId).then(response => {
             deviceInfo = response;
             console.log("Device Info Received");
@@ -74,6 +65,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
 
         await getUserData(userTokens.userId).then(response => {
             userInfo = response;
+            console.log("userdata",JSON.stringify(userInfo))
         });
         userTokens.firstname = userInfo.firstName;
         userTokens.lastname = userInfo.lastName;
