@@ -1,6 +1,6 @@
 'use esversion: 8';
 
-exports = async function(changeEvent) {
+exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
     let id;
 
@@ -26,6 +26,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.heartrate = fullDocument.data.hr;
         rapidSosData.alertInfo = fullDocument.data.c;
         rapidSosData.isConfirmed = fullDocument.isConfirmed;
+        console.log(JSON.stringify(fullDocument));
         let userInfo = {};
 
         let deviceInfo = {};
@@ -137,6 +138,7 @@ async function insertIntoSensorDataTS(fullDocument) {
 
 async function decryptGPGGA(gpgga) {
     try {
+      console.log(JSON.stringify(gpgga));
         const nmea = require('@drivetech/node-nmea');
         gpgga = gpgga.replace(/\r\n/g, '');
         let data = nmea.parse(gpgga);
