@@ -63,14 +63,13 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         userTokens.userId = deviceInfo.mappedUsers[0].userId;
         userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
 
-         getUserData(userTokens.userId).then(response => {
+        await getUserData(userTokens.userId).then(response => {
 
             console.log("FirstName & LastName", JSON.stringify(response.firstName), JSON.stringify(response.lastName));
-                userTokens.firstname = response.firstName;
-                userTokens.lastname = response.lastName;
-                console.log("userTokens", JSON.stringify(userTokens))
-            }
-        );
+            userTokens.firstname = response.firstName;
+            userTokens.lastname = response.lastName;
+            console.log("userTokens", JSON.stringify(userTokens))
+        });
 
 
         rapidSosData.userTokens = userTokens;
@@ -161,7 +160,7 @@ async function getUserData(userId) {
             "_id": userId
         }
 
-        var response = await userCollection.find(userquery).toArray().then(resultData => {
+        var response = await userCollection.find(userquery).then(resultData => {
             if (resultData) {
                 let user_data = resultData
                 return user_data;
