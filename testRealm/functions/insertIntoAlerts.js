@@ -119,7 +119,7 @@ exports = async function(changeEvent) {
                         "value": "Distance greater",
                         "alert": "",
                         "isAlertFor": GeoFence_Alert,
-                        "deviceCordinates": fulldeviceCordinates
+                        "deviceCordinates": deviceCordinates
                     };
                     AlertBody.push("Geofence - Yes");
                     details.push({
