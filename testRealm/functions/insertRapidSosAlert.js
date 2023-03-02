@@ -68,7 +68,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             console.log("userdata", JSON.stringify(userInfo));
             userTokens.firstname = userInfo.firstName;
             userTokens.lastname = userInfo.lastName;
-            console.log("userTokens")
+            console.log("userTokens",JSON.stringify(userTokens))
         });
 
 
