@@ -16,7 +16,7 @@ exports = async function (changeEvent) {
 
 async function insertIntoRapidSos(fullDocument, insertedId) {
     try {
-        const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts ");
+        const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts");
 
         let rapidSosData = {};
 
@@ -101,7 +101,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
 
 async function insertIntoSensorDataTS(fullDocument) {
     try {
-        const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData ");
+        const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData");
         let sensorData = {};
 
         sensorData.timestamp = fullDocument.time;
