@@ -1,0 +1,29 @@
+{
+    "id": "6400949efd2f151f0b73a47d",
+    "name": "IntoAlert",
+    "type": "DATABASE",
+    "config": {
+        "operation_types": [
+            "INSERT",
+            "UPDATE"
+        ],
+        "database": "production_Cluster0",
+        "collection": "rapidSOSAlerts",
+        "service_name": "mongodb-atlas",
+        "match": {},
+        "project": {},
+        "full_document": true,
+        "full_document_before_change": false,
+        "unordered": false,
+        "skip_catchup_events": false,
+        "tolerate_resume_errors": false
+    },
+    "disabled": false,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "insertIntoAlerts"
+            }
+        }
+    }
+}

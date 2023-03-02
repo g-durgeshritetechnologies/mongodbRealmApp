@@ -99,5 +99,9 @@
     {
         "name": "insertRapidSosAlert",
         "private": true
+    },
+    {
+        "name": "insertIntoAlerts",
+        "private": true
     }
 ]
