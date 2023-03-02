@@ -107,8 +107,8 @@ exports = async function(changeEvent) {
                 wearer.isActive == "true";
             });
             console.log("activeWearer",JSON.stringify(activeWearer));
-            console.log("Wearer Data Test",Json.stringify(deviceData.wearer));
-            console.log("Wearer Data Test",Json.stringify(deviceData.geofences));
+            console.log("Wearer Data Test",JSON.stringify(deviceData.wearer));
+            console.log("Wearer Data Test",JSON.stringify(deviceData.geofences));
             GetGeofenceRecord = deviceData.geofences.forEach((geofence) => {
                 geofence.status == "active";
 
