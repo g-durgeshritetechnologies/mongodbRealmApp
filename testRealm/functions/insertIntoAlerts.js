@@ -207,7 +207,7 @@ exports = async function (changeEvent) {
                                 "isAlertFor": GeoFence_Alert,
                                 "deviceCordinates": deviceCordinates
                             };
-                            console.log("Code Reached here 1");
+                  
                             AlertBody.push("Geofence - Yes");
                             details.push({
                                 "param": "Heart Rate",
@@ -219,14 +219,12 @@ exports = async function (changeEvent) {
                                 "wearerThreshold": ""
 
                             });
-                            console.log("Code Reached here 2");
                         } else {}
                     }
 
 
                 }
                 if (SpO2_Alert == 1) {
-                    console.log("Code Reached here 3");
                     AlertTitle.push("SpO2 alert");
                     details.push({
                         "param": "Heart Rate",
@@ -240,7 +238,6 @@ exports = async function (changeEvent) {
                     });
                 }
                 if (SOS_Alert == 1) {
-                    console.log("Code Reached here 4");
                     AlertTitle.push("SOS alert");
                     details.push({
                         "param": "Heart Rate",
@@ -276,7 +273,6 @@ exports = async function (changeEvent) {
 
                 if (AlertBodyFinalString.includes("Geofence - Yes") || AlertBodyFinalString.includes("Fall Detection - Yes")) {
                     for (const dtokens of fullDocument.userTokens.notificationTokens) {
-                        console.log("GeofenceRecord inside", JSON.stringify(GetGeofenceRecord));
                         if (GetGeofenceRecord) {
                             geoFenceName = "Geo Fence - " + GetGeofenceRecord.name;
                             notificationBody.geofenceDetails = GetGeofenceRecord.name;
@@ -299,7 +295,6 @@ exports = async function (changeEvent) {
                         alertObj.confidence = fullDocument.alertInfo;
                         alertObj.isStopped = 0;
 
-                        console.log("AlertObject", JSON.stringify(alertObj));
                         let alertid = await saveAlert(alertObj);
                       
 
@@ -322,11 +317,6 @@ exports = async function (changeEvent) {
                             "deviceCordinates": deviceCordinates,
                             "alert_id": alertid
                         };
-
-                        console.log("Payload", JSON.stringify(payload));
-                        console.log("AlertData", JSON.stringify(alertdata));
-                        console.log("Alert", JSON.stringify(alert));
-
 
                         await sleep(25);
 
