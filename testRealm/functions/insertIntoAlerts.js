@@ -83,7 +83,8 @@ exports = async function (changeEvent) {
             const fullDocument = changeEvent.fullDocument;
             let Alert = fullDocument.alert;
             console.log("data", JSON.stringify(fullDocument));
-            if (fullDocument.isConfirmed == "Y") {} else {
+            if (fullDocument.isConfirmed == "Y") {} 
+            else {
                 if (fullDocument.alert == "" || fullDocument.alert.length != 8) {
                     fullDocument.alert = "00000000";
                 }
@@ -176,6 +177,7 @@ exports = async function (changeEvent) {
                 if (GeoFence_Alert == 1) {
 
                     await getdeviceInfo(fullDocument.deviceId).then(result => {
+                        console.log("FUllDocument Device ID",JSON.stringify(fullDocument.deviceId));
                         if (result) {
                             deviceData = result;
                         } else {
@@ -299,14 +301,7 @@ exports = async function (changeEvent) {
 
                         console.log("AlertObject", JSON.stringify(alertObj));
                         let alertid = await saveAlert(alertObj);
-                        // let alertid = await saveAlert(alertObj).then(result => {
-                        //     console.log("Result",JSON.stringify(result));
-                        //     if (result) {
-                        //         alertid  = result;
-                        //     } else {
-                        //         console.log("No document matches the provided query.");
-                        //     };
-                        // });
+                      
 
                         alertdata = {
                             "color": AlertLevelFinalString,
@@ -352,10 +347,11 @@ exports = async function (changeEvent) {
 }
 
 
-async function getdeviceInfo(userId) {
+async function getUserInfo(userId) {
     const userCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info");
     const query = {
         "_id": userId
+       
     };
 
     var user_id_data;
@@ -372,9 +368,10 @@ async function getdeviceInfo(userId) {
     return res;
 }
 
-async function getUserInfo(deviceIdData) {
+async function getdeviceInfo(deviceIdData) {
     const deviceCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("users");
     const query = {
+        
         "deviceId": deviceIdData
     };
 
