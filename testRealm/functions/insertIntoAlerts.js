@@ -348,7 +348,7 @@ exports = async function (changeEvent) {
 
 
 async function getUserInfo(userId) {
-    const userCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info");
+    const userCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("users");
     const query = {
         "_id": userId
        
@@ -369,7 +369,7 @@ async function getUserInfo(userId) {
 }
 
 async function getdeviceInfo(deviceIdData) {
-    const deviceCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("users");
+    const deviceCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info");
     const query = {
         
         "deviceId": deviceIdData
