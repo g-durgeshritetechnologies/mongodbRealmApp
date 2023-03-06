@@ -107,9 +107,11 @@ exports = async function (changeEvent) {
                         }
                     }).catch(err => console.error(`Failed to find document: ${err}`));
 
+
                     activeWearer = deviceData.wearer.find((wearer) => {
                         return wearer.isActive == true;
                     });
+
                     console.log("Active Wearer", JSON.stringify(activeWearer));
 
                     GetGeofenceRecord = deviceData.geofences.find((geofence) => {
@@ -248,7 +250,7 @@ exports = async function (changeEvent) {
                     if (GeoFence_Alert == 1) {
 
                         await getdeviceInfo(fullDocument.deviceId).then(result => {
-                            console.log("FUllDocument Device ID", JSON.stringify(fullDocument.deviceId));
+
                             if (result) {
                                 deviceData = result;
                             } else {
@@ -260,13 +262,13 @@ exports = async function (changeEvent) {
                         activeWearer = deviceData.wearer.find((wearer) => {
                             return wearer.isActive == true;
                         });
-                        console.log("Active Wearer", JSON.stringify(activeWearer));
+                       
 
                         GetGeofenceRecord = deviceData.geofences.find((geofence) => {
                             return geofence.status == "active";
                         });
 
-                        console.log("GetGeofenceRecord", JSON.stringify(GetGeofenceRecord));
+            
                         if (GetGeofenceRecord.length === 0) {} else {
                             if (GetGeofenceRecord) {
 
@@ -339,7 +341,7 @@ exports = async function (changeEvent) {
                     }
 
                     const AlertBodyFinalString = AlertBody.join("\n").toString();
-                    console.log("ALertBodyFinalString", JSON.stringify(AlertBodyFinalString));
+           
 
 
                     if (AlertBodyFinalString.includes("Geofence - Yes") || AlertBodyFinalString.includes("Fall Detection - Yes")) {
@@ -723,7 +725,6 @@ function sendNotifications(alert, payload, xhr, token) {
     body.alert = alert;
     body.payload = payload;
     body.sound = "chime.aiff";
-    console.log("Body Data", JSON.stringify(body));
     triggerData.aps = body;
 
     triggerData.token = token;
