@@ -320,10 +320,7 @@ function sendNotifications(alert,payload,xhr,token)
         xhr.timeout = 5000; 
         xhr.setRequestHeader('Content-Type', 'application/json');
         
-        const fullDocument = changeEvent.fullDocument;
-        alert = fullDocument.alertObj;
-       
-        payload = fullDocument.payload;
+
    
         body.alert = alert;
         body.payload = payload;
