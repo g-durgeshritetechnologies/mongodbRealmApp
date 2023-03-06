@@ -2,14 +2,15 @@
 
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
-    let id;
+    let insertedId;
 
     await insertIntoSensorDataTS(fullDocument).then(response => {
-        id = response;
-    });
-    await insertIntoRapidSos(fullDocument, id).then(response => {
+        insertedId = response;
+        insertIntoRapidSos(fullDocument, insertedId).then(response => {
         logres = response;
     });
+    });
+    
     console.log(JSON.stringify(logres));
 
 };
