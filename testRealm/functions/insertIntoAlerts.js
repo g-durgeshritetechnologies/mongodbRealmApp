@@ -13,7 +13,7 @@ exports = async function (changeEvent) {
                         if (result) {
                             deviceData = result;
                         } else {
-                            console.log("No document matches the provided query.");
+                            console.log("No documentss matches the provided query.");
                         }
                     }).catch(err => console.error(`Failed to find document: ${err}`));
 
@@ -22,7 +22,7 @@ exports = async function (changeEvent) {
                         if (result) {
                             userData = result;
                         } else {
-                            console.log("No document matches the provided query.");
+                            console.log("No documentss matches the provided query.");
                         }
                     }).catch(err => console.error(`Failed to find document: ${err}`));
 
