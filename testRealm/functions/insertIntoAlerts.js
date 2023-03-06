@@ -110,7 +110,7 @@ exports = async function(changeEvent) {
                 return geofence.status == "active";
             });
             
-            console.log("Geofence",JSON.stringify(GetGeofenceRecord));
+    
           
             
             console.log("GetGeofenceRecord",JSON.stringify(GetGeofenceRecord));
@@ -190,12 +190,12 @@ exports = async function(changeEvent) {
         }
 
         const AlertBodyFinalString = AlertBody.join("\n").toString();
-        console.log(AlertBodyFinalString);
+        console.log("ALertBodyFinalString",JSON.stringify(AlertBodyFinalString));
 
 
         if (AlertBodyFinalString.includes("Geofence - Yes") || AlertBodyFinalString.includes("Fall Detection - Yes")) {
             for (const dtokens of fullDocument.userTokens.notificationTokens) {
-                console.log(GetGeofenceRecord);
+                console.log("GeofenceRecord inside",JSON.stringify(GetGeofenceRecord));
                 if (GetGeofenceRecord) {
                     geoFenceName = "Geo Fence - " + GetGeofenceRecord.name;
                     notificationBody.geofenceDetails = GetGeofenceRecord.name;
