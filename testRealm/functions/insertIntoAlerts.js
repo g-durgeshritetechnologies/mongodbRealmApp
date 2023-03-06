@@ -102,16 +102,14 @@ exports = async function(changeEvent) {
 
             }).catch(err => console.error(`Failed to find document: ${err}`));
  
-            activeWearer = deviceData.wearer.find((wearers) => {
-                return wearers.isActive == "true";
+            activeWearer = deviceData.wearer.find((wearer) => {
+                return wearer.isActive == true;
             });
             console.log("Active Wearer",JSON.stringify(activeWearer));
+
              GetGeofenceRecord = deviceData.geofences.find((geofence) => {
                 return geofence.status == "active";
             });
-            
-    
-          
             
             console.log("GetGeofenceRecord",JSON.stringify(GetGeofenceRecord));
             if (GetGeofenceRecord.length === 0) {} else {
