@@ -4,11 +4,11 @@ exports = async function (changeEvent) {
         if (changeEvent.operationType == "update") {
             if (changeEvent.fullDocument) {
                 const fullDocument = changeEvent.fullDocument;
+                console.log("Data",JSON.stringify(fullDocument));
                 let deviceData = {};
                 let payload = {};
                 let userData={};
                 if (fullDocument.isConfirmed == "Y") {
-
                     await getdeviceInfo(fullDocument.deviceId).then(result => {
                         if (result) {
                             deviceData = result;
@@ -346,7 +346,7 @@ exports = async function (changeEvent) {
             }
         }
     } catch (error) {
-        console.log(JSON.stringify(error));
+        console.log("Some issue",JSON.stringify(error));
     }
 
 }
