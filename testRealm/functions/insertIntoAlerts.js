@@ -102,8 +102,8 @@ exports = async function(changeEvent) {
 
             }).catch(err => console.error(`Failed to find document: ${err}`));
  
-            activeWearer = deviceData.wearer.find((wearer) => {
-                return wearer.isActive == "true";
+            const activeWearer = deviceData.wearer.find((wearers) => {
+                return wearers.isActive == "true";
             });
             console.log("Active Wearer",JSON.stringify(activeWearer));
             const GetGeofenceRecord = deviceData.geofences.find((geofence) => {
