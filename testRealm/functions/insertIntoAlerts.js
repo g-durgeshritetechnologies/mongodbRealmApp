@@ -82,7 +82,6 @@ exports = async function (changeEvent) {
             const xhr = new XMLHttpRequest();
             const fullDocument = changeEvent.fullDocument;
             let Alert = fullDocument.alert;
-            console.log("data", JSON.stringify(fullDocument));
             if (fullDocument.isConfirmed == "Y") {
                 const fullDocument = changeEvent.fullDocument;
                 console.log("Data", JSON.stringify(fullDocument));
@@ -112,18 +111,19 @@ exports = async function (changeEvent) {
                         return wearer.isActive == true;
                     });
 
-                    console.log("Active Wearer", JSON.stringify(activeWearer));
+                
 
                     GetGeofenceRecord = deviceData.geofences.find((geofence) => {
                         return geofence.status == "active";
                     });
 
-                    console.log("GeofenceRecord", JSON.stringify(GetGeofenceRecord));
+             
 
                     let age = getAge(activeWearer.dob);
 
 
                     payload.callflow = "weartech_emergency_v0";
+
                     payload.variables = {
                         "wearer_information": {
                             "wearer_name": activeWearer.firstname + " " + activeWearer.lastname,
@@ -148,7 +148,7 @@ exports = async function (changeEvent) {
                     console.log("Final Payload : ", JSON.stringify(payload));
 
                     getToken().then(function (token) {
-                        console.log(token);
+                        console.log("Token",JSON.stringify(token));
                         postDatToRapidSOS(token, payload).then(function (response) {
                             console.log("Successfully Posted Data", response);
                         }).catch(function (error) {
