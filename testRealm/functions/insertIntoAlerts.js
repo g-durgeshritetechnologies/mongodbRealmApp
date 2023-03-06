@@ -64,7 +64,7 @@ exports = async function(changeEvent) {
             if (nonoEdgeFallAnomaly_Alert == 0) {
                 AlertLevels.push({"alertLevel": 3, "high": "", "low": ""});
             }
-            AlertTitle = "Fall Detection";
+            AlertTitle.push("Fall Detection");
             AlertBody.push("Fall Detection - Yes");
             notificationBody.FallDeteted = {
                 "value": "Yes",
@@ -118,7 +118,7 @@ exports = async function(changeEvent) {
                 if (GetGeofenceRecord) {
 
                     AlertLevels.push({"alertLevel": 2, "high": "", "low": ""});
-                    AlertTitle = "Geo Fence Event";
+                    AlertTitle.push("Geo Fence Event");
                     notificationBody.GeoFence = {
                         "value": "Distance greater",
                         "alert": "",
