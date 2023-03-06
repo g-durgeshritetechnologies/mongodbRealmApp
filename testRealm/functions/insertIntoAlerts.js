@@ -449,7 +449,7 @@ function postDatToRapidSOS(token, payload) {
         var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
         const xhr = new XMLHttpRequest();
         const url = "https://api-sandbox.rapidsos.com/v1/rem/trigger";
-        const json = JSON.stringify(sensorPayload);
+        const json = JSON.stringify(payload);
         xhr.open("POST", url);
         xhr.setRequestHeader("Authorization", `Bearer ${
             token.toString()
