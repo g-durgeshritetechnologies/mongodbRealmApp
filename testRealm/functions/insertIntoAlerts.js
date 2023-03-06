@@ -1,4 +1,7 @@
 exports = async function(changeEvent) {
+
+    var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+    const xhr = new XMLHttpRequest();
     const fullDocument = changeEvent.fullDocument;
     let Alert=fullDocument.alert;
     console.log("data",JSON.stringify(fullDocument));
@@ -14,6 +17,7 @@ exports = async function(changeEvent) {
         const SpO2_Alert = Alert.charAt(6);
         const SOS_Alert = Alert.charAt(7);
         let alertObj = {};
+        let alert_type=2;
         let AlertTitle = [];
         let AlertBody = [];
         let AlertLevels = [];
@@ -23,7 +27,7 @@ exports = async function(changeEvent) {
         let deviceData = {};
         let details=[];
         let activeWearer={};
-        let deviceCordinates={}
+        let deviceCordinates={};
         deviceCordinates.latitude=fullDocument.latitude;
         deviceCordinates.longitute=fullDocument.longitute;
        
@@ -215,30 +219,43 @@ exports = async function(changeEvent) {
                 alertObj.confidence=fullDocument.alertInfo;
                 alertObj.isStopped=0;
 
-                await saveAlert(alertObj);
 
+                let alertid = await saveAlert(alertObj).the.then(result => {
+                    if (result) {
+                        alertid  = result;
+                    } else {
+                        console.log("No document matches the provided query.");
+                    }
+                });
 
-                // alertdata = {
-                //     "color": AlertLevelFinalString,
-                //     "false_alert": 0,
-                //     "title": AlertTitle,
-                //     "body": notificationBody
-                // };
+                alertdata = {
+                    "color": AlertLevelFinalString,
+                    "false_alert": 0,
+                    "title": AlertTitle,
+                    "body": notificationBody
+                };
 
-                // alert = {
-                //     "title": dtokens.wearerName + " - " + AlertTitle,
-                //     "body": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString
-                // };
-                // payload = {
-                //     "title": dtokens.wearerName + " - " + AlertTitle,
-                //     "message": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString,
-                //     "alertType": alert_type,
-                //     "wearerID": dtokens.wearerId,
-                //     "deviceCordinates": deviceCordinates,
-                //     "notification_id": notification_id
-                // };
-                // console.log(payload);
+                alert = {
+                    "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
+                    "body": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString
+                };
+                payload = {
+                    "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
+                    "message": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString,
+                    "alertType": alert_type,
+                    "wearerID": alertObj.wearerId,
+                    "deviceCordinates": deviceCordinates,
+                    "alert_id": alertid
+                };
+                console.log(payload);
                 
+
+               
+            
+                await sleep(25);
+                
+                sendNotifications(alert,payload,xhr,dtokens);
+
             }
 
 
@@ -284,3 +301,54 @@ async function saveAlert(data)
         return false;
     });
 } 
+
+
+function sendNotifications(alert,payload,xhr,token)
+{
+        
+        let body = {};
+        let aps = {};
+        let triggerData = {};
+        
+        var url = "http://4.227.137.1:5000/api/trigger";
+        xhr.open('POST', url, true);
+        xhr.timeout = 5000; 
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        const fullDocument = changeEvent.fullDocument;
+        alert = fullDocument.alertObj;
+       
+        payload = fullDocument.payload;
+   
+        body.alert = alert;
+        body.payload = payload;
+        body.sound = "chime.aiff";
+        console.log("Body Data", JSON.stringify(body));
+        triggerData.aps = body;
+
+        triggerData.token = token;
+        console.log("Trigger Data", JSON.stringify(triggerData));
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+               
+                return JSON.parse(xhr.readyState);
+        
+              
+            }
+            else if(xhr.readyState==3){
+              
+            }
+            else if (xhr.readyState==2){
+                console.log("Final State :", JSON.stringify(xhr.readyState));
+            }
+           
+        };
+        
+        xhr.send(JSON.stringify(triggerData));
+        console.log(xhr.readyState);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
