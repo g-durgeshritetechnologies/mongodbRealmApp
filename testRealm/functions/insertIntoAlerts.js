@@ -371,7 +371,6 @@ async function getUserInfo(userId) {
 async function getdeviceInfo(deviceIdData) {
     const deviceCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info");
     const query = {
-        
         "deviceId": deviceIdData
     };
 
