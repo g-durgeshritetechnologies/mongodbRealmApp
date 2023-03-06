@@ -103,5 +103,9 @@
     {
         "name": "insertIntoAlerts",
         "private": true
+    },
+    {
+        "name": "InsertBuzzIntoRapidAlerts",
+        "private": true
     }
 ]
