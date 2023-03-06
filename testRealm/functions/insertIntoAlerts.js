@@ -220,15 +220,15 @@ exports = async function(changeEvent) {
                 alertObj.isStopped=0;
 
                 console.log("AlertObject",JSON.stringify(alertObj));
-
-                let alertid = await saveAlert(alertObj).then(result => {
-                    console.log("Result",JSON.stringify(result));
-                    if (result) {
-                        alertid  = result;
-                    } else {
-                        console.log("No document matches the provided query.");
-                    };
-                });
+                await saveAlert(alertObj);
+                // let alertid = await saveAlert(alertObj).then(result => {
+                //     console.log("Result",JSON.stringify(result));
+                //     if (result) {
+                //         alertid  = result;
+                //     } else {
+                //         console.log("No document matches the provided query.");
+                //     };
+                // });
 
                 alertdata = {
                     "color": AlertLevelFinalString,
