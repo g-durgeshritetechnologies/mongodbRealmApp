@@ -3,6 +3,7 @@
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
     let insertedId;
+    let logres;
 
     await insertIntoSensorDataTS(fullDocument).then(response => {
         insertedId = response;
