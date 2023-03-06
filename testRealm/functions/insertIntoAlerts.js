@@ -220,7 +220,7 @@ exports = async function(changeEvent) {
                 alertObj.isStopped=0;
 
                 console.log("AlertObject",JSON.stringify(alertObj));
-                await saveAlert(alertObj);
+                let alertid=await saveAlert(alertObj);
                 // let alertid = await saveAlert(alertObj).then(result => {
                 //     console.log("Result",JSON.stringify(result));
                 //     if (result) {
@@ -247,7 +247,7 @@ exports = async function(changeEvent) {
                     "alertType": alert_type,
                     "wearerID": alertObj.wearerId,
                     "deviceCordinates": deviceCordinates,
-                    // "alert_id": alertid
+                    "alert_id": alertid
                 };
                 
                 console.log("Payload",JSON.stringify(payload));
@@ -257,9 +257,9 @@ exports = async function(changeEvent) {
 
                
             
-                // await sleep(25);
+                await sleep(25);
                 
-                // sendNotifications(alert,payload,xhr,dtokens);
+                sendNotifications(alert,payload,xhr,dtokens);
 
             }
 
