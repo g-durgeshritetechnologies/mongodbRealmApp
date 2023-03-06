@@ -101,18 +101,18 @@ exports = async function(changeEvent) {
                 }
 
             }).catch(err => console.error(`Failed to find document: ${err}`));
-        //     console.log("deviceData",JSON.stringify(deviceData));
-        // console.log("deviceData",JSON.stringify(deviceData));
-        //     activeWearer = deviceData.wearer.forEach((wearer) => {
-        //         wearer.isActive == "true";
-        //     });
-            // console.log("activeWearer",JSON.stringify(activeWearer));
-            // console.log("Wearer Data Test",JSON.stringify(deviceData.wearer));
-            // console.log("Wearer Data Test",JSON.stringify(deviceData.geofences));
-            // GetGeofenceRecord = deviceData.geofences.forEach((geofence) => {
-            //     geofence.status == "active";
-
-            // });
+ 
+            activeWearer = deviceData.wearer.find((wearer) => {
+                return wearer.isActive == "true";
+            });
+            console.log("Active Wearer",JSON.stringify(activeWearer));
+            const GetGeofenceRecord = deviceData.geofences.find((geofence) => {
+                return geofence.status == "active";
+            });
+            
+            console.log("Geofence",JSON.stringify(GetGeofenceRecord));
+          
+            
             console.log("GetGeofenceRecord",JSON.stringify(GetGeofenceRecord));
             if (GetGeofenceRecord.length === 0) {} else {
                 if (GetGeofenceRecord) {
