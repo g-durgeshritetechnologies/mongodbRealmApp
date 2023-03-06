@@ -83,7 +83,81 @@ exports = async function (changeEvent) {
             const fullDocument = changeEvent.fullDocument;
             let Alert = fullDocument.alert;
             console.log("data", JSON.stringify(fullDocument));
-            if (fullDocument.isConfirmed == "Y") {} 
+            if (fullDocument.isConfirmed == "Y") {
+                const fullDocument = changeEvent.fullDocument;
+                console.log("Data",JSON.stringify(fullDocument));
+                let deviceData = {};
+                let payload = {};
+                let userData={};
+                if (fullDocument.isConfirmed == "Y") {
+                    await getdeviceInfo(fullDocument.deviceId).then(result => {
+                        if (result) {
+                            deviceData = result;
+                        } else {
+                            console.log("No documentss matches the provided query.");
+                        }
+                    }).catch(err => console.error(`Failed to find document: ${err}`));
+
+
+                    await getUserInfo(fullDocument.userTokens.userId).then(result => {
+                        if (result) {
+                            userData = result;
+                        } else {
+                            console.log("No documentss matches the provided query.");
+                        }
+                    }).catch(err => console.error(`Failed to find document: ${err}`));
+
+                    activeWearer = deviceData.wearer.find((wearer) => {
+                        return wearer.isActive == true;
+                    });
+                    console.log("Active Wearer", JSON.stringify(activeWearer));
+                    
+                    GetGeofenceRecord = deviceData.geofences.find((geofence) => {
+                        return geofence.status == "active";
+                    });
+                    
+                    console.log("GeofenceRecord", JSON.stringify(GetGeofenceRecord));
+
+                    let age = getAge(activeWearer.dob);
+
+
+                    payload.callflow = "weartech_emergency_v0";
+                    payload.variables = {
+                        "wearer_information": {
+                            "wearer_name": activeWearer.firstname + " " + activeWearer.lastname,
+                            "phone_number": activeWearer.emergency_contact_number,
+                            "age": age.toString(),
+                            "gender": activeWearer.gender
+                        },
+                        "guardian_information": {
+                            "guardian_name": userData.firstName + " " + userData.lastName,
+                            "guardian_phone": userData.phone
+                        },
+                        "incident_information": {
+                            "incident_type": "Severe Fall Detected",
+                            "incident_verification": "Incident Has Been Verified by End User",
+                            "additional_notes": "Guardian notified via SMS."
+                        },
+                        "location": {
+                            "latitude": activeWearer.latitude,
+                            "longitude": activeWearer.longitude
+                        }
+                    }
+                    console.log("Final Payload : ", JSON.stringify(payload));
+
+                    getToken().then(function (token) {
+                        console.log(token);
+                        postDatToRapidSOS(token, payload).then(function (response) {
+                            console.log("Successfully Posted Data", response);
+                        }).catch(function (error) {
+                            console.log("Could not Post Data", error);
+                        });
+                    }).catch(function (error) {
+                        console.log("Could not receive token", error);
+                    });
+
+                }
+            } 
             else {
                 if (fullDocument.alert == "" || fullDocument.alert.length != 8) {
                     fullDocument.alert = "00000000";
