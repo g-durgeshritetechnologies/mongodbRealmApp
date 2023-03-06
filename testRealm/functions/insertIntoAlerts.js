@@ -102,11 +102,11 @@ exports = async function(changeEvent) {
 
             }).catch(err => console.error(`Failed to find document: ${err}`));
  
-            const activeWearer = deviceData.wearer.find((wearers) => {
+            activeWearer = deviceData.wearer.find((wearers) => {
                 return wearers.isActive == "true";
             });
             console.log("Active Wearer",JSON.stringify(activeWearer));
-            const GetGeofenceRecord = deviceData.geofences.find((geofence) => {
+             GetGeofenceRecord = deviceData.geofences.find((geofence) => {
                 return geofence.status == "active";
             });
             
@@ -145,31 +145,31 @@ exports = async function(changeEvent) {
         }
         if (SpO2_Alert == 1) {
             console.log("Code Reached here 3");
-            //AlertTitle.push("SpO2 alert");
-            // details.push({
-            //     "param":"Heart Rate",
-            //     "value":fullDocument.heartrate,
-            //     "type":"",
-            //     "message":"Heart Rate is high",
-            //     "level":alertLevel,
-            //     "color":alertLevel,
-            //     "wearerThreshold": ""
+            AlertTitle.push("SpO2 alert");
+            details.push({
+                "param":"Heart Rate",
+                "value":fullDocument.heartrate,
+                "type":"",
+                "message":"Heart Rate is high",
+                "level":alertLevel,
+                "color":alertLevel,
+                "wearerThreshold": ""
 
-            // });
+            });
         }
         if (SOS_Alert == 1) {
             console.log("Code Reached here 4");
-            //AlertTitle.push("SOS alert");
-            // details.push({
-            //     "param":"Heart Rate",
-            //     "value":fullDocument.heartrate,
-            //     "type":"",
-            //     "message":"Heart Rate is high",
-            //     "level":alertLevel,
-            //     "color":alertLevel,
-            //     "wearerThreshold": ""
+            AlertTitle.push("SOS alert");
+            details.push({
+                "param":"Heart Rate",
+                "value":fullDocument.heartrate,
+                "type":"",
+                "message":"Heart Rate is high",
+                "level":alertLevel,
+                "color":alertLevel,
+                "wearerThreshold": ""
 
-            // });
+            });
         }
 
         let AlertLevelFinalString = Math.max.apply(Math, AlertLevels.map(function (o) {
@@ -178,7 +178,6 @@ exports = async function(changeEvent) {
         notificationBody.AlertLevel = AlertLevelFinalString;
         let AlertLevelBody = '';
 
-        // console.log("AlertLevelFinalString" + JSON.stringify(AlertLevelFinalString));
 
         switch (AlertLevelFinalString) {
             case 2: AlertLevelBody = "Time sensitive\n";
