@@ -1,649 +1,30 @@
-exports = async function (changeEvent) {
+exports = async function(changeEvent) {
 
     try {
         if (changeEvent.operationType == "update") {
             if (changeEvent.fullDocument) {
                 const fullDocument = changeEvent.fullDocument;
                 console.log("Data", JSON.stringify(fullDocument));
-                let deviceData = {};
-                let payload = {};
-                let userData = {};
+
                 if (fullDocument.isConfirmed == "Y") {
-                    await getdeviceInfo(fullDocument.deviceId).then(result => {
-                        if (result) {
-                            deviceData = result;
-                        } else {
-                            console.log("No documentss matches the provided query.");
-                        }
-                    }).catch(err => console.error(`Failed to find document: ${err}`));
-
-
-                    await getUserInfo(fullDocument.userTokens.userId).then(result => {
-                        if (result) {
-                            userData = result;
-                        } else {
-                            console.log("No documentss matches the provided query.");
-                        }
-                    }).catch(err => console.error(`Failed to find document: ${err}`));
-
-                    activeWearer = deviceData.wearer.find((wearer) => {
-                        return wearer.isActive == true;
-                    });
-                    console.log("Active Wearer", JSON.stringify(activeWearer));
-
-                    GetGeofenceRecord = deviceData.geofences.find((geofence) => {
-                        return geofence.status == "active";
-                    });
-
-                    console.log("GeofenceRecord", JSON.stringify(GetGeofenceRecord));
-
-                    let age = getAge(activeWearer.dob);
-
-
-                    payload.callflow = "weartech_emergency_v0";
-                    payload.variables = {
-                        "wearer_information": {
-                            "wearer_name": activeWearer.firstname + " " + activeWearer.lastname,
-                            "phone_number": activeWearer.emergency_contact_number,
-                            "age": age.toString(),
-                            "gender": activeWearer.gender
-                        },
-                        "guardian_information": {
-                            "guardian_name": userData.firstName + " " + userData.lastName,
-                            "guardian_phone": userData.phone
-                        },
-                        "incident_information": {
-                            "incident_type": "Severe Fall Detected",
-                            "incident_verification": "Incident Has Been Verified by End User",
-                            "additional_notes": "Guardian notified via SMS."
-                        },
-                        "location": {
-                            "latitude": activeWearer.latitude,
-                            "longitude": activeWearer.longitude
-                        }
-                    }
-                    console.log("Final Payload : ", JSON.stringify(payload));
-
-                    getToken().then(function (token) {
-                        console.log(token);
-                        postDatToRapidSOS(token, payload).then(function (response) {
-                            console.log("Successfully Posted Data", response);
-                        }).catch(function (error) {
-                            console.log("Could not Post Data", error);
-                        });
-                    }).catch(function (error) {
-                        console.log("Could not receive token", error);
-                    });
-
+                    await sendRapidSOSData(fullDocument);
                 }
             }
         } else {
-            var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-            const xhr = new XMLHttpRequest();
             const fullDocument = changeEvent.fullDocument;
             let Alert = fullDocument.alert;
             if (fullDocument.isConfirmed == "Y") {
                 const fullDocument = changeEvent.fullDocument;
                 console.log("Data", JSON.stringify(fullDocument));
-                let deviceData = {};
-                let payload = {};
-                let userData = {};
-                if (fullDocument.isConfirmed == "Y") {
-                    await getdeviceInfo(fullDocument.deviceId).then(result => {
-                        if (result) {
-                            deviceData = result;
-                        } else {
-                            console.log("No documentss matches the provided query.");
-                        }
-                    }).catch(err => console.error(`Failed to find document: ${err}`));
+
+                await sendRapidSOSData(fullDocument);
 
 
-                    await getUserInfo(fullDocument.userTokens.userId).then(result => {
-                        if (result) {
-                            userData = result;
-                        } else {
-                            console.log("No documentss matches the provided query.");
-                        }
-                    }).catch(err => console.error(`Failed to find document: ${err}`));
+                await sendAlerts();
 
-
-                    activeWearer = deviceData.wearer.find((wearer) => {
-                        return wearer.isActive == true;
-                    });
-
-                
-
-                    GetGeofenceRecord = deviceData.geofences.find((geofence) => {
-                        return geofence.status == "active";
-                    });
-
-             
-
-                    let age = getAge(activeWearer.dob);
-
-
-                    payload.callflow = "weartech_emergency_v0";
-
-                    payload.variables = {
-                        "wearer_information": {
-                            "wearer_name": activeWearer.firstname + " " + activeWearer.lastname,
-                            "phone_number": activeWearer.emergency_contact_number,
-                            "age": age.toString(),
-                            "gender": activeWearer.gender
-                        },
-                        "guardian_information": {
-                            "guardian_name": userData.firstName + " " + userData.lastName,
-                            "guardian_phone": userData.phone
-                        },
-                        "incident_information": {
-                            "incident_type": "Severe Fall Detected",
-                            "incident_verification": "Incident Has Been Verified by End User",
-                            "additional_notes": "Guardian notified via SMS."
-                        },
-                        "location": {
-                            "latitude": activeWearer.latitude,
-                            "longitude": activeWearer.longitude
-                        }
-                    }
-                    console.log("Final Payload : ", JSON.stringify(payload));
-
-                    getToken().then(function (token) {
-                        console.log("Token",JSON.stringify(token));
-                        postDatToRapidSOS(token, payload).then(function (response) {
-                            console.log("Successfully Posted Data", response);
-                        }).catch(function (error) {
-                            console.log("Could not Post Data", error);
-                        });
-                    }).catch(function (error) {
-                        console.log("Could not receive token", error);
-                    });
-
-                    if (fullDocument.alert == "" || fullDocument.alert.length != 8) {
-                        fullDocument.alert = "00000000";
-                    }
-                    const HeartRate_Alert = Alert.charAt(1);
-                    const AmbientTemp_Alert = Alert.charAt(2);
-                    const AccelFallDetect_Alert = Alert.charAt(3);
-                    const nonoEdgeFallAnomaly_Alert = Alert.charAt(4);
-                    const GeoFence_Alert = Alert.charAt(5);
-                    const SpO2_Alert = Alert.charAt(6);
-                    const SOS_Alert = Alert.charAt(7);
-                    let alertObj = {};
-                    let alert_type = 2;
-                    let AlertTitle = [];
-                    let AlertBody = [];
-                    let AlertLevels = [];
-                    let notificationBody = [];
-                    let alertLevel = 0;
-                    let GetGeofenceRecord = {};
-                    let deviceData = {};
-                    let details = [];
-                    let activeWearer = {};
-                    let deviceCordinates = {}
-                    deviceCordinates.latitude = fullDocument.latitude;
-                    deviceCordinates.longitute = fullDocument.longitute;
-
-
-                    if (HeartRate_Alert == 1) {
-                        AlertTitle.push("Heart Rate alert");
-                        details.push({
-                            "param": "Heart Rate",
-                            "value": fullDocument.heartrate,
-                            "type": "",
-                            "message": "Heart Rate is high",
-                            "level": alertLevel,
-                            "color": alertLevel,
-                            "wearerThreshold": ""
-
-                        });
-
-                    }
-                    if (AmbientTemp_Alert == 1) {
-                        AlertTitle.push("AmbientTemp alert");
-                        details.push({
-                            "param": "Ambient Rate",
-                            "value": fullDocument.heartrate,
-                            "type": "",
-                            "message": "Heart Rate is high",
-                            "level": alertLevel,
-                            "color": alertLevel,
-                            "wearerThreshold": ""
-
-                        });
-                    }
-
-                    if (AccelFallDetect_Alert == 1) {
-
-                        if (nonoEdgeFallAnomaly_Alert == 1) {
-                            AlertLevels.push({"alertLevel": 2, "high": "", "low": ""});
-                        }
-                        if (nonoEdgeFallAnomaly_Alert == 0) {
-                            AlertLevels.push({"alertLevel": 3, "high": "", "low": ""});
-                        }
-                        AlertTitle.push("Fall Detection");
-                        AlertBody.push("Fall Detection - Yes");
-                        notificationBody.FallDeteted = {
-                            "value": "Yes",
-                            "alert": "High",
-                            "isAlertFor": AccelFallDetect_Alert
-                        };
-
-                        details.push({
-                            "param": "Fall Detection",
-                            "value": fullDocument.heartrate,
-                            "type": "",
-                            "message": "fall detetcion",
-                            "level": alertLevel,
-                            "color": alertLevel,
-                            "wearerThreshold": ""
-
-                        });
-
-                    } else {
-                        notificationBody.FallDeteted = {
-                            "value": "No",
-                            "alert": "Low",
-                            "isAlertFor": AccelFallDetect_Alert
-                        };
-                    }
-
-                    if (GeoFence_Alert == 1) {
-
-                        await getdeviceInfo(fullDocument.deviceId).then(result => {
-
-                            if (result) {
-                                deviceData = result;
-                            } else {
-                                console.log("No document matches the provided query.");
-                            }
-
-                        }).catch(err => console.error(`Failed to find document: ${err}`));
-
-                        activeWearer = deviceData.wearer.find((wearer) => {
-                            return wearer.isActive == true;
-                        });
-                       
-
-                        GetGeofenceRecord = deviceData.geofences.find((geofence) => {
-                            return geofence.status == "active";
-                        });
-
-            
-                        if (GetGeofenceRecord.length === 0) {} else {
-                            if (GetGeofenceRecord) {
-
-                                AlertLevels.push({"alertLevel": 2, "high": "", "low": ""});
-                                AlertTitle.push("Geo Fence Event");
-                                notificationBody.GeoFence = {
-                                    "value": "Distance greater",
-                                    "alert": "",
-                                    "isAlertFor": GeoFence_Alert,
-                                    "deviceCordinates": deviceCordinates
-                                };
-
-                                AlertBody.push("Geofence - Yes");
-                                details.push({
-                                    "param": "Heart Rate",
-                                    "value": fullDocument.heartrate,
-                                    "type": "",
-                                    "message": "Heart Rate is high",
-                                    "level": alertLevel,
-                                    "color": alertLevel,
-                                    "wearerThreshold": ""
-
-                                });
-                            } else {}
-                        }
-
-
-                    }
-                    if (SpO2_Alert == 1) {
-                        AlertTitle.push("SpO2 alert");
-                        details.push({
-                            "param": "Heart Rate",
-                            "value": fullDocument.heartrate,
-                            "type": "",
-                            "message": "Heart Rate is high",
-                            "level": alertLevel,
-                            "color": alertLevel,
-                            "wearerThreshold": ""
-
-                        });
-                    }
-                    if (SOS_Alert == 1) {
-                        AlertTitle.push("SOS alert");
-                        details.push({
-                            "param": "Heart Rate",
-                            "value": fullDocument.heartrate,
-                            "type": "",
-                            "message": "Heart Rate is high",
-                            "level": alertLevel,
-                            "color": alertLevel,
-                            "wearerThreshold": ""
-
-                        });
-                    }
-
-                    let AlertLevelFinalString = Math.max.apply(Math, AlertLevels.map(function (o) {
-                        return o.alertLevel;
-                    }));
-                    notificationBody.AlertLevel = AlertLevelFinalString;
-                    let AlertLevelBody = '';
-
-
-                    switch (AlertLevelFinalString) {
-                        case 2: AlertLevelBody = "Time sensitive\n";
-                            break;
-                        case 3: AlertLevelBody = "Take action now\n";
-                            break;
-                        case 4: AlertLevelBody = "SOS\n\n";
-                            break;
-                    }
-
-                    const AlertBodyFinalString = AlertBody.join("\n").toString();
-           
-
-
-                    if (AlertBodyFinalString.includes("Geofence - Yes") || AlertBodyFinalString.includes("Fall Detection - Yes")) {
-                        for (const dtokens of fullDocument.userTokens.notificationTokens) {
-                            if (GetGeofenceRecord) {
-                                geoFenceName = "Geo Fence - " + GetGeofenceRecord.name;
-                                notificationBody.geofenceDetails = GetGeofenceRecord.name;
-                            }
-
-                            alertObj.title = AlertTitle;
-                            alertObj.version = deviceData.version;
-                            alertObj.createdAt = new Date(Date.now()).toISOString();
-                            alertObj.latitude = fullDocument.latitude;
-                            alertObj.longitute = fullDocument.longitute;
-                            alertObj.spo2 = fullDocument.spo2;
-                            alertObj.heartrate = fullDocument.heartrate;
-                            alertObj.details = details;
-                            alertObj.userTokens = fullDocument.userTokens.notificationTokens;
-                            alertObj.sensordataid = fullDocument.sensordataid;
-                            alertObj.deviceId = fullDocument.deviceId;
-                            alertObj.wearerId = activeWearer._id;
-                            alertObj.wearerFirstName = activeWearer.firstname;
-                            alertObj.wearerLastName = activeWearer.lastname;
-                            alertObj.confidence = fullDocument.alertInfo;
-                            alertObj.isStopped = 0;
-
-                            let alertid = await saveAlert(alertObj);
-
-
-                            alertdata = {
-                                "color": AlertLevelFinalString,
-                                "false_alert": 0,
-                                "title": AlertTitle,
-                                "body": notificationBody
-                            };
-
-                            alert = {
-                                "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
-                                "body": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString
-                            };
-                            payload = {
-                                "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
-                                "message": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString,
-                                "alertType": alert_type,
-                                "wearerID": alertObj.wearerId,
-                                "deviceCordinates": deviceCordinates,
-                                "alert_id": alertid
-                            };
-
-                            await sleep(25);
-
-                            sendNotifications(alert, payload, xhr, dtokens);
-
-                        }
-
-
-                    }
-
-                }
             } else {
-                if (fullDocument.alert == "" || fullDocument.alert.length != 8) {
-                    fullDocument.alert = "00000000";
-                }
-                const HeartRate_Alert = Alert.charAt(1);
-                const AmbientTemp_Alert = Alert.charAt(2);
-                const AccelFallDetect_Alert = Alert.charAt(3);
-                const nonoEdgeFallAnomaly_Alert = Alert.charAt(4);
-                const GeoFence_Alert = Alert.charAt(5);
-                const SpO2_Alert = Alert.charAt(6);
-                const SOS_Alert = Alert.charAt(7);
-                let alertObj = {};
-                let alert_type = 2;
-                let AlertTitle = [];
-                let AlertBody = [];
-                let AlertLevels = [];
-                let notificationBody = [];
-                let alertLevel = 0;
-                let GetGeofenceRecord = {};
-                let deviceData = {};
-                let details = [];
-                let activeWearer = {};
-                let deviceCordinates = {}
-                deviceCordinates.latitude = fullDocument.latitude;
-                deviceCordinates.longitute = fullDocument.longitute;
 
-
-                if (HeartRate_Alert == 1) {
-                    AlertTitle.push("Heart Rate alert");
-                    details.push({
-                        "param": "Heart Rate",
-                        "value": fullDocument.heartrate,
-                        "type": "",
-                        "message": "Heart Rate is high",
-                        "level": alertLevel,
-                        "color": alertLevel,
-                        "wearerThreshold": ""
-
-                    });
-
-                }
-                if (AmbientTemp_Alert == 1) {
-                    AlertTitle.push("AmbientTemp alert");
-                    details.push({
-                        "param": "Ambient Rate",
-                        "value": fullDocument.heartrate,
-                        "type": "",
-                        "message": "Heart Rate is high",
-                        "level": alertLevel,
-                        "color": alertLevel,
-                        "wearerThreshold": ""
-
-                    });
-                }
-
-                if (AccelFallDetect_Alert == 1) {
-
-                    if (nonoEdgeFallAnomaly_Alert == 1) {
-                        AlertLevels.push({"alertLevel": 2, "high": "", "low": ""});
-                    }
-                    if (nonoEdgeFallAnomaly_Alert == 0) {
-                        AlertLevels.push({"alertLevel": 3, "high": "", "low": ""});
-                    }
-                    AlertTitle.push("Fall Detection");
-                    AlertBody.push("Fall Detection - Yes");
-                    notificationBody.FallDeteted = {
-                        "value": "Yes",
-                        "alert": "High",
-                        "isAlertFor": AccelFallDetect_Alert
-                    };
-
-                    details.push({
-                        "param": "Fall Detection",
-                        "value": fullDocument.heartrate,
-                        "type": "",
-                        "message": "fall detetcion",
-                        "level": alertLevel,
-                        "color": alertLevel,
-                        "wearerThreshold": ""
-
-                    });
-
-                } else {
-                    notificationBody.FallDeteted = {
-                        "value": "No",
-                        "alert": "Low",
-                        "isAlertFor": AccelFallDetect_Alert
-                    };
-                }
-
-                if (GeoFence_Alert == 1) {
-
-                    await getdeviceInfo(fullDocument.deviceId).then(result => {
-                        console.log("FUllDocument Device ID", JSON.stringify(fullDocument.deviceId));
-                        if (result) {
-                            deviceData = result;
-                        } else {
-                            console.log("No document matches the provided query.");
-                        }
-
-                    }).catch(err => console.error(`Failed to find document: ${err}`));
-
-                    activeWearer = deviceData.wearer.find((wearer) => {
-                        return wearer.isActive == true;
-                    });
-                    console.log("Active Wearer", JSON.stringify(activeWearer));
-
-                    GetGeofenceRecord = deviceData.geofences.find((geofence) => {
-                        return geofence.status == "active";
-                    });
-
-                    console.log("GetGeofenceRecord", JSON.stringify(GetGeofenceRecord));
-                    if (GetGeofenceRecord.length === 0) {} else {
-                        if (GetGeofenceRecord) {
-
-                            AlertLevels.push({"alertLevel": 2, "high": "", "low": ""});
-                            AlertTitle.push("Geo Fence Event");
-                            notificationBody.GeoFence = {
-                                "value": "Distance greater",
-                                "alert": "",
-                                "isAlertFor": GeoFence_Alert,
-                                "deviceCordinates": deviceCordinates
-                            };
-
-                            AlertBody.push("Geofence - Yes");
-                            details.push({
-                                "param": "Heart Rate",
-                                "value": fullDocument.heartrate,
-                                "type": "",
-                                "message": "Heart Rate is high",
-                                "level": alertLevel,
-                                "color": alertLevel,
-                                "wearerThreshold": ""
-
-                            });
-                        } else {}
-                    }
-
-
-                }
-                if (SpO2_Alert == 1) {
-                    AlertTitle.push("SpO2 alert");
-                    details.push({
-                        "param": "Heart Rate",
-                        "value": fullDocument.heartrate,
-                        "type": "",
-                        "message": "Heart Rate is high",
-                        "level": alertLevel,
-                        "color": alertLevel,
-                        "wearerThreshold": ""
-
-                    });
-                }
-                if (SOS_Alert == 1) {
-                    AlertTitle.push("SOS alert");
-                    details.push({
-                        "param": "Heart Rate",
-                        "value": fullDocument.heartrate,
-                        "type": "",
-                        "message": "Heart Rate is high",
-                        "level": alertLevel,
-                        "color": alertLevel,
-                        "wearerThreshold": ""
-
-                    });
-                }
-
-                let AlertLevelFinalString = Math.max.apply(Math, AlertLevels.map(function (o) {
-                    return o.alertLevel;
-                }));
-                notificationBody.AlertLevel = AlertLevelFinalString;
-                let AlertLevelBody = '';
-
-
-                switch (AlertLevelFinalString) {
-                    case 2: AlertLevelBody = "Time sensitive\n";
-                        break;
-                    case 3: AlertLevelBody = "Take action now\n";
-                        break;
-                    case 4: AlertLevelBody = "SOS\n\n";
-                        break;
-                }
-
-                const AlertBodyFinalString = AlertBody.join("\n").toString();
-                console.log("ALertBodyFinalString", JSON.stringify(AlertBodyFinalString));
-
-
-                if (AlertBodyFinalString.includes("Geofence - Yes") || AlertBodyFinalString.includes("Fall Detection - Yes")) {
-                    for (const dtokens of fullDocument.userTokens.notificationTokens) {
-                        if (GetGeofenceRecord) {
-                            geoFenceName = "Geo Fence - " + GetGeofenceRecord.name;
-                            notificationBody.geofenceDetails = GetGeofenceRecord.name;
-                        }
-
-                        alertObj.title = AlertTitle;
-                        alertObj.version = deviceData.version;
-                        alertObj.createdAt = new Date(Date.now()).toISOString();
-                        alertObj.latitude = fullDocument.latitude;
-                        alertObj.longitute = fullDocument.longitute;
-                        alertObj.spo2 = fullDocument.spo2;
-                        alertObj.heartrate = fullDocument.heartrate;
-                        alertObj.details = details;
-                        alertObj.userTokens = fullDocument.userTokens.notificationTokens;
-                        alertObj.sensordataid = fullDocument.sensordataid;
-                        alertObj.deviceId = fullDocument.deviceId;
-                        alertObj.wearerId = activeWearer._id;
-                        alertObj.wearerFirstName = activeWearer.firstname;
-                        alertObj.wearerLastName = activeWearer.lastname;
-                        alertObj.confidence = fullDocument.alertInfo;
-                        alertObj.isStopped = 0;
-
-                        let alertid = await saveAlert(alertObj);
-
-
-                        alertdata = {
-                            "color": AlertLevelFinalString,
-                            "false_alert": 0,
-                            "title": AlertTitle,
-                            "body": notificationBody
-                        };
-
-                        alert = {
-                            "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
-                            "body": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString
-                        };
-                        payload = {
-                            "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
-                            "message": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString,
-                            "alertType": alert_type,
-                            "wearerID": alertObj.wearerId,
-                            "deviceCordinates": deviceCordinates,
-                            "alert_id": alertid
-                        };
-
-                        await sleep(25);
-
-                        sendNotifications(alert, payload, xhr, dtokens);
-
-                    }
-
-
-                }
-
+                await sendAlerts();
 
             }
         }
@@ -653,6 +34,345 @@ exports = async function (changeEvent) {
 
 }
 
+
+
+async function sendRapidSOSData(fullDocument) {
+    let deviceData = {};
+    let payload = {};
+    let userData = {};
+    try {
+        await getdeviceInfo(fullDocument.deviceId).then(result => {
+            if (result) {
+                deviceData = result;
+            } else {
+                console.log("No documentss matches the provided query.");
+            }
+        }).catch(err => console.error(`Failed to find document: ${err}`));
+
+
+        await getUserInfo(fullDocument.userTokens.userId).then(result => {
+            if (result) {
+                userData = result;
+            } else {
+                console.log("No documentss matches the provided query.");
+            }
+        }).catch(err => console.error(`Failed to find document: ${err}`));
+
+        activeWearer = deviceData.wearer.find((wearer) => {
+            return wearer.isActive == true;
+        });
+        console.log("Active Wearer", JSON.stringify(activeWearer));
+
+        GetGeofenceRecord = deviceData.geofences.find((geofence) => {
+            return geofence.status == "active";
+        });
+
+        console.log("GeofenceRecord", JSON.stringify(GetGeofenceRecord));
+
+        let age = getAge(activeWearer.dob);
+
+
+        payload.callflow = "weartech_emergency_v0";
+        payload.variables = {
+            "wearer_information": {
+                "wearer_name": activeWearer.firstname + " " + activeWearer.lastname,
+                "phone_number": activeWearer.emergency_contact_number,
+                "age": age.toString(),
+                "gender": activeWearer.gender
+            },
+            "guardian_information": {
+                "guardian_name": userData.firstName + " " + userData.lastName,
+                "guardian_phone": userData.phone
+            },
+            "incident_information": {
+                "incident_type": "Severe Fall Detected",
+                "incident_verification": "Incident Has Been Verified by End User",
+                "additional_notes": "Guardian notified via SMS."
+            },
+            "location": {
+                "latitude": activeWearer.latitude,
+                "longitude": activeWearer.longitude
+            }
+        }
+        console.log("Final Payload : ", JSON.stringify(payload));
+
+        getToken().then(function(token) {
+            console.log(token);
+            postDatToRapidSOS(token, payload).then(function(response) {
+                console.log("Successfully Posted Data", response);
+            }).catch(function(error) {
+                console.log("Could not Post Data", error);
+            });
+        }).catch(function(error) {
+            console.log("Could not receive token", error);
+        });
+    } catch (error) {
+        console.log("Error Occured in SendRapidSOSData", error)
+    }
+}
+
+async function sendAlerts(fullDocument) {
+    try {
+        if (fullDocument.alert == "" || fullDocument.alert.length != 8) {
+            fullDocument.alert = "00000000";
+        }
+        const HeartRate_Alert = Alert.charAt(1);
+        const AmbientTemp_Alert = Alert.charAt(2);
+        const AccelFallDetect_Alert = Alert.charAt(3);
+        const nonoEdgeFallAnomaly_Alert = Alert.charAt(4);
+        const GeoFence_Alert = Alert.charAt(5);
+        const SpO2_Alert = Alert.charAt(6);
+        const SOS_Alert = Alert.charAt(7);
+        let alertObj = {};
+        let alert_type = 2;
+        let AlertTitle = [];
+        let AlertBody = [];
+        let AlertLevels = [];
+        let notificationBody = [];
+        let alertLevel = 0;
+        let GetGeofenceRecord = {};
+        let deviceData = {};
+        let details = [];
+        let activeWearer = {};
+        let deviceCordinates = {}
+        deviceCordinates.latitude = fullDocument.latitude;
+        deviceCordinates.longitute = fullDocument.longitute;
+
+
+        if (HeartRate_Alert == 1) {
+            AlertTitle.push("Heart Rate alert");
+            details.push({
+                "param": "Heart Rate",
+                "value": fullDocument.heartrate,
+                "type": "",
+                "message": "Heart Rate is high",
+                "level": alertLevel,
+                "color": alertLevel,
+                "wearerThreshold": ""
+
+            });
+
+        }
+        if (AmbientTemp_Alert == 1) {
+            AlertTitle.push("AmbientTemp alert");
+            details.push({
+                "param": "Ambient Rate",
+                "value": fullDocument.heartrate,
+                "type": "",
+                "message": "Heart Rate is high",
+                "level": alertLevel,
+                "color": alertLevel,
+                "wearerThreshold": ""
+
+            });
+        }
+
+        if (AccelFallDetect_Alert == 1) {
+
+            if (nonoEdgeFallAnomaly_Alert == 1) {
+                AlertLevels.push({
+                    "alertLevel": 2,
+                    "high": "",
+                    "low": ""
+                });
+            }
+            if (nonoEdgeFallAnomaly_Alert == 0) {
+                AlertLevels.push({
+                    "alertLevel": 3,
+                    "high": "",
+                    "low": ""
+                });
+            }
+            AlertTitle.push("Fall Detection");
+            AlertBody.push("Fall Detection - Yes");
+            notificationBody.FallDeteted = {
+                "value": "Yes",
+                "alert": "High",
+                "isAlertFor": AccelFallDetect_Alert
+            };
+
+            details.push({
+                "param": "Fall Detection",
+                "value": fullDocument.heartrate,
+                "type": "",
+                "message": "fall detetcion",
+                "level": alertLevel,
+                "color": alertLevel,
+                "wearerThreshold": ""
+
+            });
+
+        } else {
+            notificationBody.FallDeteted = {
+                "value": "No",
+                "alert": "Low",
+                "isAlertFor": AccelFallDetect_Alert
+            };
+        }
+
+        if (GeoFence_Alert == 1) {
+
+            await getdeviceInfo(fullDocument.deviceId).then(result => {
+
+                if (result) {
+                    deviceData = result;
+                } else {
+                    console.log("No document matches the provided query.");
+                }
+
+            }).catch(err => console.error(`Failed to find document: ${err}`));
+
+            activeWearer = deviceData.wearer.find((wearer) => {
+                return wearer.isActive == true;
+            });
+
+
+            GetGeofenceRecord = deviceData.geofences.find((geofence) => {
+                return geofence.status == "active";
+            });
+
+
+            if (GetGeofenceRecord.length === 0) {} else {
+                if (GetGeofenceRecord) {
+
+                    AlertLevels.push({
+                        "alertLevel": 2,
+                        "high": "",
+                        "low": ""
+                    });
+                    AlertTitle.push("Geo Fence Event");
+                    notificationBody.GeoFence = {
+                        "value": "Distance greater",
+                        "alert": "",
+                        "isAlertFor": GeoFence_Alert,
+                        "deviceCordinates": deviceCordinates
+                    };
+
+                    AlertBody.push("Geofence - Yes");
+                    details.push({
+                        "param": "Heart Rate",
+                        "value": fullDocument.heartrate,
+                        "type": "",
+                        "message": "Heart Rate is high",
+                        "level": alertLevel,
+                        "color": alertLevel,
+                        "wearerThreshold": ""
+
+                    });
+                } else {}
+            }
+
+
+        }
+        if (SpO2_Alert == 1) {
+            AlertTitle.push("SpO2 alert");
+            details.push({
+                "param": "Heart Rate",
+                "value": fullDocument.heartrate,
+                "type": "",
+                "message": "Heart Rate is high",
+                "level": alertLevel,
+                "color": alertLevel,
+                "wearerThreshold": ""
+
+            });
+        }
+        if (SOS_Alert == 1) {
+            AlertTitle.push("SOS alert");
+            details.push({
+                "param": "Heart Rate",
+                "value": fullDocument.heartrate,
+                "type": "",
+                "message": "Heart Rate is high",
+                "level": alertLevel,
+                "color": alertLevel,
+                "wearerThreshold": ""
+
+            });
+        }
+
+        let AlertLevelFinalString = Math.max.apply(Math, AlertLevels.map(function(o) {
+            return o.alertLevel;
+        }));
+        notificationBody.AlertLevel = AlertLevelFinalString;
+        let AlertLevelBody = '';
+
+
+        switch (AlertLevelFinalString) {
+            case 2:
+                AlertLevelBody = "Time sensitive\n";
+                break;
+            case 3:
+                AlertLevelBody = "Take action now\n";
+                break;
+            case 4:
+                AlertLevelBody = "SOS\n\n";
+                break;
+        }
+
+        const AlertBodyFinalString = AlertBody.join("\n").toString();
+
+
+
+        if (AlertBodyFinalString.includes("Geofence - Yes") || AlertBodyFinalString.includes("Fall Detection - Yes")) {
+            for (const dtokens of fullDocument.userTokens.notificationTokens) {
+                if (GetGeofenceRecord) {
+                    geoFenceName = "Geo Fence - " + GetGeofenceRecord.name;
+                    notificationBody.geofenceDetails = GetGeofenceRecord.name;
+                }
+
+                alertObj.title = AlertTitle;
+                alertObj.version = deviceData.version;
+                alertObj.createdAt = new Date(Date.now()).toISOString();
+                alertObj.latitude = fullDocument.latitude;
+                alertObj.longitute = fullDocument.longitute;
+                alertObj.spo2 = fullDocument.spo2;
+                alertObj.heartrate = fullDocument.heartrate;
+                alertObj.details = details;
+                alertObj.userTokens = fullDocument.userTokens.notificationTokens;
+                alertObj.sensordataid = fullDocument.sensordataid;
+                alertObj.deviceId = fullDocument.deviceId;
+                alertObj.wearerId = activeWearer._id;
+                alertObj.wearerFirstName = activeWearer.firstname;
+                alertObj.wearerLastName = activeWearer.lastname;
+                alertObj.confidence = fullDocument.alertInfo;
+                alertObj.isStopped = 0;
+
+                let alertid = await saveAlert(alertObj);
+
+
+                alertdata = {
+                    "color": AlertLevelFinalString,
+                    "false_alert": 0,
+                    "title": AlertTitle,
+                    "body": notificationBody
+                };
+
+                alert = {
+                    "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
+                    "body": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString
+                };
+                payload = {
+                    "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
+                    "message": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString,
+                    "alertType": alert_type,
+                    "wearerID": alertObj.wearerId,
+                    "deviceCordinates": deviceCordinates,
+                    "alert_id": alertid
+                };
+
+                await sleep(25);
+
+                sendNotifications(alert, payload, xhr, dtokens);
+
+            }
+
+
+        }
+    } catch (error) {
+        console.log("Error Occured in SendAlerts", error)
+    }
+}
 
 async function getUserInfo(userId) {
     const userCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("users");
@@ -730,7 +450,7 @@ function sendNotifications(alert, payload, xhr, token) {
     triggerData.token = token;
     console.log("Trigger Data", JSON.stringify(triggerData));
 
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
 
             return JSON.parse(xhr.readyState);
@@ -751,7 +471,7 @@ function sleep(ms) {
 }
 
 function postDatToRapidSOS(token, payload) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
         const xhr = new XMLHttpRequest();
         const url = "https://api-sandbox.rapidsos.com/v1/rem/trigger";
@@ -761,7 +481,7 @@ function postDatToRapidSOS(token, payload) {
             token.toString()
         }`);
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 console.log(xhr.status);
                 console.log(xhr.responseText);
@@ -781,7 +501,7 @@ function getAge(dateOfBirth) {
 }
 
 function getToken() {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         try {
             var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
             const xhr = new XMLHttpRequest();
@@ -789,7 +509,7 @@ function getToken() {
             xhr.open('POST', url, true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send("grant_type=client_credentials&client_id=ZSeFLQDjoMTRNPOrXD75xtoWNvllB4SZ&client_secret=sqdKIFwdDWtC6OXn");
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         let token = JSON.parse(xhr.responseText).access_token;
