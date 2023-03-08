@@ -12,7 +12,7 @@ exports = async function(changeEvent) {
             }
         } else {
             const fullDocument = changeEvent.fullDocument;
-            let Alert = fullDocument.alert;
+            
             if (fullDocument.isConfirmed == "Y") {
                 const fullDocument = changeEvent.fullDocument;
                 console.log("Data", JSON.stringify(fullDocument));
@@ -112,6 +112,7 @@ async function sendRapidSOSData(fullDocument) {
 
 async function sendAlerts(fullDocument) {
     try {
+        let Alert = fullDocument.alert;
         if (fullDocument.alert == "" || fullDocument.alert.length != 8) {
             fullDocument.alert = "00000000";
         }
@@ -122,6 +123,7 @@ async function sendAlerts(fullDocument) {
         const GeoFence_Alert = Alert.charAt(5);
         const SpO2_Alert = Alert.charAt(6);
         const SOS_Alert = Alert.charAt(7);
+
         let alertObj = {};
         let alert_type = 2;
         let AlertTitle = [];
