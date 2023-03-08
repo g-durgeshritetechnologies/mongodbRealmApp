@@ -365,7 +365,7 @@ async function sendAlerts(fullDocument) {
 
                 await sleep(25);
 
-                sendNotifications(alert, payload, xhr, dtokens);
+                sendNotifications(alert, payload, dtokens);
 
             }
 
@@ -432,12 +432,13 @@ async function saveAlert(data) {
     });
 }
 
-function sendNotifications(alert, payload, xhr, token) {
+function sendNotifications(alert, payload, token) {
 
     let body = {};
-    let aps = {};
-    let triggerData = {};
 
+    let triggerData = {};
+    var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+    const xhr = new XMLHttpRequest();
     var url = "http://4.227.137.1:5000/api/trigger";
     xhr.open('POST', url, true);
     xhr.timeout = 5000;
