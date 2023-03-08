@@ -133,7 +133,8 @@ async function sendAlerts(fullDocument) {
         let deviceData = {};
         let details = [];
         let activeWearer = {};
-        let deviceCordinates = {}
+        let deviceCordinates = {};
+        let alert={}; 
         deviceCordinates.latitude = fullDocument.latitude;
         deviceCordinates.longitute = fullDocument.longitute;
 
