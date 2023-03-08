@@ -19,13 +19,12 @@ exports = async function(changeEvent) {
 
                 await sendRapidSOSData(fullDocument);
 
-
-                await sendAlerts();
+                await sendAlerts(fullDocument);
 
             } else {
 
-                await sendAlerts();
-
+                await sendAlerts(fullDocument); 
+         
             }
         }
     } catch (error) {
