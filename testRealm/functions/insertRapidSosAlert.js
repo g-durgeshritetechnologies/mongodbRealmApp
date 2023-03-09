@@ -113,7 +113,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.accel = fullDocument.data.ac;
         sensorData.gyro = fullDocument.data.g;
         sensorData.alertInfo = fullDocument.data.c;
-        sensorData.nodeId - '';
+        sensorData.nodeId - fullDocument.nodeId;
 
 
         await rapidsosalert.insertOne(sensorData).then(result => {

@@ -4,7 +4,7 @@ exports = async function(changeEvent) {
         if (changeEvent.operationType == "update") {
             if (changeEvent.fullDocument) {
                 const fullDocument = changeEvent.fullDocument;
-                console.log("Data", JSON.stringify(fullDocument));
+                console.log("Data Updated", JSON.stringify(fullDocument));
 
                 if (fullDocument.isConfirmed == "Y") {
                     await sendRapidSOSData(fullDocument);
