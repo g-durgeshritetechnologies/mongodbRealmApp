@@ -34,7 +34,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let deviceCordinates = {};
         let DeviceLatitude = "";
         let DeviceLongitude = "";
-        let gpggaData = fullDocument.data.gpgga;
+        let gpggaData = fullDocument.data.GPGGA;
         Device_GPGGA = await decryptGPGGA(gpggaData);
 
         if (Device_GPGGA.valid == true) {
