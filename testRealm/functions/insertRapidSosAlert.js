@@ -7,9 +7,9 @@ exports = async function (changeEvent) {
     await insertIntoSensorDataTS(fullDocument).then(response => {
         insertedId = response;
         insertIntoRapidSos(fullDocument, insertedId).then(response => {
-            logres = response;
+          
         });
-        console.log(JSON.stringify(logres));
+
     });
 
 
@@ -164,6 +164,7 @@ async function getUserData(userId) {
         var response = await userCollection.find(userquery).then(resultData => {
             if (resultData) {
                 let user_data = resultData
+                console.log("User Data from Users", user_data);
                 return user_data;
             } else {
                 console.log("No document matches the provided query.");
