@@ -111,7 +111,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.temp = fullDocument.data.t;
         sensorData.batt = fullDocument.data.b;
         sensorData.accel = fullDocument.data.ac;
-        sensorData.gyro = fullDocument.data.g;
+        sensorData.gyro = fullDocument.data.gy;
         sensorData.alertInfo = fullDocument.data.c;
         sensorData.nodeId - fullDocument.nodeId;
 
