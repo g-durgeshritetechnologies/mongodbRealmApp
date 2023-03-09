@@ -2,15 +2,16 @@
 
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
-    let insertedId;
+    var insertedId;
 
     await insertIntoSensorDataTS(fullDocument).then(response => {
         insertedId = response;
+        insertIntoRapidSos(fullDocument, insertedId).then(response => {
+            logres = response;
+        });
+        console.log(JSON.stringify(logres));
     });
-    await insertIntoRapidSos(fullDocument, insertedId).then(response => {
-        logres = response;
-    });
-    console.log(JSON.stringify(logres));
+
 
 };
 
@@ -66,11 +67,10 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         await getUserData(userTokens.userId).then(response => {
 
             console.log("FirstName & LastName", JSON.stringify(response.firstName), JSON.stringify(response.lastName));
-                userTokens.firstname = response.firstName;
-                userTokens.lastname = response.lastName;
-                console.log("userTokens", JSON.stringify(userTokens))
-            }
-        );
+            userTokens.firstname = response.firstName;
+            userTokens.lastname = response.lastName;
+            console.log("userTokens", JSON.stringify(userTokens))
+        });
 
 
         rapidSosData.userTokens = userTokens;
