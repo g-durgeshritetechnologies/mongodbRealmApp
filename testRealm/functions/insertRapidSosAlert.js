@@ -161,7 +161,7 @@ async function getUserData(userId) {
             "_id": userId
         }
 
-        var response = await userCollection.find(userquery).toArray().then(resultData => {
+        var response = await userCollection.find(userquery).then(resultData => {
             if (resultData) {
                 let user_data = resultData
                 return user_data;
