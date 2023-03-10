@@ -22,6 +22,9 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
+        let configdata= await getconfigData();
+        console.log("Config Data outside",JSON.stringify(configdata));
+        console.log("AlertBit0Name", JSON.stringify(configdata.AlertBit0Name))
         sensorData.alertInfo = [
             {
                 "alertName": "HeartRate",
@@ -78,4 +81,26 @@ async function insertIntoSensorDataTS(fullDocument) {
     } catch (error) {
         console.log("Error Occured in Insertion ", error);
     }
+}
+
+
+
+async function getconfigData() {
+
+   
+        const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
+
+        const configquery = {
+        }
+
+        var response = await configCollection.findOne(configquery).then(resultData => {
+            if (resultData) {
+                let config_data = resultData
+                console.log("Config Data from Confugurations Collection", config_data);
+                return config_data;
+            } else {
+                console.log("No document matches the provided query.");
+            }
+        }).catch(err => console.error(`Failed to find document: ${err}`));
+    return response;
 }
