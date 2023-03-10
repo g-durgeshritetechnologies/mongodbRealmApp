@@ -22,7 +22,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-        let configdata = await getconfigData();
+        let configdata = getconfigData();
         sensorData.alertInfo = [
             {
                 "alertName": configdata.AlertBit0Name,
