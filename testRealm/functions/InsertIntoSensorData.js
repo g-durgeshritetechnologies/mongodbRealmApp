@@ -27,12 +27,12 @@ async function insertIntoSensorDataTS(fullDocument) {
         console.log("Fulldocument => Data",JSON.stringify(fullDocument.data));
         console.log("Fulldocument => A",JSON.stringify(fullDocument.data.a));
         sensorData.alertInfo = [
-            // {
-            //     "alertName": configdata.AlertBit0Name,
-            //     "alertbitNo": parseInt(fullDocument.data.a[0]),
-            //     "confidence": fullDocument.data.c[0],
-            //     "Level": fullDocument.data.l[0]
-            // },
+            {
+                "alertName": configdata.AlertBit0Name,
+                "alertbitNo": parseInt(fullDocument.data.a[0]),
+                "confidence": fullDocument.data.c[0],
+                "Level": fullDocument.data.l[0]
+            },
             {
                 "alertName": configdata.AlertBit1Name,
                 "alertbitNo": parseInt(fullDocument.data.a[1]),
