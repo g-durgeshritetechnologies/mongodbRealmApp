@@ -22,18 +22,34 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-        sensorData.alertInfo=[{},{},{},{},{},{},{}];
-        let object={}
+        sensorData.alertInfo=[
+            {
+                "alertName":"HeartRate",
+                
+            },
+            {
+
+            },
+            {
+
+            },
+            {
+
+            },
+            {
+
+            },
+            {
+
+            },
+            {
+
+            }
+        ];
+ 
         
 
-        for(let i=1;i<fullDocument.data.a.length;i++)
-        {
-            sensorData.alertInfo[i].ALertBit=fullDocument.data.a[i];
-            console.log("AlertBit",JSON.stringify(object.ALertBit));
-            object.Confidence=fullDocument.data.c[i];
-            object.Level=fullDocument.data.l[i];
-            sensorData.alertInfo.push(object);
-        }
+        
 
 
         console.log("Data", JSON.stringify(sensorData));
