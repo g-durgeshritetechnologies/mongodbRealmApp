@@ -22,7 +22,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-        let configdata = getconfigData();
+        let configdata = await getconfigData();
         sensorData.alertInfo = [
             {
                 "alertName": configdata.AlertBit0Name,
@@ -85,7 +85,7 @@ async function insertIntoSensorDataTS(fullDocument) {
     } catch (error) {
         console.log("Error Occured in Insertion ", error);
     }
-} 
+}
 
  function getconfigData() {
     const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
