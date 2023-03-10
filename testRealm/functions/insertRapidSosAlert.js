@@ -2,12 +2,12 @@
 
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
- 
+
 
     await insertIntoSensorDataTS(fullDocument).then(response => {
-        console.log("Response",JSON.stringify(response));
-        let insertedId = response;
-        insertIntoRapidSos(fullDocument, insertedId)
+        console.log("Response", JSON.stringify(response));
+        //let insertedId = response;
+        //insertIntoRapidSos(fullDocument, insertedId)
     });
 
 
@@ -94,27 +94,75 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
 
 async function insertIntoSensorDataTS(fullDocument) {
     try {
-        const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData");
-        let sensorData = {};
+        const sensorDataCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData");
 
-        sensorData.timestamp = fullDocument.timestamp;
-        sensorData.deviceId = fullDocument.deviceId;
-        sensorData.version = '';
-        sensorData.pressure = fullDocument.data.p;
+        let sensorData = {};
+        sensorData.timestamp = fullDocument.data.timestamp;
+        sensorData.deviceId = fullDocument.data.deviceId;
+        sensorData.alert = fullDocument.data.a;
+        sensorData.temperature = fullDocument.data.data.t;
+        sensorData.humidity = fullDocument.data.data.h;
+        sensorData.pressure = fullDocument.data.data.p;
+        sensorData.nodeId = fullDocument.nodeId;
+        sensorData.spo2 = fullDocument.data.o;
         sensorData.heartrate = fullDocument.data.hr;
         sensorData.gpgga = fullDocument.data.GPGGA;
-        sensorData.spo2 = fullDocument.data.o;
-        sensorData.alert = fullDocument.data.a;
-        sensorData.humidity = fullDocument.data.h;
-        sensorData.temp = fullDocument.data.t;
-        sensorData.batt = fullDocument.data.b;
-        sensorData.accel = fullDocument.data.ac;
-        sensorData.gyro = fullDocument.data.gy;
-        sensorData.alertInfo = fullDocument.data.c;
-        sensorData.nodeId - fullDocument.nodeId;
+        sensorData.accel = fullDocument.data.data.ac;
+        sensorData.gyro = fullDocument.data.data.gy;
+        sensorData.battery = fullDocument.data.b;
+        sensorData.version = "";
+        let configdata = await getconfigData();
+        sensorData.alertInfo = [
+            {
+                "alertName": configdata.AlertBit0Name,
+                "alertbitNo": parseInt(fullDocument.data.a[0]),
+                "confidence": fullDocument.data.c[0],
+                "Level": fullDocument.data.l[0]
+            },
+            {
+                "alertName": configdata.AlertBit1Name,
+                "alertbitNo": parseInt(fullDocument.data.a[1]),
+                "confidence": fullDocument.data.c[1],
+                "Level": fullDocument.data.l[1]
+            },
+            {
+                "alertName": configdata.AlertBit2Name,
+                "alertbitNo": parseInt(fullDocument.data.a[2]),
+                "confidence": fullDocument.data.c[2],
+                "Level": fullDocument.data.l[2]
+            },
+            {
+                "alertName": configdata.AlertBit3Name,
+                "alertbitNo": parseInt(fullDocument.data.a[3]),
+                "confidence": fullDocument.data.c[3],
+                "Level": fullDocument.data.l[3]
+            },
+            {
+                "alertName": configdata.AlertBit4Name,
+                "alertbitNo": parseInt(fullDocument.data.a[4]),
+                "confidence": fullDocument.data.c[4],
+                "Level": fullDocument.data.l[4]
+            }, {
+                "alertName": configdata.AlertBit5Name,
+                "alertbitNo": parseInt(fullDocument.data.a[5]),
+                "confidence": fullDocument.data.c[5],
+                "Level": fullDocument.data.l[5]
+            }, {
+                "alertName": configdata.AlertBit6Name,
+                "alertbitNo": parseInt(fullDocument.data.a[6]),
+                "confidence": fullDocument.data.c[6],
+                "Level": fullDocument.data.l[6]
+            }, {
+                "alertName": configdata.AlertBit7Name,
+                "alertbitNo": parseInt(fullDocument.data.a[7]),
+                "confidence": fullDocument.data.c[7],
+                "Level": fullDocument.data.l[7]
+            }
+        ];
 
+        console.log("Data", JSON.stringify(sensorData));
 
-        await rapidsosalert.insertOne(sensorData).then(result => {
+        await sensorDataCollection.insertOne(sensorData).then(result => {
             console.log(`Successfully inserted item with _id: ${
                 result.insertedId
             }`);
@@ -126,7 +174,21 @@ async function insertIntoSensorDataTS(fullDocument) {
     } catch (error) {
         console.log("Error Occured in Insertion ", error);
     }
+}
 
+async function getconfigData() {
+    const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
+
+    const configquery = {}
+    var response = await configCollection.findOne(configquery).then(resultData => {
+        if (resultData) {
+            let config_data = resultData;
+            return config_data;
+        } else {
+            console.log("No document matches the provided query.");
+        }
+    }).catch(err => console.error(`Failed to find document: ${err}`));
+    return response;
 }
 
 async function decryptGPGGA(gpgga) {
@@ -161,7 +223,7 @@ async function getUserData(userId) {
 
         var response = await userCollection.findOne(userquery).then(resultData => {
             if (resultData) {
-                let user_data = resultData
+                let user_data = resultData;
                 console.log("User Data from Users", user_data);
                 return user_data;
             } else {
