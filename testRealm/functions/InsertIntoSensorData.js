@@ -23,44 +23,42 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
         let configdata= await getconfigData();
-        console.log("Config Data outside",JSON.stringify(configdata));
-        console.log("AlertBit0Name", JSON.stringify(configdata.AlertBit0Name))
         sensorData.alertInfo = [
             {
-                "alertName": "HeartRate",
+                "alertName": getconfigData.AlertBit1Name,
                 "alertbitNo": parseInt(fullDocument.data.a[1]),
                 "confidence": fullDocument.data.c[1],
                 "Level": fullDocument.data.l[1]
             },
             {
-                "alertName": "HeartRate",
+                "alertName":getconfigData.AlertBit2Name,
                 "alertbitNo": parseInt(fullDocument.data.a[2]),
                 "confidence": fullDocument.data.c[2],
                 "Level": fullDocument.data.l[2]
             },
             {
-                "alertName": "HeartRate",
+                "alertName": getconfigData.AlertBit3Name,
                 "alertbitNo": parseInt(fullDocument.data.a[3]),
                 "confidence": fullDocument.data.c[3],
                 "Level": fullDocument.data.l[3]
             },
             {
-                "alertName": "HeartRate",
+                "alertName": getconfigData.AlertBit4Name,
                 "alertbitNo": parseInt(fullDocument.data.a[4]),
                 "confidence": fullDocument.data.c[4],
                 "Level": fullDocument.data.l[4]
             }, {
-                "alertName": "HeartRate",
+                "alertName": getconfigData.AlertBit5Name,
                 "alertbitNo": parseInt(fullDocument.data.a[5]),
                 "confidence": fullDocument.data.c[5],
                 "Level": fullDocument.data.l[5]
             }, {
-                "alertName": "HeartRate",
+                "alertName": getconfigData.AlertBit6Name,
                 "alertbitNo": parseInt(fullDocument.data.a[6]),
                 "confidence": fullDocument.data.c[6],
                 "Level": fullDocument.data.l[6]
             }, {
-                "alertName": "HeartRate",
+                "alertName": getconfigData.AlertBit7Name,
                 "alertbitNo": parseInt(fullDocument.data.a[7]),
                 "confidence": fullDocument.data.c[7],
                 "Level": fullDocument.data.l[7]
@@ -95,8 +93,7 @@ async function getconfigData() {
 
         var response = await configCollection.findOne(configquery).then(resultData => {
             if (resultData) {
-                let config_data = resultData
-                console.log("Config Data from Confugurations Collection", config_data);
+                let config_data = resultData;
                 return config_data;
             } else {
                 console.log("No document matches the provided query.");
