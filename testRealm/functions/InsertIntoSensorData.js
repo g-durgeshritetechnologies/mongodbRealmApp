@@ -18,11 +18,11 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.spo2 = fullDocument.data.o;
         sensorData.heartrate = fullDocument.data.hr;
         sensorData.gpgga = fullDocument.data.GPGGA;
-        sensorData.accel = fullDocument.data.data.acc;
+        sensorData.accel = fullDocument.data.data.ac;
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-        let configdata= await getconfigData();
+        let configdata = await getconfigData();
         sensorData.alertInfo = [
             {
                 "alertName": configdata.AlertBit1Name,
@@ -31,7 +31,7 @@ async function insertIntoSensorDataTS(fullDocument) {
                 "Level": fullDocument.data.l[1]
             },
             {
-                "alertName":configdata.AlertBit2Name,
+                "alertName": configdata.AlertBit2Name,
                 "alertbitNo": parseInt(fullDocument.data.a[2]),
                 "confidence": fullDocument.data.c[2],
                 "Level": fullDocument.data.l[2]
@@ -81,23 +81,17 @@ async function insertIntoSensorDataTS(fullDocument) {
     }
 }
 
-
-
 async function getconfigData() {
+    const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
 
-   
-        const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
-
-        const configquery = {
+    const configquery = {}
+    var response = await configCollection.findOne(configquery).then(resultData => {
+        if (resultData) {
+            let config_data = resultData;
+            return config_data;
+        } else {
+            console.log("No document matches the provided query.");
         }
-
-        var response = await configCollection.findOne(configquery).then(resultData => {
-            if (resultData) {
-                let config_data = resultData;
-                return config_data;
-            } else {
-                console.log("No document matches the provided query.");
-            }
-        }).catch(err => console.error(`Failed to find document: ${err}`));
+    }).catch(err => console.error(`Failed to find document: ${err}`));
     return response;
 }
