@@ -22,38 +22,47 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-        sensorData.alertInfo=[
+        sensorData.alertInfo = [
             {
-                "alertName":"HeartRate",
-                "alertbitNo":parseInt(fullDocument.data.a[1]),
-                "confidence":fullDocument.data.c[1],
-                "Level":fullDocument.data.l[1]
-                
+                "alertName": "HeartRate",
+                "alertbitNo": parseInt(fullDocument.data.a[1]),
+                "confidence": fullDocument.data.c[1],
+                "Level": fullDocument.data.l[1]
             },
             {
-
+                "alertName": "HeartRate",
+                "alertbitNo": parseInt(fullDocument.data.a[2]),
+                "confidence": fullDocument.data.c[2],
+                "Level": fullDocument.data.l[2]
             },
             {
-
+                "alertName": "HeartRate",
+                "alertbitNo": parseInt(fullDocument.data.a[3]),
+                "confidence": fullDocument.data.c[3],
+                "Level": fullDocument.data.l[3]
             },
             {
-
-            },
-            {
-
-            },
-            {
-
-            },
-            {
-
+                "alertName": "HeartRate",
+                "alertbitNo": parseInt(fullDocument.data.a[4]),
+                "confidence": fullDocument.data.c[4],
+                "Level": fullDocument.data.l[4]
+            }, {
+                "alertName": "HeartRate",
+                "alertbitNo": parseInt(fullDocument.data.a[5]),
+                "confidence": fullDocument.data.c[5],
+                "Level": fullDocument.data.l[5]
+            }, {
+                "alertName": "HeartRate",
+                "alertbitNo": parseInt(fullDocument.data.a[6]),
+                "confidence": fullDocument.data.c[6],
+                "Level": fullDocument.data.l[6]
+            }, {
+                "alertName": "HeartRate",
+                "alertbitNo": parseInt(fullDocument.data.a[7]),
+                "confidence": fullDocument.data.c[7],
+                "Level": fullDocument.data.l[7]
             }
         ];
- 
-        
-
-        
-
 
         console.log("Data", JSON.stringify(sensorData));
 
