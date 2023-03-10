@@ -2,8 +2,7 @@ exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
 
     await insertIntoSensorDataTS(fullDocument).then(response => {
-        console.log("Response", JSON.stringify(response));
-
+        
     });
 
 };
@@ -29,6 +28,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
         sensorData.alertIni = [{}];
+        console.log("Data",JSON.stringify(sensorData));
 
         await sensorDataCollection.insertOne(sensorData).then(result => {
             console.log(`Successfully inserted item with _id: ${
