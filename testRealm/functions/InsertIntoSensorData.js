@@ -85,7 +85,7 @@ async function insertIntoSensorDataTS(fullDocument) {
     } catch (error) {
         console.log("Error Occured in Insertion ", error);
     }
-}
+} 
 
  function getconfigData() {
     const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
