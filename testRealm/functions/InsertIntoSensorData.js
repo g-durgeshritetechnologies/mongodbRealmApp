@@ -25,7 +25,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.alertInfo=[
             {
                 "alertName":"HeartRate",
-                "alertbitNo":fullDocument.data.a[i],
+                "alertbitNo":fullDocument.data.a[1],
                 "confidence":fullDocument.data.c[1],
                 "Level":fullDocument.data.l[1]
                 
@@ -50,8 +50,6 @@ async function insertIntoSensorDataTS(fullDocument) {
             }
         ];
  
-        
-
         
 
 
