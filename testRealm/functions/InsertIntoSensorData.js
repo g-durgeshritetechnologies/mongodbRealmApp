@@ -87,11 +87,11 @@ async function insertIntoSensorDataTS(fullDocument) {
     }
 }
 
-async function getconfigData() {
+ function getconfigData() {
     const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
 
     const configquery = {}
-    var response = await configCollection.findOne(configquery).then(resultData => {
+    var response =  configCollection.findOne(configquery).then(resultData => {
         if (resultData) {
             let config_data = resultData;
             return config_data;
