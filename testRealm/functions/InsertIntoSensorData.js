@@ -23,6 +23,9 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
         let configdata = await getconfigData();
+        console.log("Fulldocument",JSON.stringify(fullDocument));
+        console.log("Fulldocument => Data",JSON.stringify(fullDocument.data));
+        console.log("Fulldocument => A",JSON.stringify(fullDocument.data.a));
         sensorData.alertInfo = [
             {
                 "alertName": configdata.AlertBit0Name,
