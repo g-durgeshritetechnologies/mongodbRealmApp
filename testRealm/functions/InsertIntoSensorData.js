@@ -26,9 +26,9 @@ async function insertIntoSensorDataTS(fullDocument) {
         let object={}
         
 
-        for(let i=1;i<=fullDocument.data.a.length;i++)
+        for(let i=1;i<fullDocument.data.a.length;i++)
         {
-            object.ALertBit=fullDocument.data.a.charAt(i);
+            alertInfo[i].ALertBit=fullDocument.data.a[i];
             console.log("AlertBit",JSON.stringify(object.ALertBit));
             object.Confidence=fullDocument.data.c[i];
             object.Level=fullDocument.data.l[i];
