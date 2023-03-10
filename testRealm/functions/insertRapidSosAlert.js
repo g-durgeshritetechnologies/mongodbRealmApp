@@ -5,7 +5,7 @@ exports = async function (changeEvent) {
 
 
     await insertIntoSensorDataTS(fullDocument).then(response => {
-        console.log("Response", JSON.stringify(response));
+        //console.log("Response", JSON.stringify(response));
         //let insertedId = response;
         //insertIntoRapidSos(fullDocument, insertedId)
     });
@@ -111,6 +111,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
+        console.log("BeforeConfig",JSON.stringify(sensorData));
         let configdata = await getconfigData();
         sensorData.alertInfo = [
             {
