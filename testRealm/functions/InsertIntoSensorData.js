@@ -25,6 +25,12 @@ async function insertIntoSensorDataTS(fullDocument) {
         let configdata = await getconfigData();
         sensorData.alertInfo = [
             {
+                "alertName": configdata.AlertBit0Name,
+                "alertbitNo": parseInt(fullDocument.data.a[0]),
+                "confidence": fullDocument.data.c[0],
+                "Level": fullDocument.data.l[0]
+            },
+            {
                 "alertName": configdata.AlertBit1Name,
                 "alertbitNo": parseInt(fullDocument.data.a[1]),
                 "confidence": fullDocument.data.c[1],
