@@ -42,7 +42,19 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.longitute = deviceCordinates.longitute;
         rapidSosData.spo2 = fullDocument.data.o;
         rapidSosData.heartrate = fullDocument.data.hr;
-        rapidSosData.details = {};
+
+
+        let details={};
+        details.param="";
+        details.value="";
+        details.type="";
+        details.message="";
+        details.level="";
+        details.color="";
+        details.wearerThreshold="";
+        details.param="";
+        rapidSosData.confidence = details;
+
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
         });
