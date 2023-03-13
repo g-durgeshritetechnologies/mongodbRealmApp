@@ -57,7 +57,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.sensordataid = insertedId;
         rapidSosData.deviceId = fullDocument.data.deviceId;
         let object={};
-        object = deviceInfo.wearer.findOne(element => {
+        object = deviceInfo.wearer.forEach(element => {
             let active = element.isActive == true;
             return active;
         });
