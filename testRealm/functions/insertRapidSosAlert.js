@@ -65,9 +65,9 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         console.log("Wearer Info", JSON.stringify(object[0]._id));
         console.log("Wearer Info", JSON.stringify(object[0].firstName));
         console.log("Wearer Info", JSON.stringify(object[0].lastName));
-        rapidSosData.wearerId = object._id;
-        rapidSosData.wearerFirstName = object.firstName;
-        rapidSosData.wearerLastName = object.lastName;
+        rapidSosData.wearerId = object[0]._id;
+        rapidSosData.wearerFirstName = object[0].firstName;
+        rapidSosData.wearerLastName = object[0].lastName;
         rapidSosData.isConfirmed = fullDocument.data.isConfirmed;
 
         rapidsosalert.insertOne(rapidSosData).then(result => {
