@@ -43,18 +43,56 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.spo2 = fullDocument.data.o;
         rapidSosData.heartrate = fullDocument.data.hr;
 
+        let configdata = await getconfigData();
+        rapidSosData.details = [
+            {
+                "alertName": configdata.AlertBit0Name,
+                "alertbitNo": parseInt(fullDocument.data.a[0]),
+                "confidence": fullDocument.data.c[0],
+                "Level": fullDocument.data.l[0]
+            },
+            {
+                "alertName": configdata.AlertBit1Name,
+                "alertbitNo": parseInt(fullDocument.data.a[1]),
+                "confidence": fullDocument.data.c[1],
+                "Level": fullDocument.data.l[1]
+            },
+            {
+                "alertName": configdata.AlertBit2Name,
+                "alertbitNo": parseInt(fullDocument.data.a[2]),
+                "confidence": fullDocument.data.c[2],
+                "Level": fullDocument.data.l[2]
+            },
+            {
+                "alertName": configdata.AlertBit3Name,
+                "alertbitNo": parseInt(fullDocument.data.a[3]),
+                "confidence": fullDocument.data.c[3],
+                "Level": fullDocument.data.l[3]
+            }, {
+                "alertName": configdata.AlertBit4Name,
+                "alertbitNo": parseInt(fullDocument.data.a[4]),
+                "confidence": fullDocument.data.c[4],
+                "Level": fullDocument.data.l[4]
+            }, {
+                "alertName": configdata.AlertBit5Name,
+                "alertbitNo": parseInt(fullDocument.data.a[5]),
+                "confidence": fullDocument.data.c[5],
+                "Level": fullDocument.data.l[5]
+            }, {
+                "alertName": configdata.AlertBit6Name,
+                "alertbitNo": parseInt(fullDocument.data.a[6]),
+                "confidence": fullDocument.data.c[6],
+                "Level": fullDocument.data.l[6]
+            }, {
+                "alertName": configdata.AlertBit7Name,
+                "alertbitNo": parseInt(fullDocument.data.a[7]),
+                "confidence": fullDocument.data.c[7],
+                "Level": fullDocument.data.l[7]
+            }
+        ];
 
-        let details={};
-        details.param="";
-        details.value="";
-        details.type="";
-        details.message="";
-        details.level="";
-        details.color="";
-        details.wearerThreshold="";
-        details.confidence="";
-        rapidSosData.details = details;
 
+       
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
         });
