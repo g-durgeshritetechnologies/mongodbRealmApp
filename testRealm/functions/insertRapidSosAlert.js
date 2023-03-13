@@ -27,8 +27,6 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.alertInfo = fullDocument.data.c;
         rapidSosData.isConfirmed = fullDocument.isConfirmed;
         console.log(JSON.stringify(fullDocument));
-
-
         let deviceInfo = {};
         let Device_GPGGA = {};
         let deviceCordinates = {};
@@ -113,7 +111,8 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-         configdata = getconfigData().then(response => {
+        
+         await getconfigData().then(response => {
             console.log("RESPONSE", JSON.stringify(response));
             return configdata = response;
         });
