@@ -47,51 +47,75 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let configdata = await getconfigData();
         rapidSosData.details = [
             {
-                "alertName": configdata.AlertBit0Name,
-                "alertbitNo": parseInt(fullDocument.data.a[0]),
+                "param": configdata.AlertBit0Name,
+                "value": parseInt(fullDocument.data.a[0]),
                 "confidence": fullDocument.data.c[0],
-                "Level": (fullDocument.data.l[0] == 1 ? "yellow" : (fullDocument.data.l[0] == 2 ? "orange" : (fullDocument.data.l[0] == 3 ? "red" : "")))
+                "level": fullDocument.data.l[0],
+                "color": (fullDocument.data.l[0] == 1 ? "yellow" : (fullDocument.data.l[0] == 2 ? "orange" : (fullDocument.data.l[0] == 3 ? "red" : ""))),
+                "type": (fullDocument.data.a[0] == 1 ? "High" : "Low"),
+                "message": ""
             },
             {
-                "alertName": configdata.AlertBit1Name,
-                "alertbitNo": parseInt(fullDocument.data.a[1]),
+                "param": configdata.AlertBit1Name,
+                "value": parseInt(fullDocument.data.a[1]),
                 "confidence": fullDocument.data.c[1],
-                "Level": getColor(fullDocument.data.l[1])
+                "level": fullDocument.data.l[1],
+                "color": (fullDocument.data.l[1] == 1 ? "yellow" : (fullDocument.data.l[1] == 2 ? "orange" : (fullDocument.data.l[1] == 3 ? "red" : ""))),
+                "type": (fullDocument.data.a[1] == 1 ? "High" : "Low"),
+                "message": ""
             },
             {
-                "alertName": configdata.AlertBit2Name,
-                "alertbitNo": parseInt(fullDocument.data.a[2]),
+                "param": configdata.AlertBit2Name,
+                "value": parseInt(fullDocument.data.a[2]),
                 "confidence": fullDocument.data.c[2],
-                "Level": getColor(fullDocument.data.l[2])
+                "level": fullDocument.data.l[2],
+                "color": (fullDocument.data.l[2] == 1 ? "yellow" : (fullDocument.data.l[2] == 2 ? "orange" : (fullDocument.data.l[2] == 3 ? "red" : ""))),
+                "type": (fullDocument.data.a[2] == 1 ? "High" : "Low"),
+                "message": ""
             },
             {
-                "alertName": configdata.AlertBit3Name,
-                "alertbitNo": parseInt(fullDocument.data.a[3]),
+                "param": configdata.AlertBit3Name,
+                "value": parseInt(fullDocument.data.a[3]),
                 "confidence": fullDocument.data.c[3],
-                "Level": getColor(fullDocument.data.l[3])
+                "level": fullDocument.data.l[3],
+                "color": (fullDocument.data.l[3] == 1 ? "yellow" : (fullDocument.data.l[3] == 2 ? "orange" : (fullDocument.data.l[3] == 3 ? "red" : ""))),
+                "type": (fullDocument.data.a[3] == 1 ? "High" : "Low"),
+                "message": ""
             }, {
-                "alertName": configdata.AlertBit4Name,
-                "alertbitNo": parseInt(fullDocument.data.a[4]),
+                "param": configdata.AlertBit4Name,
+                "value": parseInt(fullDocument.data.a[4]),
                 "confidence": fullDocument.data.c[4],
-                "Level": getColor(fullDocument.data.l[4])
+                "level": fullDocument.data.l[4],
+                "color": (fullDocument.data.l[4] == 1 ? "yellow" : (fullDocument.data.l[4] == 2 ? "orange" : (fullDocument.data.l[4] == 3 ? "red" : ""))),
+                "type": (fullDocument.data.a[4] == 1 ? "High" : "Low"),
+                "message": ""
             }, {
-                "alertName": configdata.AlertBit5Name,
-                "alertbitNo": parseInt(fullDocument.data.a[5]),
+                "param": configdata.AlertBit5Name,
+                "value": parseInt(fullDocument.data.a[5]),
                 "confidence": fullDocument.data.c[5],
-                "Level": getColor(fullDocument.data.l[5])
+                "level": fullDocument.data.l[5],
+                "color": (fullDocument.data.l[5] == 1 ? "yellow" : (fullDocument.data.l[5] == 2 ? "orange" : (fullDocument.data.l[5] == 3 ? "red" : ""))),
+                "type": (fullDocument.data.a[5] == 1 ? "High" : "Low"),
+                "message": ""
             }, {
-                "alertName": configdata.AlertBit6Name,
-                "alertbitNo": parseInt(fullDocument.data.a[6]),
+                "param": configdata.AlertBit6Name,
+                "value": parseInt(fullDocument.data.a[6]),
                 "confidence": fullDocument.data.c[6],
-                "Level": getColor(fullDocument.data.l[6])
+                "level": fullDocument.data.l[6],
+                "color": (fullDocument.data.l[6] == 1 ? "yellow" : (fullDocument.data.l[6] == 2 ? "orange" : (fullDocument.data.l[6] == 3 ? "red" : ""))),
+                "type": (fullDocument.data.a[6] == 1 ? "High" : "Low"),
+                "message": ""
             }, {
-                "alertName": configdata.AlertBit7Name,
-                "alertbitNo": parseInt(fullDocument.data.a[7]),
+                "param": configdata.AlertBit7Name,
+                "value": parseInt(fullDocument.data.a[7]),
                 "confidence": fullDocument.data.c[7],
-                "Level": getColor(fullDocument.data.l[7])
+                "level": fullDocument.data.l[7],
+                "color": (fullDocument.data.l[7] == 1 ? "yellow" : (fullDocument.data.l[7] == 2 ? "orange" : (fullDocument.data.l[7] == 3 ? "red" : ""))),
+                "type": (fullDocument.data.a[7] == 1 ? "High" : "Low"),
+                "message": ""
             }
         ];
-        console.log("Details",JSON.stringify(rapidSosData.details));
+        console.log("Details", JSON.stringify(rapidSosData.details));
 
 
         // let details = [];
@@ -177,17 +201,20 @@ async function insertIntoSensorDataTS(fullDocument) {
                 "alertbitNo": parseInt(fullDocument.data.a[0]),
                 "confidence": fullDocument.data.c[0],
                 "Level": fullDocument.data.l[0]
-            }, {
+            },
+            {
                 "param": configdata.AlertBit1Name,
                 "alertbitNo": parseInt(fullDocument.data.a[1]),
                 "confidence": fullDocument.data.c[1],
                 "Level": fullDocument.data.l[1]
-            }, {
+            },
+            {
                 "param": configdata.AlertBit2Name,
                 "alertbitNo": parseInt(fullDocument.data.a[2]),
                 "confidence": fullDocument.data.c[2],
                 "Level": fullDocument.data.l[2]
-            }, {
+            },
+            {
                 "param": configdata.AlertBit3Name,
                 "alertbitNo": parseInt(fullDocument.data.a[3]),
                 "confidence": fullDocument.data.c[3],
@@ -298,20 +325,4 @@ async function getdeviceInfo(deviceIdData) {
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
     return res;
-}
-
-
-async function getColor(num)
-{
-    if(num==1)
-    {
-        return "Yellow";
-    }
-    if(num==2)
-    {
-        return "Orange";
-    }if(num==3)
-    {
-        return "Yellow";
-    }
 }
