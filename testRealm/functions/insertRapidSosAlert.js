@@ -111,8 +111,9 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-        let configdata = getconfigData().then(response=>{
-            return configdata=response
+        let configdata = getconfigData().then(response => {
+            console.log("RESPONSE", JSON.stringify(response));
+            return configdata = response;
         });
         console.log("CONFIG DATA", JSON.stringify(configdata));
         sensorData.alertInfo = [
@@ -193,13 +194,6 @@ async function getconfigData() {
     }).catch(err => console.error(`Failed to find document: ${err}`));
     return response;
 }
-
-
-
-
-
-
-
 
 
 async function decryptGPGGA(gpgga) {
