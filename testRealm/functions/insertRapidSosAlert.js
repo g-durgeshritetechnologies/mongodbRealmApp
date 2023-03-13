@@ -60,7 +60,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             let active = element.isActive == true;
             return active;
         });
-
+        console.log("Wearer Info",JSON.stringify(object));
         rapidSosData.wearerId = object._id;
         rapidSosData.wearerFirstName = object.firstName;
         rapidSosData.wearerLastName = object.lastName;
