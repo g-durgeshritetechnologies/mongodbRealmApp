@@ -49,70 +49,78 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             {
                 "param": configdata.AlertBit0Name,
                 "value": parseInt(fullDocument.data.a[0]),
-                "confidence": fullDocument.data.c[0],
+                "type": (fullDocument.data.a[0] == 1 ? "High" : "Low"),
+                "message": "",
                 "level": fullDocument.data.l[0],
                 "color": (fullDocument.data.l[0] == 1 ? "yellow" : (fullDocument.data.l[0] == 2 ? "orange" : (fullDocument.data.l[0] == 3 ? "red" : ""))),
-                "type": (fullDocument.data.a[0] == 1 ? "High" : "Low"),
-                "message": ""
+                "wearerThreshold":"",
+                "confidence": fullDocument.data.c[0]
             },
             {
                 "param": configdata.AlertBit1Name,
                 "value": parseInt(fullDocument.data.a[1]),
-                "confidence": fullDocument.data.c[1],
+                "type": (fullDocument.data.a[1] == 1 ? "High" : "Low"),
+                "message": "",
                 "level": fullDocument.data.l[1],
                 "color": (fullDocument.data.l[1] == 1 ? "yellow" : (fullDocument.data.l[1] == 2 ? "orange" : (fullDocument.data.l[1] == 3 ? "red" : ""))),
-                "type": (fullDocument.data.a[1] == 1 ? "High" : "Low"),
-                "message": ""
+                "wearerThreshold":"",
+                "confidence": fullDocument.data.c[1]
             },
             {
                 "param": configdata.AlertBit2Name,
                 "value": parseInt(fullDocument.data.a[2]),
-                "confidence": fullDocument.data.c[2],
+                "type": (fullDocument.data.a[2] == 1 ? "High" : "Low"),
+                "message": "",
                 "level": fullDocument.data.l[2],
                 "color": (fullDocument.data.l[2] == 1 ? "yellow" : (fullDocument.data.l[2] == 2 ? "orange" : (fullDocument.data.l[2] == 3 ? "red" : ""))),
-                "type": (fullDocument.data.a[2] == 1 ? "High" : "Low"),
-                "message": ""
+                "wearerThreshold":"",
+                "confidence": fullDocument.data.c[2]
             },
             {
                 "param": configdata.AlertBit3Name,
                 "value": parseInt(fullDocument.data.a[3]),
-                "confidence": fullDocument.data.c[3],
+                "type": (fullDocument.data.a[3] == 1 ? "High" : "Low"),
+                "message": "",
                 "level": fullDocument.data.l[3],
                 "color": (fullDocument.data.l[3] == 1 ? "yellow" : (fullDocument.data.l[3] == 2 ? "orange" : (fullDocument.data.l[3] == 3 ? "red" : ""))),
-                "type": (fullDocument.data.a[3] == 1 ? "High" : "Low"),
-                "message": ""
+                "wearerThreshold":"",
+                "confidence": fullDocument.data.c[3]
             }, {
                 "param": configdata.AlertBit4Name,
                 "value": parseInt(fullDocument.data.a[4]),
-                "confidence": fullDocument.data.c[4],
+                "type": (fullDocument.data.a[4] == 1 ? "High" : "Low"),
+                "message": "",
                 "level": fullDocument.data.l[4],
                 "color": (fullDocument.data.l[4] == 1 ? "yellow" : (fullDocument.data.l[4] == 2 ? "orange" : (fullDocument.data.l[4] == 3 ? "red" : ""))),
-                "type": (fullDocument.data.a[4] == 1 ? "High" : "Low"),
-                "message": ""
+                "wearerThreshold":"",
+                "confidence": fullDocument.data.c[4]
             }, {
                 "param": configdata.AlertBit5Name,
                 "value": parseInt(fullDocument.data.a[5]),
-                "confidence": fullDocument.data.c[5],
+                "type": (fullDocument.data.a[5] == 1 ? "High" : "Low"),
+                "message": "",
                 "level": fullDocument.data.l[5],
                 "color": (fullDocument.data.l[5] == 1 ? "yellow" : (fullDocument.data.l[5] == 2 ? "orange" : (fullDocument.data.l[5] == 3 ? "red" : ""))),
-                "type": (fullDocument.data.a[5] == 1 ? "High" : "Low"),
-                "message": ""
+                "wearerThreshold":"",
+                "confidence": fullDocument.data.c[5]
             }, {
                 "param": configdata.AlertBit6Name,
                 "value": parseInt(fullDocument.data.a[6]),
-                "confidence": fullDocument.data.c[6],
+                "type": (fullDocument.data.a[6] == 1 ? "High" : "Low"),
+                "message": "",
                 "level": fullDocument.data.l[6],
                 "color": (fullDocument.data.l[6] == 1 ? "yellow" : (fullDocument.data.l[6] == 2 ? "orange" : (fullDocument.data.l[6] == 3 ? "red" : ""))),
-                "type": (fullDocument.data.a[6] == 1 ? "High" : "Low"),
-                "message": ""
+                "wearerThreshold":"",
+                "confidence": fullDocument.data.c[6]
             }, {
                 "param": configdata.AlertBit7Name,
                 "value": parseInt(fullDocument.data.a[7]),
-                "confidence": fullDocument.data.c[7],
+                "type": (fullDocument.data.a[7] == 1 ? "High" : "Low"),
+                "message": "",
                 "level": fullDocument.data.l[7],
                 "color": (fullDocument.data.l[7] == 1 ? "yellow" : (fullDocument.data.l[7] == 2 ? "orange" : (fullDocument.data.l[7] == 3 ? "red" : ""))),
-                "type": (fullDocument.data.a[7] == 1 ? "High" : "Low"),
-                "message": ""
+                "wearerThreshold":"",
+                "confidence": fullDocument.data.c[7]
             }
         ];
         console.log("Details", JSON.stringify(rapidSosData.details));
