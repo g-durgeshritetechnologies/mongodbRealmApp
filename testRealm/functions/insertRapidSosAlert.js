@@ -7,16 +7,39 @@ exports = async function (changeEvent) {
         sensordataid = response;
         insertIntoRapidSos(fullDocument, sensordataid)
     });
-
-
 };
 
 async function insertIntoRapidSos(fullDocument, insertedId) {
     try {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts");
         let rapidSosData = {};
-        rapidSosData.title = "";
-        rapidSosData.title.concat();
+        
+
+
+
+        titles = [
+            "CapSense",
+            "HeartRate",
+            "AmbientTemp",
+            "AccelerometerFallDetection",
+            "InferenceFallDetection",
+            "GeoFence",
+            "MahiFence",
+            "AlertSOS"
+        ]
+        let titleArray=[];
+        let bits = fullDocument.data.a;
+        const bitsSplit = bits.split("");
+        console.log("Split Array",JSON.stringify(bitsSplit));
+         for(let i =0;i<=bitsSplit.length;i++)
+         {
+            if(bitsSplit[i]==1)
+            {
+                 titleArray.push(titles[i]) ;
+            }
+         }
+         rapidSosData.title = titleArray.join();
+
         rapidSosData.version = "";
         rapidSosData.createdAt = new Date();
         let deviceInfo = {};
@@ -122,8 +145,6 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
                 "confidence": fullDocument.data.c[7]
             }
         ];
-        console.log("Details", JSON.stringify(rapidSosData.details));
-
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
         });
@@ -142,12 +163,10 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             let active = element.isActive == true;
             return active;
         });
-
         rapidSosData.wearerId = object[0]._id;
         rapidSosData.wearerFirstName = object[0].firstName;
         rapidSosData.wearerLastName = object[0].lastName;
         rapidSosData.isConfirmed = fullDocument.data.isConfirmed;
-
         rapidsosalert.insertOne(rapidSosData).then(result => {
             console.log(`Successfully inserted item with _id: ${
                 result.insertedId
