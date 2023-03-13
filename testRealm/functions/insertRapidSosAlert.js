@@ -52,8 +52,8 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         details.level="";
         details.color="";
         details.wearerThreshold="";
-        details.param="";
-        rapidSosData.confidence = details;
+        details.confidence="";
+        rapidSosData.details = details;
 
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
