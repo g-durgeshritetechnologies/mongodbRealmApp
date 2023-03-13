@@ -5,7 +5,6 @@ exports = async function(changeEvent) {
             if (changeEvent.fullDocument) {
                 const fullDocument = changeEvent.fullDocument;
                 console.log("Data Updated", JSON.stringify(fullDocument));
-
                 if (fullDocument.isConfirmed == "Y") {
                     await sendRapidSOSData(fullDocument);
                 }
@@ -32,8 +31,6 @@ exports = async function(changeEvent) {
     }
 
 }
-
-
 
 async function sendRapidSOSData(fullDocument) {
     let deviceData = {};
@@ -139,8 +136,7 @@ async function sendAlerts(fullDocument) {
         let alert={}; 
         deviceCordinates.latitude = fullDocument.latitude;
         deviceCordinates.longitute = fullDocument.longitute;
-
-
+        console.log("CODE REACHED HERE 1");
         if (HeartRate_Alert == 1) {
             AlertTitle.push("Heart Rate alert");
             details.push({
@@ -228,7 +224,7 @@ async function sendAlerts(fullDocument) {
                 return wearer.isActive == true;
             });
 
-
+            console.log("CODE REACHED HERE 2");
             GetGeofenceRecord = deviceData.geofences.find((geofence) => {
                 return geofence.status == "active";
             });

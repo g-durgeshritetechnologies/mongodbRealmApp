@@ -3,13 +3,7 @@
     "type": "mongodb-atlas",
     "config": {
         "clusterName": "Cluster0",
-        "namespacePreimageConfigs": [
-            {
-                "collectionName": "rapidSOSAlerts",
-                "dbName": "production_Cluster0",
-                "recordPreimages": true
-            }
-        ],
+        "namespacePreimageConfigs": [],
         "readPreference": "primary",
         "wireProtocolEnabled": false
     },
