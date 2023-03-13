@@ -26,7 +26,10 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let DeviceLatitude = "";
         let DeviceLongitude = "";
         let gpggaData = fullDocument.data.GPGGA;
-        Device_GPGGA = await decryptGPGGA(gpggaData);
+        Device_GPGGA ={}
+        await decryptGPGGA(gpggaData).then(response=>{
+            return Device_GPGGA=response;
+        });
         console("GPGGA", JSON.stringify(Device_GPGGA));
         if (Device_GPGGA.valid == true) {
             if (Device_GPGGA.loc.geojson && Device_GPGGA.loc.geojson != undefined) {
@@ -193,7 +196,6 @@ async function decryptGPGGA(gpgga) {
             gpgga = gpgga.join();
             gpgga = gpgga.replace(/\s/g, '');
             data = nmea.parse(gpgga);
-
         }
         console.log("DATA GPGGA", JSON.stringify(data));
         return data;
