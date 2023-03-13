@@ -96,7 +96,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         const sensorDataCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("sensorData");
 
         let sensorData = {};
-        let configdata={};
+        let configdata = {};
         sensorData.timestamp = fullDocument.data.timestamp;
         sensorData.deviceId = fullDocument.data.deviceId;
         sensorData.alert = fullDocument.data.a;
@@ -111,9 +111,8 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-        
-         await getconfigData().then(response => {
-            console.log("RESPONSE", JSON.stringify(response));
+
+        await getconfigData().then(response => {
             return configdata = response;
         });
         console.log("CONFIG DATA", JSON.stringify(configdata));
@@ -165,7 +164,6 @@ async function insertIntoSensorDataTS(fullDocument) {
         ];
 
         console.log("Data", JSON.stringify(sensorData));
-
         await sensorDataCollection.insertOne(sensorData).then(result => {
             console.log(`Successfully inserted item with _id: ${
                 result.insertedId
@@ -182,12 +180,10 @@ async function insertIntoSensorDataTS(fullDocument) {
 
 async function getconfigData() {
     const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
-
     const configquery = {}
     var response = await configCollection.findOne(configquery).then(resultData => {
         if (resultData) {
             let config_data = resultData;
-            console.log("InternalConfig", JSON.stringify(config_data));
             return config_data;
         } else {
             console.log("No document matches the provided query.");
@@ -222,11 +218,9 @@ async function getUserData(userId) {
 
     if (userId) {
         const userCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("users");
-
         const userquery = {
             "_id": userId
         }
-
         var response = await userCollection.findOne(userquery).then(resultData => {
             if (resultData) {
                 let user_data = resultData;
@@ -235,9 +229,7 @@ async function getUserData(userId) {
             } else {
                 console.log("No document matches the provided query.");
             }
-
         }).catch(err => console.error(`Failed to find document: ${err}`));
-
     }
     return response;
 }
@@ -247,17 +239,14 @@ async function getdeviceInfo(deviceIdData) {
     const query = {
         "deviceId": deviceIdData
     };
-
     var device_id_data;
     var res = await deviceCollection.findOne(query).then(result => {
         if (result) {
             device_id_data = result;
-
             return device_id_data;
         } else {
             console.log("No document matches the provided query.");
         }
-
     }).catch(err => console.error(`Failed to find document: ${err}`));
     return res;
 }
