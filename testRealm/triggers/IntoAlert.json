@@ -13,7 +13,7 @@
         "match": {},
         "project": {},
         "full_document": true,
-        "full_document_before_change": false,
+        "full_document_before_change": true,
         "unordered": false,
         "skip_catchup_events": true,
         "tolerate_resume_errors": false
