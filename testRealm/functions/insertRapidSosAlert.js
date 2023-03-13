@@ -91,6 +91,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
                 "Level": getColor(fullDocument.data.l[7])
             }
         ];
+        console.log("Details",JSON.stringify(rapidSosData.details));
 
 
         // let details = [];
