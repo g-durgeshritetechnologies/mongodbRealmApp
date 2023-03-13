@@ -5,9 +5,9 @@ exports = async function (changeEvent) {
 
 
     await insertIntoSensorDataTS(fullDocument).then(response => {
-        //console.log("Response", JSON.stringify(response));
-        //let insertedId = response;
-        //insertIntoRapidSos(fullDocument, insertedId)
+        // console.log("Response", JSON.stringify(response));
+        // let insertedId = response;
+        // insertIntoRapidSos(fullDocument, insertedId)
     });
 
 
@@ -112,7 +112,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
         let configdata = getconfigData();
-
+        console.log("CONFIG DATA", JSON.stringify(configdata));
         sensorData.alertInfo = [
             {
                 "alertName": configdata.AlertBit0Name,
@@ -137,8 +137,7 @@ async function insertIntoSensorDataTS(fullDocument) {
                 "alertbitNo": parseInt(fullDocument.data.a[3]),
                 "confidence": fullDocument.data.c[3],
                 "Level": fullDocument.data.l[3]
-            },
-            {
+            }, {
                 "alertName": configdata.AlertBit4Name,
                 "alertbitNo": parseInt(fullDocument.data.a[4]),
                 "confidence": fullDocument.data.c[4],
@@ -181,7 +180,7 @@ async function getconfigData() {
     const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
 
     const configquery = {}
-    var response =  await configCollection.findOne(configquery).then(resultData => {
+    var response = await configCollection.findOne(configquery).then(resultData => {
         if (resultData) {
             let config_data = resultData;
             return config_data;
