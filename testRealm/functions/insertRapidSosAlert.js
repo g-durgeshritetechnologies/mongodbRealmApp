@@ -61,6 +61,9 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             return active;
         });
         console.log("Wearer Info",JSON.stringify(object));
+        console.log("Wearer Info",JSON.stringify(object._id));
+        console.log("Wearer Info",JSON.stringify(object.firstName));
+        console.log("Wearer Info",JSON.stringify(object.lastName));
         rapidSosData.wearerId = object._id;
         rapidSosData.wearerFirstName = object.firstName;
         rapidSosData.wearerLastName = object.lastName;
