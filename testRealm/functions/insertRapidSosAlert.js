@@ -2,14 +2,11 @@
 
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
-
-
-    await insertIntoSensorDataTS(fullDocument)
-    // .then(response => {
-    //     // console.log("Response", JSON.stringify(response));
-    //     // let insertedId = response;
-    //     // insertIntoRapidSos(fullDocument, insertedId)
-    // });
+    await insertIntoSensorDataTS(fullDocument).then(response => {
+        console.log("Response", JSON.stringify(response));
+        var insertedId = response;
+        insertIntoRapidSos(fullDocument, insertedId)
+    });
 
 
 };
@@ -19,14 +16,9 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts");
 
         let rapidSosData = {};
-
         rapidSosData.title = '';
-        rapidSosData.deviceId = fullDocument.deviceId;
-        rapidSosData.spo2 = fullDocument.data.o;
-        rapidSosData.heartrate = fullDocument.data.hr;
-        rapidSosData.alertInfo = fullDocument.data.c;
-        rapidSosData.isConfirmed = fullDocument.isConfirmed;
-        console.log(JSON.stringify(fullDocument));
+        rapidSosData.version = "";
+        rapidSosData.createdAt = new Date();
         let deviceInfo = {};
         let Device_GPGGA = {};
         let deviceCordinates = {};
@@ -34,7 +26,6 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let DeviceLongitude = "";
         let gpggaData = fullDocument.data.GPGGA;
         Device_GPGGA = await decryptGPGGA(gpggaData);
-
         if (Device_GPGGA.valid == true) {
             if (Device_GPGGA.loc.geojson && Device_GPGGA.loc.geojson != undefined) {
                 DeviceLatitude = Device_GPGGA.loc.geojson.coordinates[1];
@@ -47,32 +38,28 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         }
         rapidSosData.latitude = deviceCordinates.latitude;
         rapidSosData.longitute = deviceCordinates.longitute;
-        rapidSosData.alert = fullDocument.data.a;
-        const details = {};
-        details.param = "Temperature";
-        rapidSosData.details = details;
-
-        await getdeviceInfo(fullDocument.deviceId).then(response => {
+        rapidSosData.spo2 = fullDocument.data.o;
+        rapidSosData.heartrate = fullDocument.data.hr;
+        rapidSosData.details = {};
+        await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
-
         });
         const userTokens = {};
-        const userInfo = {};
         userTokens.userId = deviceInfo.mappedUsers[0].userId;
         userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
-
         await getUserData(userTokens.userId).then(response => {
-
             console.log("FirstName & LastName", JSON.stringify(response.firstName), JSON.stringify(response.lastName));
             userTokens.firstname = response.firstName;
             userTokens.lastname = response.lastName;
             console.log("userTokens", JSON.stringify(userTokens))
         });
-
-
         rapidSosData.userTokens = userTokens;
         rapidSosData.sensordataid = insertedId;
-
+        rapidSosData.deviceId = fullDocument.data.deviceId;
+        rapidSosData.wearerId = '';
+        rapidSosData.wearerFirstName = "";
+        rapidSosData.wearerLastName = "";
+        rapidSosData.isConfirmed = fullDocument.data.isConfirmed;
 
         rapidsosalert.insertOne(rapidSosData).then(result => {
             console.log(`Successfully inserted item with _id: ${
