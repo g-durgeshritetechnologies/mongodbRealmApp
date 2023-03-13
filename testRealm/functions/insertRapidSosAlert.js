@@ -93,16 +93,16 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         ];
 
 
-        let details = [];
-        details.param = "";
-        details.value = "";
-        details.type = "";
-        details.message = "";
-        details.level = "";
-        details.color = "";
-        details.wearerThreshold = "";
-        details.confidence = "";
-        rapidSosData.details = details;
+        // let details = [];
+        // details.param = "";
+        // details.value = "";
+        // details.type = "";
+        // details.message = "";
+        // details.level = "";
+        // details.color = "";
+        // details.wearerThreshold = "";
+        // details.confidence = "";
+        // rapidSosData.details = details;
 
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
@@ -122,10 +122,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             let active = element.isActive == true;
             return active;
         });
-        console.log("Wearer Info", JSON.stringify(object[0]));
-        console.log("Wearer Info", JSON.stringify(object[0]._id));
-        console.log("Wearer Info", JSON.stringify(object[0].firstName));
-        console.log("Wearer Info", JSON.stringify(object[0].lastName));
+
         rapidSosData.wearerId = object[0]._id;
         rapidSosData.wearerFirstName = object[0].firstName;
         rapidSosData.wearerLastName = object[0].lastName;
@@ -178,42 +175,42 @@ async function insertIntoSensorDataTS(fullDocument) {
                 "param": configdata.AlertBit0Name,
                 "alertbitNo": parseInt(fullDocument.data.a[0]),
                 "confidence": fullDocument.data.c[0],
-                "Level": getColor(fullDocument.data.l[0])
+                "Level": fullDocument.data.l[0]
             }, {
                 "param": configdata.AlertBit1Name,
                 "alertbitNo": parseInt(fullDocument.data.a[1]),
                 "confidence": fullDocument.data.c[1],
-                "Level": getColor(fullDocument.data.l[1])
+                "Level": fullDocument.data.l[1]
             }, {
                 "param": configdata.AlertBit2Name,
                 "alertbitNo": parseInt(fullDocument.data.a[2]),
                 "confidence": fullDocument.data.c[2],
-                "Level": getColor(fullDocument.data.l[2])
+                "Level": fullDocument.data.l[2]
             }, {
                 "param": configdata.AlertBit3Name,
                 "alertbitNo": parseInt(fullDocument.data.a[3]),
                 "confidence": fullDocument.data.c[3],
-                "Level": getColor(fullDocument.data.l[3])
+                "Level": fullDocument.data.l[3]
             }, {
                 "param": configdata.AlertBit4Name,
                 "alertbitNo": parseInt(fullDocument.data.a[4]),
                 "confidence": fullDocument.data.c[4],
-                "Level": getColor(fullDocument.data.l[4])
+                "Level": fullDocument.data.l[4]
             }, {
                 "param": configdata.AlertBit5Name,
                 "alertbitNo": parseInt(fullDocument.data.a[5]),
                 "confidence": fullDocument.data.c[5],
-                "Level": getColor(fullDocument.data.l[5])
+                "Level": fullDocument.data.l[5]
             }, {
                 "param": configdata.AlertBit6Name,
                 "alertbitNo": parseInt(fullDocument.data.a[6]),
                 "confidence": fullDocument.data.c[6],
-                "Level": getColor(fullDocument.data.l[6])
+                "Level": fullDocument.data.l[6]
             }, {
                 "param": configdata.AlertBit7Name,
                 "alertbitNo": parseInt(fullDocument.data.a[7]),
                 "confidence": fullDocument.data.c[7],
-                "Level": getColor(fullDocument.data.l[7])
+                "Level": fullDocument.data.l[7]
             }
         ];
 
@@ -314,6 +311,6 @@ async function getColor(num)
         return "Orange";
     }if(num==3)
     {
-        return "Red";
+        return "Yellow";
     }
 }
