@@ -7,7 +7,7 @@
             "INSERT"
         ],
         "database": "production_Cluster0",
-        "collection": "temp_sosAlerts ",
+        "collection": "temp_sosAlerts",
         "service_name": "mongodb-atlas",
         "match": {},
         "project": {},
