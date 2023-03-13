@@ -50,7 +50,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
                 "alertName": configdata.AlertBit0Name,
                 "alertbitNo": parseInt(fullDocument.data.a[0]),
                 "confidence": fullDocument.data.c[0],
-                "Level": getColor(fullDocument.data.l[0])
+                "Level": (fullDocument.data.l[0] == 1 ? "yellow" : (fullDocument.data.l[0] == 2 ? "orange" : (fullDocument.data.l[0] == 3 ? "red" : "")))
             },
             {
                 "alertName": configdata.AlertBit1Name,
