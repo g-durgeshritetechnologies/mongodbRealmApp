@@ -183,6 +183,7 @@ async function getconfigData() {
     var response = await configCollection.findOne(configquery).then(resultData => {
         if (resultData) {
             let config_data = resultData;
+            console.log("InternalConfig", JSON.stringify(config_data));
             return config_data;
         } else {
             console.log("No document matches the provided query.");
