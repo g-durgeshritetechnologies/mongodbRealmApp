@@ -15,7 +15,8 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
     try {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts");
         let rapidSosData = {};
-        rapidSosData.title = '';
+        rapidSosData.title = "";
+        rapidSosData.title.concat();
         rapidSosData.version = "";
         rapidSosData.createdAt = new Date();
         let deviceInfo = {};
@@ -42,100 +43,86 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.longitute = deviceCordinates.longitute;
         rapidSosData.spo2 = fullDocument.data.o;
         rapidSosData.heartrate = fullDocument.data.hr;
-
-
         let configdata = await getconfigData();
         rapidSosData.details = [
             {
                 "param": configdata.AlertBit0Name,
                 "value": parseInt(fullDocument.data.a[0]),
                 "type": (fullDocument.data.a[0] == 1 ? "High" : "Low"),
-                "message": "",
+                "message": (fullDocument.data.a[0] == 1 ? "CapSense is High" : "CapSense is Low"),
                 "level": fullDocument.data.l[0],
                 "color": (fullDocument.data.l[0] == 1 ? "yellow" : (fullDocument.data.l[0] == 2 ? "orange" : (fullDocument.data.l[0] == 3 ? "red" : ""))),
-                "wearerThreshold":"",
+                "wearerThreshold": "",
                 "confidence": fullDocument.data.c[0]
             },
             {
                 "param": configdata.AlertBit1Name,
                 "value": parseInt(fullDocument.data.a[1]),
                 "type": (fullDocument.data.a[1] == 1 ? "High" : "Low"),
-                "message": "",
+                "message": (fullDocument.data.a[1] == 1 ? "Heart Rate is High" : "Heart Rate is Low"),
                 "level": fullDocument.data.l[1],
                 "color": (fullDocument.data.l[1] == 1 ? "yellow" : (fullDocument.data.l[1] == 2 ? "orange" : (fullDocument.data.l[1] == 3 ? "red" : ""))),
-                "wearerThreshold":"",
+                "wearerThreshold": "",
                 "confidence": fullDocument.data.c[1]
             },
             {
                 "param": configdata.AlertBit2Name,
                 "value": parseInt(fullDocument.data.a[2]),
                 "type": (fullDocument.data.a[2] == 1 ? "High" : "Low"),
-                "message": "",
+                "message": (fullDocument.data.a[2] == 1 ? "AmbientTemp is High" : "AmbientTemp is Low"),
                 "level": fullDocument.data.l[2],
                 "color": (fullDocument.data.l[2] == 1 ? "yellow" : (fullDocument.data.l[2] == 2 ? "orange" : (fullDocument.data.l[2] == 3 ? "red" : ""))),
-                "wearerThreshold":"",
+                "wearerThreshold": "",
                 "confidence": fullDocument.data.c[2]
             },
             {
                 "param": configdata.AlertBit3Name,
                 "value": parseInt(fullDocument.data.a[3]),
                 "type": (fullDocument.data.a[3] == 1 ? "High" : "Low"),
-                "message": "",
+                "message": (fullDocument.data.a[3] == 1 ? "AccelerometerFallDetection is High" : "AccelerometerFallDetection is Low"),
                 "level": fullDocument.data.l[3],
                 "color": (fullDocument.data.l[3] == 1 ? "yellow" : (fullDocument.data.l[3] == 2 ? "orange" : (fullDocument.data.l[3] == 3 ? "red" : ""))),
-                "wearerThreshold":"",
+                "wearerThreshold": "",
                 "confidence": fullDocument.data.c[3]
             }, {
                 "param": configdata.AlertBit4Name,
                 "value": parseInt(fullDocument.data.a[4]),
                 "type": (fullDocument.data.a[4] == 1 ? "High" : "Low"),
-                "message": "",
+                "message": (fullDocument.data.a[4] == 1 ? "InferenceFallDetection is High" : "InferenceFallDetection is Low"),
                 "level": fullDocument.data.l[4],
                 "color": (fullDocument.data.l[4] == 1 ? "yellow" : (fullDocument.data.l[4] == 2 ? "orange" : (fullDocument.data.l[4] == 3 ? "red" : ""))),
-                "wearerThreshold":"",
+                "wearerThreshold": "",
                 "confidence": fullDocument.data.c[4]
             }, {
                 "param": configdata.AlertBit5Name,
                 "value": parseInt(fullDocument.data.a[5]),
                 "type": (fullDocument.data.a[5] == 1 ? "High" : "Low"),
-                "message": "",
+                "message": (fullDocument.data.a[5] == 1 ? "GeoFence is High" : "GeoFence is Low"),
                 "level": fullDocument.data.l[5],
                 "color": (fullDocument.data.l[5] == 1 ? "yellow" : (fullDocument.data.l[5] == 2 ? "orange" : (fullDocument.data.l[5] == 3 ? "red" : ""))),
-                "wearerThreshold":"",
+                "wearerThreshold": "",
                 "confidence": fullDocument.data.c[5]
             }, {
                 "param": configdata.AlertBit6Name,
                 "value": parseInt(fullDocument.data.a[6]),
                 "type": (fullDocument.data.a[6] == 1 ? "High" : "Low"),
-                "message": "",
+                "message": (fullDocument.data.a[6] == 1 ? "MahiFence is High" : "MahiFence is Low"),
                 "level": fullDocument.data.l[6],
                 "color": (fullDocument.data.l[6] == 1 ? "yellow" : (fullDocument.data.l[6] == 2 ? "orange" : (fullDocument.data.l[6] == 3 ? "red" : ""))),
-                "wearerThreshold":"",
+                "wearerThreshold": "",
                 "confidence": fullDocument.data.c[6]
             }, {
                 "param": configdata.AlertBit7Name,
                 "value": parseInt(fullDocument.data.a[7]),
                 "type": (fullDocument.data.a[7] == 1 ? "High" : "Low"),
-                "message": "",
+                "message": (fullDocument.data.a[7] == 1 ? "AlertSOS is High" : "AlertSOS is Low"),
                 "level": fullDocument.data.l[7],
                 "color": (fullDocument.data.l[7] == 1 ? "yellow" : (fullDocument.data.l[7] == 2 ? "orange" : (fullDocument.data.l[7] == 3 ? "red" : ""))),
-                "wearerThreshold":"",
+                "wearerThreshold": "",
                 "confidence": fullDocument.data.c[7]
             }
         ];
         console.log("Details", JSON.stringify(rapidSosData.details));
-
-
-        // let details = [];
-        // details.param = "";
-        // details.value = "";
-        // details.type = "";
-        // details.message = "";
-        // details.level = "";
-        // details.color = "";
-        // details.wearerThreshold = "";
-        // details.confidence = "";
-        // rapidSosData.details = details;
 
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
@@ -173,8 +160,6 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
     } catch (error) {
         console.log("Some Error : ", JSON.stringify(error));
     }
-
-
 }
 
 
@@ -254,7 +239,12 @@ async function insertIntoSensorDataTS(fullDocument) {
             console.log(`Successfully inserted item with _id: ${
                 result.insertedId
             }`);
-            return result.insertedId;
+            do {
+                if (result.insertedId) {
+                    console.log("ID", result.insertedId);
+                    return result.insertedId;
+                }
+            } while (result.insertedId == "");
         }).catch(err => {
             console.error(`Failed to insert item: ${err}`);
             return false;
