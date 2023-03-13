@@ -57,15 +57,13 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.sensordataid = insertedId;
         rapidSosData.deviceId = fullDocument.data.deviceId;
         let object = deviceInfo.wearer.filter(element => {
-           let active= element.isActive == true;
+            let active = element.isActive == true;
             return active;
-        }
-        
-        );
-        console.log("WEARER ARRAY", JSON.stringify(object));
-        rapidSosData.wearerId = '';
-        rapidSosData.wearerFirstName = "";
-        rapidSosData.wearerLastName = "";
+        });
+
+        rapidSosData.wearerId = object._id;
+        rapidSosData.wearerFirstName = object.firstName;
+        rapidSosData.wearerLastName = object.lastName;
         rapidSosData.isConfirmed = fullDocument.data.isConfirmed;
 
         rapidsosalert.insertOne(rapidSosData).then(result => {
