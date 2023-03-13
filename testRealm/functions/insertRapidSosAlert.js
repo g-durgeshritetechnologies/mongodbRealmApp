@@ -5,7 +5,7 @@ exports = async function (changeEvent) {
     await insertIntoSensorDataTS(fullDocument).then(response => {
         console.log("Response", JSON.stringify(response));
         var insertedId = response;
-        insertIntoRapidSos(fullDocument, insertedId)
+        insertIntoRapidSos(fullDocument, insertedId);
     });
 
 
@@ -26,7 +26,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let DeviceLatitude = "";
         let DeviceLongitude = "";
         let gpggaData = fullDocument.data.GPGGA;
-        Device_GPGGA ={}
+        
         await decryptGPGGA(gpggaData).then(response=>{
             return Device_GPGGA=response;
         });
@@ -46,7 +46,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.spo2 = fullDocument.data.o;
         rapidSosData.heartrate = fullDocument.data.hr;
         rapidSosData.details = {};
-        console.log("DeviceId", JSON.stringify(fullDocument.data.deviceId))
+        console.log("DeviceId", JSON.stringify(fullDocument.data.deviceId));
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
         });
@@ -77,7 +77,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             return false;
         });
     } catch (error) {
-        console.log("Error Occured in Insertion ", error);
+        console.log("Some Error", error);
     }
 
 
@@ -171,7 +171,7 @@ async function insertIntoSensorDataTS(fullDocument) {
 
 async function getconfigData() {
     const configCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("default_configurations");
-    const configquery = {}
+    const configquery = {};
     var response = await configCollection.findOne(configquery).then(resultData => {
         if (resultData) {
             let config_data = resultData;
@@ -211,7 +211,7 @@ async function getUserData(userId) {
         const userCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("users");
         const userquery = {
             "_id": userId
-        }
+        };
         var response = await userCollection.findOne(userquery).then(resultData => {
             if (resultData) {
                 let user_data = resultData;
@@ -222,7 +222,7 @@ async function getUserData(userId) {
             }
         }).catch(err => console.error(`Failed to find document: ${err}`));
     }
-    return response;
+  
 }
 
 async function getdeviceInfo(deviceIdData) {
