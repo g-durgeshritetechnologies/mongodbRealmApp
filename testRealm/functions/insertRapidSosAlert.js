@@ -3,18 +3,16 @@
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
     let sensordataid = "";
-    await insertIntoSensorDataTS(fullDocument).then(response => {
+    sensordataid = await insertIntoSensorDataTS(fullDocument).then(response => {
         sensordataid = response;
-        insertIntoRapidSos(fullDocument, sensordataid)
     });
+    await insertIntoRapidSos(fullDocument, sensordataid)
 };
 
 async function insertIntoRapidSos(fullDocument, insertedId) {
     try {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts");
         let rapidSosData = {};
-        
-
 
 
         titles = [
@@ -27,18 +25,15 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
             "MahiFence",
             "AlertSOS"
         ]
-        let titleArray=[];
+        let titleArray = [];
         let bits = fullDocument.data.a;
         const bitsSplit = bits.split("");
-        console.log("Split Array",JSON.stringify(bitsSplit));
-         for(let i =0;i<=bitsSplit.length;i++)
-         {
-            if(bitsSplit[i]==1)
-            {
-                 titleArray.push(titles[i]) ;
+        for (let i = 0; i <= bitsSplit.length; i++) {
+            if (bitsSplit[i] == 1) {
+                titleArray.push(titles[i]);
             }
-         }
-         rapidSosData.title = titleArray.join();
+        }
+        rapidSosData.title = titleArray.join();
 
         rapidSosData.version = "";
         rapidSosData.createdAt = new Date();
