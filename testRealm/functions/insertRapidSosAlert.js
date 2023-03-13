@@ -59,10 +59,10 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.userTokens = userTokens;
         rapidSosData.sensordataid = insertedId;
         rapidSosData.deviceId = fullDocument.data.deviceId;
-        let xyz = deviceInfo.wearer.forEach(element => {
-            return element.isActive==true;
+        let object = deviceInfo.wearer.filter(element => {
+             element.isActive==true;
         });
-        console.log("WEARER ARRAY",JSON.stringify(xyz));
+        console.log("WEARER ARRAY",JSON.stringify(object));
         rapidSosData.wearerId = '';
         rapidSosData.wearerFirstName = "";
         rapidSosData.wearerLastName = "";
