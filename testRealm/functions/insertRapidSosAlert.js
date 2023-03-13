@@ -2,11 +2,7 @@
 
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
-    let sensordataid = "";
-    sensordataid = await insertIntoSensorDataTS(fullDocument).then(response => {
-        sensordataid = response;
-    });
-    await insertIntoRapidSos(fullDocument, sensordataid)
+     await insertIntoSensorDataTS(fullDocument)
 };
 
 async function insertIntoRapidSos(fullDocument, insertedId) {
@@ -183,6 +179,7 @@ async function insertIntoSensorDataTS(fullDocument) {
 
         let sensorData = {};
         let configdata = {};
+        
 
         sensorData.timestamp = fullDocument.data.timestamp;
         sensorData.deviceId = fullDocument.data.deviceId;
@@ -255,8 +252,7 @@ async function insertIntoSensorDataTS(fullDocument) {
             }`);
             do {
                 if (result.insertedId) {
-                    console.log("ID", result.insertedId);
-                    return result.insertedId;
+                    insertIntoRapidSos(fullDocument, result.insertedId)
                 }
             } while (result.insertedId == "");
         }).catch(err => {
