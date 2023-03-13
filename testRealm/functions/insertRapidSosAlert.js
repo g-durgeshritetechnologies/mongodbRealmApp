@@ -14,11 +14,12 @@ exports = async function (changeEvent) {
 async function insertIntoRapidSos(fullDocument, insertedId) {
     try {
         const rapidsosalert = context.services.get("mongodb-atlas").db("production_Cluster0").collection("rapidSOSAlerts");
-
         let rapidSosData = {};
         rapidSosData.title = '';
         rapidSosData.version = "";
+        console.log("CODE REACHED HERE 1");
         rapidSosData.createdAt = new Date();
+        console.log("CODE REACHED HERE 2");
         let deviceInfo = {};
         let Device_GPGGA = {};
         let deviceCordinates = {};
@@ -26,7 +27,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let DeviceLongitude = "";
         let gpggaData = fullDocument.data.GPGGA;
         Device_GPGGA = await decryptGPGGA(gpggaData);
-        console("GPGGA",JSON.stringify(Device_GPGGA));
+        console("GPGGA", JSON.stringify(Device_GPGGA));
         if (Device_GPGGA.valid == true) {
             if (Device_GPGGA.loc.geojson && Device_GPGGA.loc.geojson != undefined) {
                 DeviceLatitude = Device_GPGGA.loc.geojson.coordinates[1];
@@ -42,7 +43,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.spo2 = fullDocument.data.o;
         rapidSosData.heartrate = fullDocument.data.hr;
         rapidSosData.details = {};
-        console.log("DeviceId",JSON.stringify(fullDocument.data.deviceId))
+        console.log("DeviceId", JSON.stringify(fullDocument.data.deviceId))
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
         });
@@ -64,7 +65,9 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.isConfirmed = fullDocument.data.isConfirmed;
 
         rapidsosalert.insertOne(rapidSosData).then(result => {
-            console.log(`Successfully inserted item with _id: ${result.insertedId}`);
+            console.log(`Successfully inserted item with _id: ${
+                result.insertedId
+            }`);
             return result.insertedId;
         }).catch(err => {
             console.error(`Failed to insert item: ${err}`);
@@ -180,7 +183,7 @@ async function getconfigData() {
 
 async function decryptGPGGA(gpgga) {
     try {
-        console.log(JSON.stringify(gpgga));
+        console.log("Decrypt", JSON.stringify(gpgga));
         const nmea = require('@drivetech/node-nmea');
         gpgga = gpgga.replace(/\r\n/g, '');
         let data = nmea.parse(gpgga);
@@ -190,8 +193,9 @@ async function decryptGPGGA(gpgga) {
             gpgga = gpgga.join();
             gpgga = gpgga.replace(/\s/g, '');
             data = nmea.parse(gpgga);
-            console.log("Converted gpgga string is -" + JSON.stringify(data));
+
         }
+        console.log("DATA GPGGA", JSON.stringify(data));
         return data;
     } catch (error) {
         console.log("Getting an error---------------------", error);
