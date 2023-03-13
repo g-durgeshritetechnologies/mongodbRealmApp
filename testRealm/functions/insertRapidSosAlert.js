@@ -2,11 +2,13 @@
 
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
+    let sensordataid="";
     await insertIntoSensorDataTS(fullDocument).then(response => {
         console.log("Response", JSON.stringify(response));
-        var insertedId = response;
+        sensordataid = response;
         insertIntoRapidSos(fullDocument, insertedId)
     });
+
 
 
 };
@@ -17,20 +19,17 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         let rapidSosData = {};
         rapidSosData.title = '';
         rapidSosData.version = "";
-        console.log("CODE REACHED HERE 1");
         rapidSosData.createdAt = new Date();
-        console.log("CODE REACHED HERE 2");
         let deviceInfo = {};
         let Device_GPGGA = {};
         let deviceCordinates = {};
         let DeviceLatitude = "";
         let DeviceLongitude = "";
         let gpggaData = fullDocument.data.GPGGA;
-        
-        await decryptGPGGA(gpggaData).then(response=>{
-            return Device_GPGGA=response;
+        await decryptGPGGA(gpggaData).then(response => {
+            return Device_GPGGA = response;
         });
-        console.log("GPGGA", JSON.stringify(Device_GPGGA));
+
         if (Device_GPGGA.valid == true) {
             if (Device_GPGGA.loc.geojson && Device_GPGGA.loc.geojson != undefined) {
                 DeviceLatitude = Device_GPGGA.loc.geojson.coordinates[1];
@@ -46,7 +45,7 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.spo2 = fullDocument.data.o;
         rapidSosData.heartrate = fullDocument.data.hr;
         rapidSosData.details = {};
-        console.log("DeviceId", JSON.stringify(fullDocument.data.deviceId))
+        console.log("CODE REACHED HERE 1")
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
         });
@@ -54,14 +53,16 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         userTokens.userId = deviceInfo.mappedUsers[0].userId;
         userTokens.notificationTokens = deviceInfo.mappedUsers[0].userNotificationTokens;
         await getUserData(userTokens.userId).then(response => {
-            console.log("FirstName & LastName", JSON.stringify(response.firstName), JSON.stringify(response.lastName));
             userTokens.firstname = response.firstName;
             userTokens.lastname = response.lastName;
-            console.log("userTokens", JSON.stringify(userTokens))
         });
         rapidSosData.userTokens = userTokens;
         rapidSosData.sensordataid = insertedId;
         rapidSosData.deviceId = fullDocument.data.deviceId;
+        let xyz = deviceInfo.wearer.forEach(element => {
+            return element.isActive==true;
+        });
+        console.log("WEARER ARRAY",JSON.stringify(xyz));
         rapidSosData.wearerId = '';
         rapidSosData.wearerFirstName = "";
         rapidSosData.wearerLastName = "";
@@ -90,6 +91,7 @@ async function insertIntoSensorDataTS(fullDocument) {
 
         let sensorData = {};
         let configdata = {};
+        
         sensorData.timestamp = fullDocument.data.timestamp;
         sensorData.deviceId = fullDocument.data.deviceId;
         sensorData.alert = fullDocument.data.a;
@@ -215,7 +217,6 @@ async function getUserData(userId) {
         var response = await userCollection.findOne(userquery).then(resultData => {
             if (resultData) {
                 let user_data = resultData;
-                console.log("User Data from Users", user_data);
                 return user_data;
             } else {
                 console.log("No document matches the provided query.");
