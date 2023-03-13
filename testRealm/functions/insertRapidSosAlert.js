@@ -111,7 +111,7 @@ async function insertIntoSensorDataTS(fullDocument) {
         sensorData.gyro = fullDocument.data.data.gy;
         sensorData.battery = fullDocument.data.b;
         sensorData.version = "";
-        let configdata = getconfigData().then(response => {
+        var configdata = getconfigData().then(response => {
             console.log("RESPONSE", JSON.stringify(response));
             return configdata = response;
         });
