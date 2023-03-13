@@ -2,13 +2,11 @@
 
 exports = async function (changeEvent) {
     const fullDocument = changeEvent.fullDocument;
-    let sensordataid="";
+    let sensordataid = "";
     await insertIntoSensorDataTS(fullDocument).then(response => {
-        console.log("Response", JSON.stringify(response));
         sensordataid = response;
         insertIntoRapidSos(fullDocument, sensordataid)
     });
-
 
 
 };
@@ -45,7 +43,6 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.spo2 = fullDocument.data.o;
         rapidSosData.heartrate = fullDocument.data.hr;
         rapidSosData.details = {};
-        console.log("CODE REACHED HERE 1")
         await getdeviceInfo(fullDocument.data.deviceId).then(response => {
             deviceInfo = response;
         });
@@ -60,9 +57,12 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.sensordataid = insertedId;
         rapidSosData.deviceId = fullDocument.data.deviceId;
         let object = deviceInfo.wearer.filter(element => {
-             element.isActive==true;
-        });
-        console.log("WEARER ARRAY",JSON.stringify(object));
+           let active= element.isActive == true;
+            return active;
+        }
+        
+        );
+        console.log("WEARER ARRAY", JSON.stringify(object));
         rapidSosData.wearerId = '';
         rapidSosData.wearerFirstName = "";
         rapidSosData.wearerLastName = "";
@@ -91,7 +91,7 @@ async function insertIntoSensorDataTS(fullDocument) {
 
         let sensorData = {};
         let configdata = {};
-        
+
         sensorData.timestamp = fullDocument.data.timestamp;
         sensorData.deviceId = fullDocument.data.deviceId;
         sensorData.alert = fullDocument.data.a;
@@ -188,7 +188,7 @@ async function getconfigData() {
 
 async function decryptGPGGA(gpgga) {
     try {
-        console.log("Decrypt", JSON.stringify(gpgga));
+
         const nmea = require('@drivetech/node-nmea');
         gpgga = gpgga.replace(/\r\n/g, '');
         let data = nmea.parse(gpgga);
@@ -199,7 +199,6 @@ async function decryptGPGGA(gpgga) {
             gpgga = gpgga.replace(/\s/g, '');
             data = nmea.parse(gpgga);
         }
-        console.log("DATA GPGGA", JSON.stringify(data));
         return data;
     } catch (error) {
         console.log("Getting an error---------------------", error);
