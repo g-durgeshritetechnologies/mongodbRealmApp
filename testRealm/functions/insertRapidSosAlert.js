@@ -56,15 +56,15 @@ async function insertIntoRapidSos(fullDocument, insertedId) {
         rapidSosData.userTokens = userTokens;
         rapidSosData.sensordataid = insertedId;
         rapidSosData.deviceId = fullDocument.data.deviceId;
-        let object={};
+        let object = {};
         object = deviceInfo.wearer.filter(element => {
             let active = element.isActive == true;
             return active;
         });
-        console.log("Wearer Info",JSON.stringify(object));
-        console.log("Wearer Info",JSON.stringify(object._id));
-        console.log("Wearer Info",JSON.stringify(object.firstName));
-        console.log("Wearer Info",JSON.stringify(object.lastName));
+        console.log("Wearer Info", JSON.stringify(object[0]));
+        console.log("Wearer Info", JSON.stringify(object[0]._id));
+        console.log("Wearer Info", JSON.stringify(object[0].firstName));
+        console.log("Wearer Info", JSON.stringify(object[0].lastName));
         rapidSosData.wearerId = object._id;
         rapidSosData.wearerFirstName = object.firstName;
         rapidSosData.wearerLastName = object.lastName;
