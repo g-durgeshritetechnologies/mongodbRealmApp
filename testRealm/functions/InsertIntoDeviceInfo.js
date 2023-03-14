@@ -44,11 +44,13 @@ async function deviceData(fulldocument) {
 
     let updatedatabase = await updatequery.updateOne(devicequery, updateDoc, options).then(resultData => {
         if (resultData) {
-            return resultData
+            let data = resultData;
+            return data;
         } else {
             console.log("No document matches the provided query.");
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
+    console.log("CODE WORKS", JSON.stringify(updatedatabase));
 
 
     let versionarray = response.configurations.versionSettings;
