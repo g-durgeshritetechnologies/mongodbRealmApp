@@ -13,7 +13,7 @@ async function deviceData(fulldocument) {
     const devicequery = {
         "deviceId": fulldocument.data.deviceId
     }
-    let response = await deviceInfoCollection.findOne(devicequery).then(resultData => {
+    let responsedocument = await deviceInfoCollection.findOne(devicequery).then(resultData => {
         if (resultData) {
             let device_data = resultData;
             return device_data;
@@ -21,7 +21,7 @@ async function deviceData(fulldocument) {
             console.log("No document matches the provided query.");
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
-    console.log("Response Data", JSON.stringify(response));
+    console.log("Response Data", JSON.stringify(responsedocument));
 
     let encryptedpwd = "";
     console.log("PWD", JSON.stringify(fulldocument.data.mqttPwd))
@@ -53,7 +53,7 @@ async function deviceData(fulldocument) {
     console.log("CODE WORKS", JSON.stringify(updatedatabase));
 
 
-    let versionarray = response.configurations.versionSettings;
+    let versionarray = responsedocument.configurations.versionSettings;
     console.log("Array", JSON.stringify(versionarray));
 
 
