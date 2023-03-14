@@ -36,7 +36,7 @@ async function deviceData(fulldocument) {
 
     const updateDoc = {
         $set: {
-            "configuration.versionSettings.mqttPwd": encryptedpwd
+            "configuration.mqttPwd": encryptedpwd
         }
     };
     console.log("CODE REACHED HERE 2 ");
