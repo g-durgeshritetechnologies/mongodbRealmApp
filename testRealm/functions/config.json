@@ -111,5 +111,9 @@
     {
         "name": "InsertIntoSensorData",
         "private": true
+    },
+    {
+        "name": "InsertIntoDeviceInfo",
+        "private": true
     }
 ]
