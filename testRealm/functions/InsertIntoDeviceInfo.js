@@ -56,6 +56,12 @@ async function deviceData(fulldocument) {
     let versionarray = [];
     versionarray = responsedocument.configuration.versionSettings;
     console.log("Array", JSON.stringify(versionarray));
+
+    let vinfoarray = [];
+    vinfoarray = fulldocument.data.vinfo;
+    console.log("Array Vinfo", JSON.stringify(vinfoarray));
+
+
 }
 
 async function Encrypt(phrase) {
