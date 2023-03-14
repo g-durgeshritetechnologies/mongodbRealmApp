@@ -72,6 +72,20 @@ async function deviceData(fulldocument) {
             }
         }
     }
+    const arrayupdate = {
+        $set: {
+            "configuration.versionSettings": versionarray
+        }
+    };
+
+    let versionupdated = await updatequery.updateOne(devicequery, arrayupdate, options).then(resultData => {
+        if (resultData) {
+            let arraydata = resultData;
+            return arraydata;
+        } else {
+            console.log("No document matches the provided query.");
+        }
+    }).catch(err => console.error(`Failed to find document: ${err}`));
 
     console.log("Updated Array", JSON.stringify(versionarray));
 
