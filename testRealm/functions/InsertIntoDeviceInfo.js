@@ -21,12 +21,12 @@ async function deviceData(fulldocument) {
             console.log("No document matches the provided query.");
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
-    console.log("Response Data", JSON.stringify(responsedocument));
+
 
     let encryptedpwd = "";
-    console.log("PWD", JSON.stringify(fulldocument.data.mqttPwd))
+
     await Encrypt(fulldocument.data.mqttPwd).then(response => {
-        console.log("REsponse", JSON.stringify(response));
+
         return encryptedpwd = response;
     });
 
@@ -39,7 +39,7 @@ async function deviceData(fulldocument) {
             "configuration.mqttPwd": encryptedpwd
         }
     };
-    console.log("CODE REACHED HERE 2 ");
+
     const updatequery = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info");
 
     let updatedatabase = await updatequery.updateOne(devicequery, updateDoc, options).then(resultData => {
@@ -50,7 +50,6 @@ async function deviceData(fulldocument) {
             console.log("No document matches the provided query.");
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
-    console.log("CODE WORKS", JSON.stringify(updatedatabase));
 
 
     let versionarray = [];
@@ -61,6 +60,20 @@ async function deviceData(fulldocument) {
     vinfoarray = fulldocument.data.vinfo;
     console.log("Array Vinfo", JSON.stringify(vinfoarray));
 
+    for (let i = 0; i < vinfoarray.length; i++) {
+        for (let j = 0; j < versionarray.length; j++) {
+            if (vinfoarray[i].p == versionarray[j].param) {
+                versionarray[j].value = vinfoarray[i].v;
+            } else {
+                let obj = {}
+                obj.param = vinfoarray[i].p;
+                obj.value = vinfoarray[i].v;
+                versionarray.push(obj);
+            }
+        }
+    }
+
+    console.log("Updated Array", JSON.stringify(versionarray));
 
 }
 
