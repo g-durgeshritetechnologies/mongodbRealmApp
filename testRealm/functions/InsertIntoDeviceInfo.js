@@ -13,10 +13,11 @@ async function deviceData(fulldocument) {
     const devicequery = {
         "deviceId": fulldocument.data.deviceId
     }
-
+    console.log("CODE REACHED HERE 1 ");
     let response = await deviceInfoCollection.filter(devicequery).then(resultData => {
         if (resultData) {
             let device_data = resultData;
+            console.log("DEVICE DATA", JSON.stringify(device_data));
             return device_data;
         } else {
             console.log("No document matches the provided query.");
@@ -28,7 +29,7 @@ async function deviceData(fulldocument) {
     await Encrypt(fulldocument.data.mqttPwd).then(response => {
         return encryptedpwd = response;
     });
-
+    console.log("PWD", JSON.stringify(encryptedpwd));
     const options = {
         "upsert": true
     };
@@ -38,7 +39,7 @@ async function deviceData(fulldocument) {
             "mqttPwd": encryptedpwd
         }
     };
-
+    console.log("CODE REACHED HERE 2 ");
     const updatequery = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info").updateOne(devicequery, updateDoc, options);
 
 
