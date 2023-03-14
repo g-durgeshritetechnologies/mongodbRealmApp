@@ -2,9 +2,9 @@ exports = async function (changeEvent) {
     try {
         const fullDocument = changeEvent.fullDocument;
         let filteredData = {};
-        await deviceData(fullDocument).then(resultData => {
+        filteredData = await deviceData(fullDocument).then(resultData => {
             if (resultData) {
-                filteredData = resultData;
+                return resultData;
             } else {
                 console.log("No document matches the provided query.");
             };
@@ -30,4 +30,5 @@ async function deviceData(fulldocument) {
             console.log("No document matches the provided query.");
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
+    console.log("Device Data",JSON.stringify(response));
 }
