@@ -10,7 +10,7 @@
             "local-userpass"
         ]
     },
-    "disabled": false,
+    "disabled": true,
     "event_processors": {
         "FUNCTION": {
             "config": {
