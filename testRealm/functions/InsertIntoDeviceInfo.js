@@ -2,7 +2,6 @@ exports = async function (changeEvent) {
     try {
         const fullDocument = changeEvent.fullDocument;
         await deviceData(fullDocument);
-
     } catch (error) {
         console.log("Some Error in the Try Block: ", JSON.stringify(error));
     }
@@ -23,13 +22,13 @@ async function deviceData(fulldocument) {
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
 
-    let encryptedpwd = "";
-    await Encrypt(fulldocument.mqttPwd).then(response => {
-        return encryptedpwd = response;
-    });
+    // let encryptedpwd = "";
+    // await Encrypt(fulldocument.mqttPwd).then(response => {
+    //     return encryptedpwd = response;
+    // });
 
 
-    console.log("Encrypted password", JSON.stringify(encryptedpwd));
+    // console.log("Encrypted password", JSON.stringify(encryptedpwd));
 
 
 }
@@ -60,7 +59,7 @@ async function Encrypt(phrase) {
     // let decrypted = decipher.update(encrypted, 'base64', 'utf8');
     // return (decrypted + decipher.final('utf8'));
     // });
-    console.log("KEy inside Function",JSON.stringify(encrypted_key)) ;
+    console.log("KEy inside Function", JSON.stringify(encrypted_key));
     return encrypted_key;
 
 }
