@@ -37,22 +37,14 @@ async function deviceData(fulldocument) {
 }
 
 
+
 async function Encrypt(phrase) {
-    const crypto = require('crypto');
-    const enc_key = "bf3c199c2470cb477d907b1e0917c17b";
-    const iv = "5183666c72eec9e4";
-
-    let encrypted_key = encrypt(phrase);
-
-    var encrypt = ((val) => {
-        let cipher = crypto.createCipheriv('aes-256-cbc', enc_key, iv);
-        let encrypted = cipher.update(val, 'utf8', 'base64');
-        encrypted += cipher.final('base64');
-        return encrypted;
-    });
-
-
-    console.log("KEy inside Function", JSON.stringify(encrypted_key));
-    return encrypted_key;
-
+  const crypto = require('crypto');
+  const enc_key = "bf3c199c2470cb477d907b1e0917c17b";
+  const iv = "5183666c72eec9e4";
+  let cipher = crypto.createCipheriv('aes-256-cbc', enc_key, iv);
+  let encrypted = cipher.update(phrase, 'utf8', 'base64');
+  encrypted += cipher.final('base64');
+  console.log("KEy inside Function", JSON.stringify(encrypted));
+  return encrypted;
 }
