@@ -61,7 +61,9 @@ async function deviceData(fulldocument) {
     console.log("Array Vinfo", JSON.stringify(vinfoarray));
 
     for (let i = 0; i < versionarray.length; i++) {
+        console.log("Working here")
         for (let j = 0; j < vinfoarray.length; j++) {
+            console.log("Working here too")
             if (versionarray[i].param == vinfoarray[j].p) {} else {
                 let obj = {}
                 obj.param = vinfoarray[j].p;
@@ -96,6 +98,5 @@ async function Encrypt(phrase) {
     let cipher = crypto.createCipheriv('aes-256-cbc', enc_key, iv);
     let encrypted = cipher.update(phrase, 'utf8', 'base64');
     encrypted += cipher.final('base64');
-    console.log("KEy inside Function", JSON.stringify(encrypted));
     return encrypted;
 }
