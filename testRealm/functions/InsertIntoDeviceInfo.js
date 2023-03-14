@@ -44,13 +44,17 @@ async function deviceData(fulldocument) {
 
     let updatedatabase = await updatequery.updateOne(devicequery, updateDoc, options).then(resultData => {
         if (resultData) {
-            let updates = resultData;
-            return updates;
+            return resultData
         } else {
             console.log("No document matches the provided query.");
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
-    console.log("Query Update Data", JSON.stringify(updatedatabase));
+
+
+    let versionarray = response.configurations.versionSettings;
+    console.log("Array", JSON.stringify(versionarray));
+
+
 }
 
 async function Encrypt(phrase) {
