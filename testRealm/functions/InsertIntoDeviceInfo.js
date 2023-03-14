@@ -9,11 +9,12 @@ exports = async function (changeEvent) {
 
 async function deviceData(fulldocument) {
     const deviceInfoCollection = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info");
-
+    let encryptedpwd = "";
     const devicequery = {
         "deviceId": fulldocument.data.deviceId
     }
-    let response = await deviceInfoCollection.findOne(devicequery).then(resultData => {
+
+    let response = await deviceInfoCollection.filter(devicequery).then(resultData => {
         if (resultData) {
             let device_data = resultData;
             return device_data;
@@ -23,28 +24,32 @@ async function deviceData(fulldocument) {
     }).catch(err => console.error(`Failed to find document: ${err}`));
     console.log("Response Data", JSON.stringify(response));
 
-    let encryptedpwd = "";
-    console.log("PWD",JSON.stringify(fulldocument.data.mqttPwd))
+
     await Encrypt(fulldocument.data.mqttPwd).then(response => {
-        console.log("REsponse", JSON.stringify(response));
         return encryptedpwd = response;
     });
 
+    const options = {
+        "upsert": true
+    };
 
-    console.log("Encrypted password", JSON.stringify(encryptedpwd));
+    const updateDoc = {
+        $set: {
+            "mqttPwd": encryptedpwd
+        }
+    };
+
+    const updatequery = context.services.get("mongodb-atlas").db("production_Cluster0").collection("device_info").updateOne(devicequery, updateDoc, options);
 
 
 }
 
-
-
 async function Encrypt(phrase) {
-  const crypto = require('crypto');
-  const enc_key = "bf3c199c2470cb477d907b1e0917c17b";
-  const iv = "5183666c72eec9e4";
-  let cipher = crypto.createCipheriv('aes-256-cbc', enc_key, iv);
-  let encrypted = cipher.update(phrase, 'utf8', 'base64');
-  encrypted += cipher.final('base64');
-  console.log("KEy inside Function", JSON.stringify(encrypted));
-  return encrypted;
+    const crypto = require('crypto');
+    const enc_key = "bf3c199c2470cb477d907b1e0917c17b";
+    const iv = "5183666c72eec9e4";
+    let cipher = crypto.createCipheriv('aes-256-cbc', enc_key, iv);
+    let encrypted = cipher.update(phrase, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+    return encrypted;
 }
