@@ -24,8 +24,8 @@ async function deviceData(fulldocument) {
     console.log("Response Data", JSON.stringify(response));
 
     let encryptedpwd = "";
-    console.log("PWD",JSON.stringify(fulldocument.mqttPwd))
-    await Encrypt(fulldocument.mqttPwd).then(response => {
+    console.log("PWD",JSON.stringify(fulldocument.data.mqttPwd))
+    await Encrypt(fulldocument.data.mqttPwd).then(response => {
         console.log("REsponse", JSON.stringify(response));
         return encryptedpwd = response;
     });
