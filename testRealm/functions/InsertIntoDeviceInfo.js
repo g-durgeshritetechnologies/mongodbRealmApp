@@ -1,7 +1,7 @@
 exports = async function (changeEvent) {
     try {
         const fullDocument = changeEvent.fullDocument;
-
+        await deviceData(fullDocument);
 
     } catch (error) {
         console.log("Some Error in the Try Block: ", JSON.stringify(error));
@@ -13,7 +13,7 @@ async function deviceData(fulldocument) {
 
     const devicequery = {
         "deviceId": fulldocument.data.deviceId
-    };
+    }
     let response = await deviceInfoCollection.findOne(devicequery).then(resultData => {
         if (resultData) {
             let device_data = resultData;
@@ -60,6 +60,7 @@ async function Encrypt(phrase) {
     // let decrypted = decipher.update(encrypted, 'base64', 'utf8');
     // return (decrypted + decipher.final('utf8'));
     // });
+    console.log("KEy inside Function",JSON.stringify(encrypted_key)) ;
     return encrypted_key;
 
 }
