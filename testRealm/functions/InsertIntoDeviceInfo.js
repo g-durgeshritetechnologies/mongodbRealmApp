@@ -60,11 +60,9 @@ async function deviceData(fulldocument) {
     vinfoarray = fulldocument.data.vinfo;
     console.log("Array Vinfo", JSON.stringify(vinfoarray));
 
-    for (let i = 0; i < vinfoarray.length; i++) {
-        for (let j = 0; j < versionarray.length; j++) {
-            if (vinfoarray[i].p == versionarray[j].param) {
-                
-            } else {
+    for (let i = 0; i < versionarray.length; i++) {
+        for (let j = 0; j < vinfoarray.length; j++) {
+            if (versionarray[i].param == vinfoarray[j].p) {} else {
                 let obj = {}
                 obj.param = vinfoarray[i].p;
                 obj.value = vinfoarray[i].v;
