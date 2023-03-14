@@ -24,7 +24,9 @@ async function deviceData(fulldocument) {
     console.log("Response Data", JSON.stringify(response));
 
     let encryptedpwd = "";
+    console.log("PWD",JSON.stringify(fulldocument.mqttPwd))
     await Encrypt(fulldocument.mqttPwd).then(response => {
+        console.log("REsponse", JSON.stringify(response));
         return encryptedpwd = response;
     });
 
@@ -37,16 +39,10 @@ async function deviceData(fulldocument) {
 
 async function Encrypt(phrase) {
     const crypto = require('crypto');
-    // const ENC_KEY = crypto.randomBytes(16).toString('hex');
-    // const IV = crypto.randomBytes(8).toString('hex');
-    const enc_key = "bf3c199c2470cb477d907b1e0917c17b"; // set random encryption key
+    const enc_key = "bf3c199c2470cb477d907b1e0917c17b";
     const iv = "5183666c72eec9e4";
-    // set random initialisation vector
-    // ENC_KEY and IV can be generated as crypto.randomBytes(32).toString('hex');
-
 
     let encrypted_key = encrypt(phrase);
-    // let original_phrase = decrypt(encrypted_key);
 
     var encrypt = ((val) => {
         let cipher = crypto.createCipheriv('aes-256-cbc', enc_key, iv);
@@ -55,11 +51,7 @@ async function Encrypt(phrase) {
         return encrypted;
     });
 
-    // var decrypt = ((encrypted) => {
-    // let decipher = crypto.createDecipheriv('aes-256-cbc', enc_key, iv);
-    // let decrypted = decipher.update(encrypted, 'base64', 'utf8');
-    // return (decrypted + decipher.final('utf8'));
-    // });
+
     console.log("KEy inside Function", JSON.stringify(encrypted_key));
     return encrypted_key;
 
