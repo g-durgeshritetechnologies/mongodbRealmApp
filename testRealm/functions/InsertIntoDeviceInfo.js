@@ -53,10 +53,9 @@ async function deviceData(fulldocument) {
     console.log("CODE WORKS", JSON.stringify(updatedatabase));
 
 
-    let versionarray = responsedocument.configurations.versionSettings;
+    let versionarray = [];
+    versionarray = responsedocument.configuration.versionSettings;
     console.log("Array", JSON.stringify(versionarray));
-
-
 }
 
 async function Encrypt(phrase) {
