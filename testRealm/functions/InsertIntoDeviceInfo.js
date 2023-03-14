@@ -64,8 +64,8 @@ async function deviceData(fulldocument) {
         for (let j = 0; j < vinfoarray.length; j++) {
             if (versionarray[i].param == vinfoarray[j].p) {} else {
                 let obj = {}
-                obj.param = vinfoarray[i].p;
-                obj.value = vinfoarray[i].v;
+                obj.param = vinfoarray[j].p;
+                obj.value = vinfoarray[j].v;
                 versionarray.push(obj);
             }
         }
