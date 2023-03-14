@@ -21,14 +21,15 @@ async function deviceData(fulldocument) {
             console.log("No document matches the provided query.");
         }
     }).catch(err => console.error(`Failed to find document: ${err}`));
+    console.log("Response Data", JSON.stringify(response));
 
-    // let encryptedpwd = "";
-    // await Encrypt(fulldocument.mqttPwd).then(response => {
-    //     return encryptedpwd = response;
-    // });
+    let encryptedpwd = "";
+    await Encrypt(fulldocument.mqttPwd).then(response => {
+        return encryptedpwd = response;
+    });
 
 
-    // console.log("Encrypted password", JSON.stringify(encryptedpwd));
+    console.log("Encrypted password", JSON.stringify(encryptedpwd));
 
 
 }
