@@ -1,31 +1,15 @@
-exports = async function(changeEvent) {
-
+exports = async function (changeEvent) {
     try {
-        if (changeEvent.operationType == "update") {
-            if (changeEvent.fullDocument) {
-                const fullDocument = changeEvent.fullDocument;
-                console.log("Data Updated", JSON.stringify(fullDocument));
-                if (fullDocument.isConfirmed == "Y") {
-                    await sendRapidSOSData(fullDocument);
-                }
-            }
-        } else {
+        const fullDocument = changeEvent.fullDocument;
+        if (fullDocument.isConfirmed == "Y") {
             const fullDocument = changeEvent.fullDocument;
-            
-            if (fullDocument.isConfirmed == "Y") {
-                const fullDocument = changeEvent.fullDocument;
-                console.log("Data", JSON.stringify(fullDocument));
-
-                await sendRapidSOSData(fullDocument);
-
-                await sendAlerts(fullDocument);
-
-            } else {
-
-                await sendAlerts(fullDocument); 
-         
-            }
+            console.log("Data", JSON.stringify(fullDocument));
+            await sendRapidSOSData(fullDocument);
+            await sendAlerts(fullDocument);
+        } else {
+            await sendAlerts(fullDocument);
         }
+
     } catch (error) {
         console.log("Some issue", JSON.stringify(error));
     }
@@ -33,10 +17,11 @@ exports = async function(changeEvent) {
 }
 
 async function sendRapidSOSData(fullDocument) {
-    let deviceData = {};
-    let payload = {};
-    let userData = {};
+
     try {
+        let deviceData = {};
+        let payload = {};
+        let userData = {};
         await getdeviceInfo(fullDocument.deviceId).then(result => {
             if (result) {
                 deviceData = result;
@@ -44,7 +29,6 @@ async function sendRapidSOSData(fullDocument) {
                 console.log("No documentss matches the provided query.");
             }
         }).catch(err => console.error(`Failed to find document: ${err}`));
-
 
         await getUserInfo(fullDocument.userTokens.userId).then(result => {
             if (result) {
@@ -54,12 +38,12 @@ async function sendRapidSOSData(fullDocument) {
             }
         }).catch(err => console.error(`Failed to find document: ${err}`));
 
-        activeWearer = deviceData.wearer.find((wearer) => {
+        let activeWearer = deviceData.wearer.find((wearer) => {
             return wearer.isActive == true;
         });
         console.log("Active Wearer", JSON.stringify(activeWearer));
 
-        GetGeofenceRecord = deviceData.geofences.find((geofence) => {
+        let GetGeofenceRecord = deviceData.geofences.find((geofence) => {
             return geofence.status == "active";
         });
 
@@ -92,14 +76,14 @@ async function sendRapidSOSData(fullDocument) {
         }
         console.log("Final Payload : ", JSON.stringify(payload));
 
-        getToken().then(function(token) {
+        getToken().then(function (token) {
             console.log(token);
-            postDatToRapidSOS(token, payload).then(function(response) {
+            postDatToRapidSOS(token, payload).then(function (response) {
                 console.log("Successfully Posted Data", response);
-            }).catch(function(error) {
+            }).catch(function (error) {
                 console.log("Could not Post Data", error);
             });
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log("Could not receive token", error);
         });
     } catch (error) {
@@ -133,7 +117,7 @@ async function sendAlerts(fullDocument) {
         let details = [];
         let activeWearer = {};
         let deviceCordinates = {};
-        let alert={}; 
+        let alert = {};
         deviceCordinates.latitude = fullDocument.latitude;
         deviceCordinates.longitute = fullDocument.longitute;
         console.log("CODE REACHED HERE 1");
@@ -166,20 +150,11 @@ async function sendAlerts(fullDocument) {
         }
 
         if (AccelFallDetect_Alert == 1) {
-
             if (nonoEdgeFallAnomaly_Alert == 1) {
-                AlertLevels.push({
-                    "alertLevel": 2,
-                    "high": "",
-                    "low": ""
-                });
+                AlertLevels.push({"alertLevel": 2, "high": "", "low": ""});
             }
             if (nonoEdgeFallAnomaly_Alert == 0) {
-                AlertLevels.push({
-                    "alertLevel": 3,
-                    "high": "",
-                    "low": ""
-                });
+                AlertLevels.push({"alertLevel": 3, "high": "", "low": ""});
             }
             AlertTitle.push("Fall Detection");
             AlertBody.push("Fall Detection - Yes");
@@ -188,7 +163,6 @@ async function sendAlerts(fullDocument) {
                 "alert": "High",
                 "isAlertFor": AccelFallDetect_Alert
             };
-
             details.push({
                 "param": "Fall Detection",
                 "value": fullDocument.heartrate,
@@ -197,9 +171,7 @@ async function sendAlerts(fullDocument) {
                 "level": alertLevel,
                 "color": alertLevel,
                 "wearerThreshold": ""
-
             });
-
         } else {
             notificationBody.FallDeteted = {
                 "value": "No",
@@ -207,37 +179,25 @@ async function sendAlerts(fullDocument) {
                 "isAlertFor": AccelFallDetect_Alert
             };
         }
-
         if (GeoFence_Alert == 1) {
-
             await getdeviceInfo(fullDocument.deviceId).then(result => {
-
                 if (result) {
                     deviceData = result;
                 } else {
                     console.log("No document matches the provided query.");
                 }
-
             }).catch(err => console.error(`Failed to find document: ${err}`));
-
-            activeWearer = deviceData.wearer.find((wearer) => {
+            let activeWearer = deviceData.wearer.find((wearer) => {
                 return wearer.isActive == true;
             });
-
             console.log("CODE REACHED HERE 2");
-            GetGeofenceRecord = deviceData.geofences.find((geofence) => {
+            let GetGeofenceRecord = deviceData.geofences.find((geofence) => {
                 return geofence.status == "active";
             });
 
-
             if (GetGeofenceRecord.length === 0) {} else {
                 if (GetGeofenceRecord) {
-
-                    AlertLevels.push({
-                        "alertLevel": 2,
-                        "high": "",
-                        "low": ""
-                    });
+                    AlertLevels.push({"alertLevel": 2, "high": "", "low": ""});
                     AlertTitle.push("Geo Fence Event");
                     notificationBody.GeoFence = {
                         "value": "Distance greater",
@@ -245,7 +205,6 @@ async function sendAlerts(fullDocument) {
                         "isAlertFor": GeoFence_Alert,
                         "deviceCordinates": deviceCordinates
                     };
-
                     AlertBody.push("Geofence - Yes");
                     details.push({
                         "param": "Heart Rate",
@@ -255,12 +214,9 @@ async function sendAlerts(fullDocument) {
                         "level": alertLevel,
                         "color": alertLevel,
                         "wearerThreshold": ""
-
                     });
                 } else {}
             }
-
-
         }
         if (SpO2_Alert == 1) {
             AlertTitle.push("SpO2 alert");
@@ -285,40 +241,31 @@ async function sendAlerts(fullDocument) {
                 "level": alertLevel,
                 "color": alertLevel,
                 "wearerThreshold": ""
-
             });
         }
 
-        let AlertLevelFinalString = Math.max.apply(Math, AlertLevels.map(function(o) {
+        let AlertLevelFinalString = Math.max.apply(Math, AlertLevels.map(function (o) {
             return o.alertLevel;
         }));
         notificationBody.AlertLevel = AlertLevelFinalString;
         let AlertLevelBody = '';
 
-
         switch (AlertLevelFinalString) {
-            case 2:
-                AlertLevelBody = "Time sensitive\n";
+            case 2: AlertLevelBody = "Time sensitive\n";
                 break;
-            case 3:
-                AlertLevelBody = "Take action now\n";
+            case 3: AlertLevelBody = "Take action now\n";
                 break;
-            case 4:
-                AlertLevelBody = "SOS\n\n";
+            case 4: AlertLevelBody = "SOS\n\n";
                 break;
         }
 
         const AlertBodyFinalString = AlertBody.join("\n").toString();
-
-
-
         if (AlertBodyFinalString.includes("Geofence - Yes") || AlertBodyFinalString.includes("Fall Detection - Yes")) {
             for (const dtokens of fullDocument.userTokens.notificationTokens) {
                 if (GetGeofenceRecord) {
                     geoFenceName = "Geo Fence - " + GetGeofenceRecord.name;
                     notificationBody.geofenceDetails = GetGeofenceRecord.name;
                 }
-
                 alertObj.title = AlertTitle;
                 alertObj.version = deviceData.version;
                 alertObj.createdAt = new Date(Date.now()).toISOString();
@@ -335,17 +282,13 @@ async function sendAlerts(fullDocument) {
                 alertObj.wearerLastName = activeWearer.lastname;
                 alertObj.confidence = fullDocument.alertInfo;
                 alertObj.isStopped = 0;
-
                 let alertid = await saveAlert(alertObj);
-
-
                 alertdata = {
                     "color": AlertLevelFinalString,
                     "false_alert": 0,
                     "title": AlertTitle,
                     "body": notificationBody
                 };
-
                 alert = {
                     "title": alertObj.wearerFirstName + " " + alertObj.wearerLastName + " - " + AlertTitle,
                     "body": AlertLevelBody + geoFenceName + "\n" + AlertBodyFinalString
@@ -358,14 +301,9 @@ async function sendAlerts(fullDocument) {
                     "deviceCordinates": deviceCordinates,
                     "alert_id": alertid
                 };
-
                 await sleep(25);
-
                 sendNotifications(alert, payload, dtokens);
-
             }
-
-
         }
     } catch (error) {
         console.log("Error Occured in SendAlerts", error)
@@ -378,17 +316,14 @@ async function getUserInfo(userId) {
         "_id": userId
 
     };
-
     var user_id_data;
     var res = await userCollection.findOne(query).then(result => {
         if (result) {
             user_id_data = result;
-
             return user_id_data;
         } else {
             console.log("No document matches the provided query.");
         }
-
     }).catch(err => console.error(`Failed to find document: ${err}`));
     return res;
 }
@@ -449,7 +384,7 @@ function sendNotifications(alert, payload, token) {
     triggerData.token = token;
     console.log("Trigger Data", JSON.stringify(triggerData));
 
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
 
             return JSON.parse(xhr.readyState);
@@ -470,7 +405,7 @@ function sleep(ms) {
 }
 
 function postDatToRapidSOS(token, payload) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
         const xhr = new XMLHttpRequest();
         const url = "https://api-sandbox.rapidsos.com/v1/rem/trigger";
@@ -480,7 +415,7 @@ function postDatToRapidSOS(token, payload) {
             token.toString()
         }`);
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 console.log(xhr.status);
                 console.log(xhr.responseText);
@@ -500,7 +435,7 @@ function getAge(dateOfBirth) {
 }
 
 function getToken() {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         try {
             var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
             const xhr = new XMLHttpRequest();
@@ -508,7 +443,7 @@ function getToken() {
             xhr.open('POST', url, true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send("grant_type=client_credentials&client_id=ZSeFLQDjoMTRNPOrXD75xtoWNvllB4SZ&client_secret=sqdKIFwdDWtC6OXn");
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         let token = JSON.parse(xhr.responseText).access_token;
